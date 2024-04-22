@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using VRBuilder.Editor.Settings;
 
 namespace VRBuilder.Editor.UI.Wizard
 {

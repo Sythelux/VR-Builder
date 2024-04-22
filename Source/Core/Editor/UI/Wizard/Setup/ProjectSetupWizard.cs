@@ -10,7 +10,6 @@ using UnityEngine;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Utils;
 using VRBuilder.Editor.PackageManager;
-using VRBuilder.Editor.Settings;
 using VRBuilder.Editor.XRUtils;
 
 namespace VRBuilder.Editor.UI.Wizard

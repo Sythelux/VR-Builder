@@ -3,33 +3,31 @@
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
 using System.Collections;
+using VRBuilder.Core;
 
-namespace VRBuilder.Core
+/// <summary>
+/// A stage process that does nothing.
+/// </summary>
+public sealed class EmptyProcess : IStageProcess
 {
-    /// <summary>
-    /// A stage process that does nothing.
-    /// </summary>
-    public sealed class EmptyProcess : IStageProcess
+    /// <inheritdoc />
+    public void Start()
     {
-        /// <inheritdoc />
-        public void Start()
-        {
-        }
+    }
 
-        /// <inheritdoc />
-        public IEnumerator Update()
-        {
-            yield break;
-        }
+    /// <inheritdoc />
+    public IEnumerator Update()
+    {
+        yield break;
+    }
 
-        /// <inheritdoc />
-        public void End()
-        {
-        }
+    /// <inheritdoc />
+    public void End()
+    {
+    }
 
-        /// <inheritdoc />
-        public void FastForward()
-        {
-        }
+    /// <inheritdoc />
+    public void FastForward()
+    {
     }
 }

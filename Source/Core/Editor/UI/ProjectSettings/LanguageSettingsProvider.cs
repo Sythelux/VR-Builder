@@ -2,20 +2,21 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
-using UnityEngine.Localization;
-using UnityEngine.Localization.Settings;
+using VRBuilder.Editor.UI;
 using VRBuilder.Core.Localization;
+using UnityEngine;
+using UnityEngine.Localization.Settings;
+using System.Collections.Generic;
+using UnityEngine.Localization;
 
-namespace VRBuilder.Editor.UI
+namespace VRBuilder.Editor.Localization
 {
     public class LanguageSettingsProvider : BaseSettingsProvider
     {
         const string Path = "Project/VR Builder/Language";
 
-        public LanguageSettingsProvider() : base(Path, SettingsScope.Project) { }
+        public LanguageSettingsProvider() : base(Path, SettingsScope.Project) {}
 
         protected override void InternalDraw(string searchContext)
         {
@@ -36,7 +37,7 @@ namespace VRBuilder.Editor.UI
             LanguageSettings.Instance.ApplicationLanguage = EditorGUILayout.TextField("Language Code", LanguageSettings.Instance.ApplicationLanguage);
 
             Locale locale = LanguageSettings.Instance.GetLocaleFromString(LanguageSettings.Instance.ApplicationLanguage);
-            if (locale.Identifier.CultureInfo != null)
+            if (locale.Identifier.CultureInfo != null )
             {
                 EditorGUILayout.LabelField($"Application language: {locale}");
             }
@@ -49,7 +50,7 @@ namespace VRBuilder.Editor.UI
         private void ShowLocalePopup()
         {
             GUI.enabled = false;
-            EditorGUILayout.TextField("Project Locale ", LocalizationSettings.ProjectLocale ? LocalizationSettings.ProjectLocale.ToString() : "None");
+            EditorGUILayout.TextField("Project Locale ", LocalizationSettings.ProjectLocale? LocalizationSettings.ProjectLocale.ToString() : "None");
             GUI.enabled = true;
 
             if (LocalizationSettings.AvailableLocales != null && LocalizationSettings.AvailableLocales.Locales.Count > 1)
@@ -79,7 +80,7 @@ namespace VRBuilder.Editor.UI
                 GUI.enabled = true;
             }
         }
-
+        
 
         public override void OnDeactivate()
         {

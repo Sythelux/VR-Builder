@@ -8,7 +8,6 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Setup;
-using VRBuilder.Editor.DemoScene;
 
 namespace VRBuilder.Editor.UI.Wizard
 {
@@ -64,7 +63,7 @@ namespace VRBuilder.Editor.UI.Wizard
 
             if (loadDemoScene)
             {
-                DemoSceneLoader.LoadDemoScene();
+                // DemoSceneLoader.LoadDemoScene();
                 ConfigureTeleportationLayers();
 
                 GlobalEditorHandler.SetCurrentProcess(ProcessAssetUtils.GetProcessNameFromPath(RuntimeConfigurator.Instance.GetSelectedProcess()));

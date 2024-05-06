@@ -1,20 +1,39 @@
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#elif GODOT
+using Godot;
+using VRBuilder.Core.Godot.Attributes;
+using Godot.Collections;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core.Configuration
 {
     /// <summary>
     /// Handles configuration specific to this scene.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     public class SceneConfiguration : MonoBehaviour, ISceneConfiguration
+#elif GODOT
+    public partial class SceneConfiguration : Node, ISceneConfiguration
+#endif
     {
+#if UNITY_5_3_OR_NEWER
         [SerializeField]
+#elif GODOT
+        [Export]
+#endif
         [Tooltip("Lists all assemblies whose property extensions will be used in the current scene.")]
-        private List<string> extensionAssembliesWhitelist = new List<string>();
+        private Array<string> extensionAssembliesWhitelist = new Array<string>();
 
+#if UNITY_5_3_OR_NEWER
         [SerializeField]
+#elif GODOT
+        [Export]
+#endif
         [Tooltip("Default resources prefab to use for the Confetti behavior.")]
         private string defaultConfettiPrefab;
 
@@ -36,7 +55,8 @@ namespace VRBuilder.Core.Configuration
                 return false;
             }
 
-            PropertyExtensionExclusionList blacklist = GetComponents<PropertyExtensionExclusionList>().FirstOrDefault(blacklist => blacklist.AssemblyFullName == assemblyName);
+            PropertyExtensionExclusionList blacklist = this.GetComponents<PropertyExtensionExclusionList>()
+                .FirstOrDefault(blacklist => blacklist.AssemblyFullName == assemblyName);
 
             if (blacklist == null)
             {
@@ -44,7 +64,8 @@ namespace VRBuilder.Core.Configuration
             }
             else
             {
-                return blacklist.DisallowedExtensionTypes.Any(disallowedType => disallowedType.FullName == extensionType.FullName) == false;
+                return blacklist.DisallowedExtensionTypes.Any(disallowedType =>
+                    disallowedType.FullName == extensionType.FullName) == false;
             }
         }
 

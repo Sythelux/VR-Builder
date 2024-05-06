@@ -2,8 +2,12 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
-using UnityEngine;
 using System.Runtime.Serialization;
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Utils.Logging;
 using VRBuilder.Unity;
 
@@ -14,7 +18,7 @@ namespace VRBuilder.Core.Behaviors
     /// </summary>
     /// <typeparam name="TData">The type of the behavior's data.</typeparam>
     [DataContract(IsReference = true)]
-    public abstract class Behavior<TData> : Entity<TData>, IBehavior where TData : class, IBehaviorData, new()
+    public abstract partial class Behavior<TData> : Entity<TData>, IBehavior where TData : class, IBehaviorData, new()
     {
         /// <inheritdoc />
         IBehaviorData IDataOwner<IBehaviorData>.Data
@@ -28,7 +32,12 @@ namespace VRBuilder.Core.Behaviors
             {
                 LifeCycle.StageChanged += (sender, args) =>
                 {
+#if UNITY_5_3_OR_NEWER
                     Debug.LogFormat("{0}<b>Behavior</b> <i>'{1} ({2})'</i> is <b>{3}</b>.\n", ConsoleUtils.GetTabs(2), Data.Name, GetType().Name, LifeCycle.Stage);
+#elif GODOT
+                    GD.Print($"{ConsoleUtils.GetTabs(2)}<b>Behavior</b> <i>'{Data.Name} ({GetType().Name})'</i> is <b>{LifeCycle.Stage}</b>.\n");
+#endif
+
                 };
             }
         }

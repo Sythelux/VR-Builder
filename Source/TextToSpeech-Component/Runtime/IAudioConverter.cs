@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 ﻿using UnityEngine;
 
 namespace VRBuilder.TextToSpeech
@@ -28,3 +29,8 @@ namespace VRBuilder.TextToSpeech
         bool TryWriteAudioClipToFile(AudioClip audio, string filePath);
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

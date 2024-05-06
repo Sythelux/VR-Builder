@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using System;
 using System.Collections.Generic;
 using VRBuilder.Core.Utils;
@@ -113,3 +114,7 @@ namespace VRBuilder.TextToSpeech
         }
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

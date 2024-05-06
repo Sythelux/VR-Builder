@@ -7,7 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.Attributes
 {
@@ -45,7 +49,11 @@ namespace VRBuilder.Core.Attributes
 
             if (uniqueTypes.Length != childAttributes.Length)
             {
+#if UNITY_5_3_OR_NEWER
                 Debug.LogError("Child attributes of ListOf attribute have to be unique. Duplicates are omitted.");
+#elif GODOT
+                GD.PrintErr("Child attributes of ListOf attribute have to be unique. Duplicates are omitted.");
+#endif
             }
 
             this.childAttributes = new List<MetadataAttribute>(uniqueTypes.Where(attribute => (typeof(MetadataAttribute).IsAssignableFrom(attribute)))

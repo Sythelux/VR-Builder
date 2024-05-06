@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using System;
 
 namespace VRBuilder.Core.ProcessUtils
@@ -19,3 +20,7 @@ namespace VRBuilder.Core.ProcessUtils
         }
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

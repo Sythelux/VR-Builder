@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -110,3 +111,8 @@ namespace VRBuilder.BasicInteraction.Conditions
         }
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

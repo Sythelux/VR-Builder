@@ -1,16 +1,18 @@
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
-
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using UnityEngine;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils;
-using Object = UnityEngine.Object;
-
 namespace VRBuilder.Core.Properties
 {
     /// <summary>
@@ -27,14 +29,22 @@ namespace VRBuilder.Core.Properties
         public static void SetSuitableName(this ISceneObject sceneObject, string baseName = "")
         {
             int counter = 1;
+#if UNITY_5_3_OR_NEWER
             string newName = baseName = string.IsNullOrEmpty(baseName) ? sceneObject.GameObject.name : baseName;
+#elif GODOT
+            string newName = baseName = string.IsNullOrEmpty(baseName) ? sceneObject.GameObject.Name : baseName;
+#endif
 
-            RuntimeConfigurator.Configuration.SceneObjectRegistry.Unregister(sceneObject);
-            while (RuntimeConfigurator.Configuration.SceneObjectRegistry.ContainsName(newName))
-            {
-                newName = string.Format("{0}_{1}", baseName, counter);
-                counter++;
-            }
+
+	        if (RuntimeConfigurator.Configuration != null)
+	        {
+	            RuntimeConfigurator.Configuration.SceneObjectRegistry.Unregister(sceneObject);
+	            while (RuntimeConfigurator.Configuration.SceneObjectRegistry.ContainsName(newName))
+	            {
+	                newName = string.Format("{0}_{1}", baseName, counter);
+	                counter++;
+	            }
+        	}
 
             sceneObject.ChangeUniqueName(newName);
         }
@@ -57,13 +67,14 @@ namespace VRBuilder.Core.Properties
         /// <param name="processProperty">Typo of <see cref="ISceneObjectProperty"/> to be added to <paramref name="sceneObject"/>.</param>
         /// <returns>A reference to the <see cref="ISceneObjectProperty"/> added to <paramref name="sceneObject"/>.</returns>
         public static ISceneObjectProperty AddProcessProperty(this ISceneObject sceneObject, Type processProperty)
-        {
-            if (AreParametersNullOrInvalid(sceneObject, processProperty))
-            {
-                return null;
-            }
+    {
+        if (AreParametersNullOrInvalid(sceneObject, processProperty)) return null;
 
+#if UNITY_5_3_OR_NEWER
             ISceneObjectProperty sceneObjectProperty = sceneObject.GameObject.GetComponent(processProperty) as ISceneObjectProperty;
+#elif GODOT
+        ISceneObjectProperty sceneObjectProperty = sceneObject.GameObject.FindChildren("*", recursive: true).FirstOrDefault(c => c.GetType() == processProperty) as ISceneObjectProperty;
+#endif
 
             if (sceneObjectProperty != null)
             {
@@ -121,8 +132,7 @@ namespace VRBuilder.Core.Properties
             {
                 string assemblyName = concreteExtension.Assembly.FullName;
 
-                if (RuntimeConfigurator.Configuration.SceneConfiguration.IsAllowedInAssembly(concreteExtension, assemblyName) &&
-                    property.SceneObject.GameObject.GetComponent(concreteExtension) == null)
+                if (RuntimeConfigurator.Configuration.SceneConfiguration.IsAllowedInAssembly(concreteExtension, assemblyName))
                 {
                     property.SceneObject.GameObject.AddComponent(concreteExtension);
                 }
@@ -136,7 +146,11 @@ namespace VRBuilder.Core.Properties
         /// <param name="processProperty"><see cref="ISceneObjectProperty"/> to be removed from <paramref name="sceneObject"/>.</param>
         /// <param name="removeDependencies">If true, this method also removes other components that are marked as `RequiredComponent` by <paramref name="processProperty"/>.</param>
         /// <param name="excludedFromBeingRemoved">The process properties in this list will not be removed if any is a dependency of <paramref name="processProperty"/>. Only relevant if <paramref name="removeDependencies"/> is true.</param>
-        public static void RemoveProcessProperty(this ISceneObject sceneObject, Component processProperty, bool removeDependencies = false, IEnumerable<Component> excludedFromBeingRemoved = null)
+#if UNITY_5_3_OR_NEWER
+        public static void RemoveProcessProperty(this ISceneObject sceneObject, Node processProperty, bool removeDependencies = false, IEnumerable<Component> excludedFromBeingRemoved = null)
+#elif GODOT
+        public static void RemoveProcessProperty(this ISceneObject sceneObject, Node processProperty, bool removeDependencies = false, IEnumerable<Component> excludedFromBeingRemoved = null)
+#endif
         {
             Type processPropertyType = processProperty.GetType();
             RemoveProcessProperty(sceneObject, processPropertyType, removeDependencies, excludedFromBeingRemoved);
@@ -149,9 +163,14 @@ namespace VRBuilder.Core.Properties
         /// <param name="processProperty">Typo of <see cref="ISceneObjectProperty"/> to be removed from <paramref name="sceneObject"/>.</param>
         /// <param name="removeDependencies">If true, this method also removes other components that are marked as `RequiredComponent` by <paramref name="processProperty"/>.</param>
         /// <param name="excludedFromBeingRemoved">The process properties in this list will not be removed if any is a dependency of <paramref name="processProperty"/>. Only relevant if <paramref name="removeDependencies"/> is true.</param>
-        public static void RemoveProcessProperty(this ISceneObject sceneObject, Type processProperty, bool removeDependencies = false, IEnumerable<Component> excludedFromBeingRemoved = null)
-        {
+        public static void RemoveProcessProperty(this ISceneObject sceneObject, Type processProperty, bool removeDependencies = false, IEnumerable<Component>? excludedFromBeingRemoved = null)
+    {
+#if UNITY_5_3_OR_NEWER
             Component processComponent = sceneObject.GameObject.GetComponent(processProperty);
+#elif GODOT
+        Node? processComponent = sceneObject.GameObject.GetChildren().FirstOrDefault(c => c.GetType() == processProperty);
+        excludedFromBeingRemoved ??= new List<Component>();
+#endif
 
             if (AreParametersNullOrInvalid(sceneObject, processProperty) || processComponent == null)
             {
@@ -163,7 +182,8 @@ namespace VRBuilder.Core.Properties
         }
 
         private static void RemoveProperty(ISceneObject sceneObject, Type typeToRemove, bool removeDependencies, IEnumerable<Type> typesToIgnore)
-        {
+    {
+#if UNITY_5_3_OR_NEWER
             IEnumerable<Component> processProperties = sceneObject.GameObject.GetComponents(typeof(Component)).Where(component => component.GetType() != typeToRemove);
 
             foreach (Component component in processProperties)
@@ -199,7 +219,11 @@ namespace VRBuilder.Core.Properties
                     RemoveProperty(sceneObject, dependency, removeDependencies, typesToIgnore);
                 }
             }
-        }
+#elif GODOT
+//TODO: implement
+#endif
+
+    }
 
         private static bool AreParametersNullOrInvalid(ISceneObject sceneObject, Type processProperty)
         {
@@ -208,6 +232,7 @@ namespace VRBuilder.Core.Properties
 
         private static bool IsTypeDependencyOfComponent(Type type, Component component)
         {
+#if UNITY_5_3_OR_NEWER
             Type propertyType = component.GetType();
             RequireComponent[] requireComponents = propertyType.GetCustomAttributes(typeof(RequireComponent), false) as RequireComponent[];
 
@@ -217,10 +242,15 @@ namespace VRBuilder.Core.Properties
             }
 
             return requireComponents.Any(requireComponent => requireComponent.m_Type0 == type || requireComponent.m_Type1 == type || requireComponent.m_Type2 == type);
-        }
+#elif GODOT
+//TODO: implement
+return false;
+#endif
+    }
 
         private static HashSet<Type> GetAllDependenciesFrom(Type processProperty)
-        {
+    {
+#if UNITY_5_3_OR_NEWER
             RequireComponent[] requireComponents = processProperty.GetCustomAttributes(typeof(RequireComponent), false) as RequireComponent[];
 
             if (requireComponents == null || requireComponents.Length == 0)
@@ -236,9 +266,12 @@ namespace VRBuilder.Core.Properties
                 AddTypeToList(requireComponent.m_Type1, ref dependencies);
                 AddTypeToList(requireComponent.m_Type2, ref dependencies);
             }
-
-            return dependencies;
-        }
+#elif GODOT
+//TODO: implement
+        HashSet<Type> dependencies = new();
+#endif
+        return dependencies;
+    }
 
         private static void AddTypeToList(Type type, ref HashSet<Type> dependencies)
         {

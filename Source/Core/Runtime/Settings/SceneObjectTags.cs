@@ -1,7 +1,8 @@
+#if UNITY_5_3_OR_NEWER
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using Godot;
 using VRBuilder.Core.Runtime.Utils;
 
 namespace VRBuilder.Core.Settings
@@ -173,3 +174,7 @@ namespace VRBuilder.Core.Settings
         }
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using System;
 using UnityEngine;
 using VRBuilder.Core.SceneObjects;
@@ -117,3 +118,8 @@ namespace VRBuilder.Core.Properties
         }
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

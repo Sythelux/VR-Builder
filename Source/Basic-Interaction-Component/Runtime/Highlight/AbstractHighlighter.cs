@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -121,3 +122,8 @@ namespace VRBuilder.BasicInteraction
         }
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

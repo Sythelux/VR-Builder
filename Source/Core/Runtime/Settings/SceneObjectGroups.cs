@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot.Collections;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Runtime.Utils;
 
 namespace VRBuilder.Core.Settings
@@ -9,16 +14,25 @@ namespace VRBuilder.Core.Settings
     /// <summary>
     /// Settings for global list of scene object groups.
     /// </summary>
-    public class SceneObjectGroups : SettingsObject<SceneObjectGroups>
+    public partial class SceneObjectGroups : SettingsObject<SceneObjectGroups>
     {
         public const string UniqueGuidNameItalic = "[<i>Object ID</i>]";
         public const string UniqueGuidName = "[Object ID]";
         public const string GuidNotRegisteredText = "[<i>Missing Group</i>]";
 
-        [Serializable]
+#if UNITY_5_3_OR_NEWER
+            [Serializable]
         public class SceneObjectGroup
+#elif GODOT
+        public partial class SceneObjectGroup : Resource
+#endif
+
         {
+#if UNITY_5_3_OR_NEWER
             [SerializeField]
+#elif GODOT
+            [Export]
+#endif
             private string label;
 
             /// <summary>
@@ -26,7 +40,11 @@ namespace VRBuilder.Core.Settings
             /// </summary>
             public string Label => label;
 
+#if UNITY_5_3_OR_NEWER
             [SerializeField]
+#elif GODOT
+            [Export]
+#endif
             private string guidString;
 
             private Guid guid;
@@ -65,8 +83,13 @@ namespace VRBuilder.Core.Settings
             }
         }
 
+#if UNITY_5_3_OR_NEWER
         [SerializeField, HideInInspector]
         private List<SceneObjectGroup> groups = new List<SceneObjectGroup>();
+#elif GODOT
+        [Export]
+#endif
+        private Array<SceneObjectGroup> groups = new Array<SceneObjectGroup>();
 
         /// <summary>
         /// All groups in the list.
@@ -102,7 +125,7 @@ namespace VRBuilder.Core.Settings
         public bool CanCreateGroup(string label)
         {
             return string.IsNullOrEmpty(label) == false &&
-                Groups.Any(group => group.Label == label) == false;
+                   Groups.Any(group => group.Label == label) == false;
         }
 
         /// <summary>
@@ -110,7 +133,19 @@ namespace VRBuilder.Core.Settings
         /// </summary>
         public bool RemoveGroup(Guid guid)
         {
+#if UNITY_5_3_OR_NEWER
             return groups.RemoveAll(group => group.Guid == guid) > 0;
+#elif GODOT
+            var toRemove = groups.Where(group => group.Guid == guid);
+            var removed = false;
+            foreach (var sceneObjectGroup in toRemove)
+            {
+                removed = true;
+                groups.Remove(sceneObjectGroup);
+            }
+
+            return removed;
+#endif
         }
 
         /// <summary>

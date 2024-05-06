@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Utils;
 using VRBuilder.ProcessController;
 
@@ -10,6 +14,7 @@ namespace VRBuilder.UX
     /// <summary>
     /// Manages the setup of the process controller and lets the developer choose the <see cref="IProcessController"/>.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     [DefaultExecutionOrder(1000)]
     public class ProcessControllerSetup : MonoBehaviour
     {
@@ -168,4 +173,10 @@ namespace VRBuilder.UX
             processControllerQualifiedName = processControllerType.Name;
         }
     }
+#elif GODOT
+    public partial class ProcessControllerSetup : Node
+    {
+        //TODO
+    }
+#endif
 }

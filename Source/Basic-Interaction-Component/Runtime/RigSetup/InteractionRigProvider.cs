@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 ﻿using UnityEngine;
 
 namespace VRBuilder.BasicInteraction.RigSetup
@@ -71,3 +72,7 @@ namespace VRBuilder.BasicInteraction.RigSetup
         }
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

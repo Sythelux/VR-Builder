@@ -2,6 +2,9 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+#if GODOT
+using Godot;
+#endif
 using VRBuilder.Unity;
 
 namespace VRBuilder.Core
@@ -9,8 +12,17 @@ namespace VRBuilder.Core
     /// <summary>
     /// Factory implementation for <see cref="ITransition"/> objects.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     internal class TransitionFactory : Singleton<TransitionFactory>
     {
+#elif GODOT
+    [GlobalClass]
+    internal partial class TransitionFactory : GodotObject
+    {
+        private static TransitionFactory instance = new TransitionFactory();
+        public static TransitionFactory Instance => instance;
+#endif
+
         /// <summary>
         /// Creates a new <see cref="ITransition"/>.
         /// </summary>

@@ -1,7 +1,12 @@
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.Utils
 {
+#if UNITY_5_3_OR_NEWER
     public static class GameObjectExtension
     {
         /// <summary>
@@ -40,4 +45,9 @@ namespace VRBuilder.Core.Utils
             }
         }
     }
+#elif GODOT
+    public static class NodeExtension
+    {
+    }
+#endif
 }

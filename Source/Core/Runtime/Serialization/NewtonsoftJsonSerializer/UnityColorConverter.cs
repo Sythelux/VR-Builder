@@ -5,7 +5,11 @@
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.Serialization
 {
@@ -13,7 +17,7 @@ namespace VRBuilder.Core.Serialization
     /// Converts Unity color into json and back.
     /// </summary>
     [NewtonsoftConverter]
-    internal class UnityColorConverter : JsonConverter
+    internal class UnityColorConverter : JsonConverter //TODO: make a GodotColorConverter.cs and solve references to it instead
     {
         /// <inheritDoc/>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -21,10 +25,17 @@ namespace VRBuilder.Core.Serialization
             Color color = (Color) value;
             JObject data = new JObject();
 
+#if UNITY_5_3_OR_NEWER
             data.Add("r",color.r);
             data.Add("g",color.g);
             data.Add("b",color.b);
             data.Add("a",color.a);
+#elif GODOT
+            data.Add("r",color.R);
+            data.Add("g",color.G);
+            data.Add("b",color.B);
+            data.Add("a",color.A);
+#endif
 
             data.WriteTo(writer);
         }
@@ -51,12 +62,22 @@ namespace VRBuilder.Core.Serialization
                 }
                 catch (Exception ex)
                 {
+#if UNITY_5_3_OR_NEWER
                     Debug.LogErrorFormat("Exception occured while trying to parse a color.\n{0}", ex.Message);
                     return Color.magenta;
+#elif GODOT
+                    GD.PushError("Exception occured while trying to parse a color.\n{0}", ex.Message);
+                    return Colors.Magenta;
+#endif
                 }
             }
+#if UNITY_5_3_OR_NEWER
             Debug.LogWarning("Can't read/parse color from JSON.");
             return Color.magenta;
+#elif GODOT
+            GD.PushWarning("Can't read/parse color from JSON.");
+            return Colors.Magenta;
+#endif
         }
 
 

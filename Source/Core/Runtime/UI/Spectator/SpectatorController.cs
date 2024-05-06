@@ -6,7 +6,11 @@ namespace VRBuilder.UX
     /// <summary>
     /// Controller for a spectator to toggle UI visibility.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     public class SpectatorController : InputActionListener
+#elif GODOT
+    public partial class SpectatorController : InputActionListener
+#endif
     {
         /// <summary>
         /// Event fired when UI visibility is toggled.

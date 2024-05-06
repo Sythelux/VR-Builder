@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 
 namespace VRBuilder.Core.Properties
@@ -20,3 +21,8 @@ namespace VRBuilder.Core.Properties
         Vector3 GetDirection(float t);
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

@@ -1,18 +1,28 @@
 /// Guid based Reference copyright © 2018 Unity Technologies ApS
-/// Licensed under the Unity Companion License for Unity-dependent projects--see 
+/// Licensed under the Unity Companion License for Unity-dependent projects--see
 /// Unity Companion License http://www.unity3d.com/legal/licenses/Unity_Companion_License.
-/// Unless expressly provided otherwise, the Software under this license is made available strictly on an 
+/// Unless expressly provided otherwise, the Software under this license is made available strictly on an
 /// “AS IS” BASIS WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
 
 /// Modifications copyright (c) 2021-2024 MindPort GmbH
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+using Godot.Collections;
+#endif
+
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Exceptions;
+using VRBuilder.Core.Godot.Attributes;
 using VRBuilder.Core.Properties;
+using VRBuilder.Core.Utils;
 using VRBuilder.Core.Utils.Logging;
 
 #if UNITY_EDITOR
@@ -25,28 +35,41 @@ namespace VRBuilder.Core.SceneObjects
 {
     /// <summary>
     /// This component gives a GameObject a stable, non-replicatable Globally Unique Identifier.
-    /// It can be used to reference a specific instance of an object no matter where it is.  
+    /// It can be used to reference a specific instance of an object no matter where it is.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     [ExecuteInEditMode, DisallowMultipleComponent]
     public class ProcessSceneObject : MonoBehaviour, ISerializationCallbackReceiver, ISceneObject
+#elif GODOT
+    [Tool]
+    public partial class ProcessSceneObject : Node3D, ISceneObject
+#endif
     {
         /// <summary>
         /// Unity's serialization system doesn't know about System.Guid, so we convert to a byte array
         /// Using strings allocates memory is was twice as slow
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         [SerializeField]
+#elif GODOT
+        [Export]
+#endif
         private SerializableGuid serializedGuid;
 
         /// <summary>
         /// We use this Guid for comparison, generation and caching.
         /// </summary>
-        /// <remarks> 
-        /// When the <see cref="serializedGuid"/> is modified by the Unity editor 
+        /// <remarks>
+        /// When the <see cref="serializedGuid"/> is modified by the Unity editor
         /// (e.g.: reverting a prefab) this will be used to revert it back canaling the changes of the editor.
         /// </remarks>
         protected Guid guid = Guid.Empty;
 
+#if UNITY_5_3_OR_NEWER
         [SerializeField]
+#elif GODOT
+        [Export]
+#endif
         [Tooltip("Unique name which identifies an object in scene, can be null or empty, but has to be unique in the scene.")]
         [Obsolete("This exists for backwards compatibility. Use the serializedGuid field to store the object's unique identifier.")]
         protected string uniqueName = null;
@@ -76,22 +99,36 @@ namespace VRBuilder.Core.SceneObjects
         /// <inheritdoc />
         public string UniqueName => uniqueName;
 
+#if UNITY_5_3_OR_NEWER
         [SerializeField]
         protected List<SerializableGuid> guids = new List<SerializableGuid>();
+#elif GODOT
+        [Export]
+        protected Array<SerializableGuid> guids = new Array<SerializableGuid>();
+#endif
 
         /// <inheritdoc />
         public IEnumerable<Guid> Guids => guids.Select(bytes => bytes.Guid);
 
         /// <inheritdoc />
+#if UNITY_5_3_OR_NEWER
         public GameObject GameObject => gameObject;
+#elif GODOT
+        public Node GameObject => this;
+#endif
 
         /// <summary>
         /// Properties associated with this scene object.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         public ICollection<ISceneObjectProperty> Properties
         {
             get { return GetComponents<ISceneObjectProperty>(); }
         }
+#elif GODOT
+        public IEnumerable<ISceneObjectProperty> Properties => GetChildren().OfType<ISceneObjectProperty>();
+#endif
+
 
         private List<IStepData> unlockers = new List<IStepData>();
 
@@ -108,19 +145,32 @@ namespace VRBuilder.Core.SceneObjects
 
         [Obsolete("This event is no longer used and will be removed in the next major release.")]
 #pragma warning disable CS0067 //The event 'event' is never used
-        public event EventHandler<SceneObjectNameChanged> UniqueNameChanged;
+        // public delegate void UniqueNameChangedEventHandler(SceneObjectNameChanged changed);
 #pragma warning restore CS0067
-        public event EventHandler<LockStateChangedEventArgs> Locked;
-        public event EventHandler<LockStateChangedEventArgs> Unlocked;
-        public event EventHandler<GuidContainerEventArgs> GuidAdded;
-        public event EventHandler<GuidContainerEventArgs> GuidRemoved;
-        public event EventHandler<UniqueIdChangedEventArgs> ObjectIdChanged;
+        [Signal]
+        public delegate void LockedEventHandler(LockStateChangedEventArgs eventArgs);
+        [Signal]
+        public delegate void UnlockedEventHandler(LockStateChangedEventArgs eventArgs);
+        [Signal]
+        public delegate void GuidAddedEventHandler(GodotObject source, GuidContainerEventArgs eventArgs);
+        [Signal]
+        public delegate void GuidRemovedEventHandler(GodotObject source, GuidContainerEventArgs eventArgs);
 
+        // public delegate void ObjectIdChangedEventHandler(UniqueIdChangedEventArgs eventArgs);
+
+
+        private bool IsRegistered => RuntimeConfigurator.Configuration != null && RuntimeConfigurator.Configuration.SceneObjectRegistry.ContainsGuid(Guid);
+
+#if UNITY_5_3_OR_NEWER
         private void Awake()
+#elif GODOT
+        public override void _Ready()
+#endif
         {
             Init();
 
             // Register inactive ProcessSceneObjects
+#if UNITY_5_3_OR_NEWER
             var processSceneObjects = GetComponentsInChildren<ProcessSceneObject>(true);
             for (int i = 0; i < processSceneObjects.Length; i++)
             {
@@ -129,9 +179,20 @@ namespace VRBuilder.Core.SceneObjects
                     processSceneObjects[i].Init();
                 }
             }
+#elif GODOT
+            IEnumerable<ProcessSceneObject> processSceneObjects = FindChildren("*", recursive: true).OfType<ProcessSceneObject>();
+            foreach (ProcessSceneObject pso in processSceneObjects)
+                if (!pso.Visible) //was if (!pso.isActiveAndEnabled)
+                    pso.Init();
+#endif
         }
 
+#if UNITY_5_3_OR_NEWER
         private void Update()
+#elif GODOT
+        public override void _Process(double delta)
+#endif
+
         {
 #if UNITY_EDITOR
             // TODO We need to move this to another update e.g. something in the RuntimeConfigurator
@@ -155,15 +216,14 @@ namespace VRBuilder.Core.SceneObjects
 
         /// <summary>
         /// Implement this method to receive a callback before Unity serializes your object.
-        /// </summary> 
+        /// </summary>
         /// <remarks>
         /// We use this to prevent the GUID to be saved into a prefab on disk.
         /// Be aware this is called more often than you would think (e.g.: about once per frame if the object is selected in the editor)
-        /// - https://discussions.unity.com/t/onbeforeserialize-is-getting-called-rapidly/115546, 
+        /// - https://discussions.unity.com/t/onbeforeserialize-is-getting-called-rapidly/115546,
         /// - https://blog.unity.com/engine-platform/serialization-in-unity </remarks>
         public void OnBeforeSerialize()
         {
-
 #if UNITY_EDITOR
             // This lets us detect if we are a prefab instance or a prefab asset.
             // A prefab asset cannot contain a GUID since it would then be duplicated when instanced.
@@ -173,25 +233,29 @@ namespace VRBuilder.Core.SceneObjects
                 return;
             }
 #endif
-            if (IsGuidAssigned() && !serializedGuid.Equals(guid))
+#if UNITY_5_3_OR_NEWER
+if (IsGuidAssigned() && !serializedGuid.Equals(guid))
             {
                 Guid previousGuid = Guid;
                 serializedGuid.SetGuid(guid);
 
                 ObjectIdChanged?.Invoke(this, new UniqueIdChangedEventArgs(previousGuid, Guid));
             }
+#elif GODOT
+            //TODO: implement ... actually we do that in OnPropertyChanged etc.
+#endif
         }
 
         /// <summary>
         /// Implement this method to receive a callback after Unity deserializes your object.
         /// </summary>
         /// <remarks>
-        /// We use this to restore the <see cref="serializedGuid"/> when it was unwanted changed by the editor 
+        /// We use this to restore the <see cref="serializedGuid"/> when it was unwanted changed by the editor
         /// or assign <see cref="guid"> from the stored <see cref="serializedGuid"/>.
         /// </remarks>
         public void OnAfterDeserialize()
         {
-
+#if UNITY_5_3_OR_NEWER
             if (IsGuidAssigned())
             {
                 /// Restore Guid:
@@ -213,6 +277,9 @@ namespace VRBuilder.Core.SceneObjects
                 /// - Drag and drop prefab into scene
                 /// - Interacting with the prefab outside of the scene
             }
+#elif GODOT
+            //TODO: implement... we do this in _Get() probably
+#endif
         }
 
 #if UNITY_EDITOR
@@ -244,7 +311,8 @@ namespace VRBuilder.Core.SceneObjects
             }
         }
 #endif
-        public void ResetUniqueId()
+#if UNITY_5_3_OR_NEWER
+public void ResetUniqueId()
         {
             if (RuntimeConfigurator.Exists)
             {
@@ -254,8 +322,15 @@ namespace VRBuilder.Core.SceneObjects
                 Init();
             }
         }
+#elif GODOT
+        //TODO: I don't know when.
+#endif
 
+#if UNITY_5_3_OR_NEWER
         private void OnDestroy()
+#elif GODOT
+        public override void _ExitTree()
+#endif
         {
             if (RuntimeConfigurator.Exists)
             {
@@ -273,11 +348,17 @@ namespace VRBuilder.Core.SceneObjects
             serializedGuid.SetGuid(guid);
             this.guid = guid;
 
+#if UNITY_5_3_OR_NEWER
             ObjectIdChanged?.Invoke(this, new UniqueIdChangedEventArgs(previousGuid, Guid));
+#elif GODOT
+            EmitSignal("ObjectIdChanged", new UniqueIdChangedEventArgs(previousGuid, Guid)); //TODO: find correct SignalName class
+#endif
         }
 
         [Obsolete("This is no longer supported.")]
-        public void ChangeUniqueName(string newName = "") { }
+        public void ChangeUniqueName(string newName = "")
+        {
+        }
 
         /// <summary>
         /// Checks if the Guid was assigned a value and not <c>System.Guid.Empty</c>.
@@ -296,7 +377,11 @@ namespace VRBuilder.Core.SceneObjects
         {
             if (RuntimeConfigurator.Exists == false)
             {
+#if UNITY_5_3_OR_NEWER
                 Debug.LogWarning($"Not registering {gameObject.name} due to runtime configurator not present.");
+#elif GODOT
+                GD.PushWarning($"Not registering {GameObject.Name} due to runtime configurator not present.");
+#endif
                 return;
             }
 
@@ -317,11 +402,20 @@ namespace VRBuilder.Core.SceneObjects
             //     PrefabUtility.RecordPrefabInstancePropertyModifications(this);
             // }
 #endif
-            RuntimeConfigurator.Configuration.SceneObjectRegistry.Register(this);
+            // RuntimeConfigurator.Configuration.SceneObjectRegistry.Register(this); obsolete?
+            // if (IsRegistered) return;
+            //
+            // this.SetSuitableName(uniqueName);
+            //
+            // if (IsRegistered == false)
+            // {
+            //     if (RuntimeConfigurator.Configuration != null) RuntimeConfigurator.Configuration.SceneObjectRegistry.Register(this);
+            //
+            //     if (UniqueNameChanged != null) UniqueNameChanged.Invoke(this, new SceneObjectNameChanged(UniqueName, UniqueName));
+            // }
         }
 
 #if UNITY_EDITOR
-
         /// <summary>
         /// Checks if the current object is in the scene and tracks stage transitions.
         /// </summary>
@@ -403,7 +497,11 @@ namespace VRBuilder.Core.SceneObjects
                 // ReSharper disable once InvertIf
                 if (CheckHasProperty(propertyType) == false)
                 {
+#if UNITY_5_3_OR_NEWER
                     Debug.LogErrorFormat("Property of type '{0}' is not attached to SceneObject '{1}'", propertyType.Name, gameObject.name);
+#elif GODOT
+                    GD.PrintErr($"Property of type '{propertyType.Name}' is not attached to SceneObject '{UniqueName}'");
+#endif
                     hasFailed = true;
                 }
             }
@@ -426,17 +524,25 @@ namespace VRBuilder.Core.SceneObjects
 
             if (IsLocked)
             {
-                if (Locked != null)
+#if UNITY_5_3_OR_NEWER
+if (Locked != null)
                 {
                     Locked.Invoke(this, new LockStateChangedEventArgs(IsLocked));
                 }
+#elif GODOT
+                EmitSignal(SignalName.Locked, new LockStateChangedEventArgs(IsLocked));
+#endif
             }
             else
             {
+#if UNITY_5_3_OR_NEWER
                 if (Unlocked != null)
                 {
                     Unlocked.Invoke(this, new LockStateChangedEventArgs(IsLocked));
                 }
+#elif GODOT
+                EmitSignal(SignalName.Unlocked, new LockStateChangedEventArgs(IsLocked));
+#endif
             }
         }
 
@@ -468,8 +574,13 @@ namespace VRBuilder.Core.SceneObjects
 
                 string listUnlockers = unlockers.Count == 0 ? "" : $"\nSteps keeping this object unlocked:{unlockerList}";
 
+#if UNITY_5_3_OR_NEWER
                 Debug.Log($"<i>{this.GetType().Name}</i> on <i>{gameObject.name}</i> received a <b>{lockType}</b> request from <i>{requester}</i>." +
                     $"\nCurrent lock state: <b>{IsLocked}</b>. Future lock state: <b>{lockState && canLock}</b>{listUnlockers}");
+#elif GODOT
+                GD.Print($"<i>{GetType().Name}</i> on <i>{Name}</i> received a <b>{lockType}</b> request from <i>{requester}</i>." +
+                         $"\nCurrent lock state: <b>{IsLocked}</b>. Future lock state: <b>{lockState && canLock}</b>{listUnlockers}");
+#endif
             }
 
             SetLocked(lockState && canLock);
@@ -487,7 +598,11 @@ namespace VRBuilder.Core.SceneObjects
         /// </summary>
         private ISceneObjectProperty FindProperty(Type type)
         {
+#if UNITY_5_3_OR_NEWER
             return GetComponent(type) as ISceneObjectProperty;
+#elif GODOT
+            return GetChildren().FirstOrDefault(c => c.GetType() == type) as ISceneObjectProperty;
+#endif
         }
 
         /// <inheritdoc />
@@ -497,7 +612,11 @@ namespace VRBuilder.Core.SceneObjects
             if (!HasGuid(guid))
             {
                 guids.Add(serializableGuid);
+#if UNITY_5_3_OR_NEWER
                 GuidAdded?.Invoke(this, new GuidContainerEventArgs(guid));
+#elif GODOT
+                EmitSignal("GuidAdded", new GuidContainerEventArgs(guid)); //TODO: find correct SignalName class
+#endif
             }
         }
 
@@ -514,16 +633,26 @@ namespace VRBuilder.Core.SceneObjects
             if (serializableGuid != null)
             {
                 guids.Remove(serializableGuid);
+#if UNITY_5_3_OR_NEWER
                 GuidRemoved?.Invoke(this, new GuidContainerEventArgs(guid));
+#elif GODOT
+                EmitSignal(SignalName.GuidRemoved, new GuidContainerEventArgs(guid));
+#endif
                 return true;
             }
+
             return false;
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return GameObject.name;
+            return GameObject.Name;
+        }
+
+        private void OnDestroy()
+        {
+            if (RuntimeConfigurator.Exists) RuntimeConfigurator.Configuration.SceneObjectRegistry.Unregister(this);
         }
     }
 }

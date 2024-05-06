@@ -2,15 +2,24 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
+using VRBuilder.Core.Properties;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using VRBuilder.Core.Properties;
 
 namespace VRBuilder.Core.SceneObjects
 {
     [Obsolete("These args belong to a unused event and will be removed in the next major release.")]
+#if UNITY_5_3_OR_NEWER
     public class SceneObjectNameChanged : EventArgs
+#elif GODOT
+    public partial class SceneObjectNameChanged : Resource
+#endif
+
     {
         public readonly string NewName;
         public readonly string PreviousName;
@@ -25,7 +34,11 @@ namespace VRBuilder.Core.SceneObjects
     /// <summary>
     /// Arguments for UniqueIdChanged event.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     public class UniqueIdChangedEventArgs : EventArgs
+#elif GODOT
+    public partial class UniqueIdChangedEventArgs : Resource
+#endif
     {
         public readonly Guid NewId;
         public readonly Guid PreviousId;
@@ -43,12 +56,22 @@ namespace VRBuilder.Core.SceneObjects
     public interface ISceneObject : ILockable, IGuidContainer
     {
         [Obsolete("This event is no longer used and will be removed in the next major release. Use UniqueIdChanged instead.")]
+#if UNITY_5_3_OR_NEWER
         event EventHandler<SceneObjectNameChanged> UniqueNameChanged;
+#elif GODOT
+        [Signal]
+        delegate void UniqueNameChangedEventHandler(SceneObjectNameChanged changed);
+#endif
 
         /// <summary>
         /// Called when the object's object id has been changed.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         event EventHandler<UniqueIdChangedEventArgs> ObjectIdChanged;
+#elif GODOT
+        [Signal]
+        delegate void ObjectIdChangedEventHandler(UniqueIdChangedEventArgs eventArgs);
+#endif
 
         /// <summary>
         /// Unique Guid for each entity, which is required
@@ -64,12 +87,21 @@ namespace VRBuilder.Core.SceneObjects
         /// <summary>
         /// Target GameObject, used for applying stuff.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         GameObject GameObject { get; }
+#elif GODOT
+        Node GameObject { get; } //was GameObject
+#endif
 
         /// <summary>
         /// Properties on the scene object.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         ICollection<ISceneObjectProperty> Properties { get; }
+#elif GODOT
+        IEnumerable<ISceneObjectProperty> Properties { get; }
+#endif
+
 
         /// <summary>
         /// True if the scene object has a property of the specified type.
@@ -83,7 +115,7 @@ namespace VRBuilder.Core.SceneObjects
 
         /// <summary>
         /// Validates properties on the scene object.
-        /// </summary>        
+        /// </summary>
         void ValidateProperties(IEnumerable<Type> properties);
 
         /// <summary>

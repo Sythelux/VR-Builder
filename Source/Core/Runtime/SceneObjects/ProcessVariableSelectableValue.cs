@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using System.Runtime.Serialization;
 using VRBuilder.Core.Properties;
 
@@ -14,3 +15,8 @@ namespace VRBuilder.Core.SceneObjects
         public override string SecondValueLabel => "Data Property";
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

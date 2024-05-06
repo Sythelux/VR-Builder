@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 ﻿using VRBuilder.BasicInteraction.Properties;
 using UnityEngine;
 
@@ -39,3 +40,7 @@ namespace VRBuilder.BasicInteraction
         bool ForceRelease();
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

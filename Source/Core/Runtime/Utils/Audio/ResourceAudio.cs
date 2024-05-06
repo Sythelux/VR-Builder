@@ -4,7 +4,11 @@
 
 using System.Runtime.Serialization;
 using VRBuilder.Core.Attributes;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Localization;
 using VRBuilder.Core.Configuration;
 
@@ -24,7 +28,9 @@ namespace VRBuilder.Core.Audio
         /// </summary>
         [DataMember]
         [DisplayName("Resources path / Key")]
+#if UNITY_5_3_OR_NEWER
         [DisplayTooltip("The audio clip needs to be in a folder called Resources or one of its subfolders. The path to enter here is the relative path to the Resources folder, without extension. So, if the path is 'Assets/Resources/Audio/MyFile.wav', you would need to enter 'Audio/MyFile'.")]
+#endif
         public string ResourcesPath
         {
             get
@@ -33,8 +39,9 @@ namespace VRBuilder.Core.Audio
             }
             set
             {
-                path = value;
+#if UNITY_5_3_OR_NEWER
                 if (Application.isPlaying)
+#endif
                 {
                     InitializeAudioClip();
                 }
@@ -60,7 +67,11 @@ namespace VRBuilder.Core.Audio
         }
 
         /// <inheritdoc/>
+#if UNITY_5_3_OR_NEWER
         public AudioClip AudioClip { get; private set; }
+#elif GODOT
+        public AudioStream AudioClip { get; private set; }
+#endif
 
         /// <inheritdoc/>
         public string ClipData
@@ -77,7 +88,8 @@ namespace VRBuilder.Core.Audio
 
         public void InitializeAudioClip()
         {
-            AudioClip = null;
+#if UNITY_5_3_OR_NEWER
+AudioClip = null;
 
             if (string.IsNullOrEmpty(ResourcesPath))
             {
@@ -88,7 +100,7 @@ namespace VRBuilder.Core.Audio
             AudioClip = Resources.Load<AudioClip>(GetLocalizedContent());
 
             // Attempt to fallback to use the key as path.
-            if (HasAudioClip == false) 
+            if (HasAudioClip == false)
             {
                 AudioClip = Resources.Load<AudioClip>(ResourcesPath);
             }
@@ -97,6 +109,28 @@ namespace VRBuilder.Core.Audio
             {
                 Debug.LogWarningFormat("Given value '{0}' has returned no valid resource path for an audio clip, or it is not a valid resource path.", ResourcesPath);
             }
+#elif GODOT
+            AudioClip = null;
+
+            if (string.IsNullOrEmpty(ResourcesPath))
+            {
+                GD.PushWarning("Path to audio file is not defined.");
+                return;
+            }
+
+            AudioClip = ResourceLoader.Load<AudioStream>(GetLocalizedContent());
+
+            // Attempt to fallback to use the key as path.
+            if (HasAudioClip == false)
+            {
+                AudioClip = ResourceLoader.Load<AudioStream>(ResourcesPath);
+            }
+
+            if (HasAudioClip == false)
+            {
+                GD.PushWarning("Given value '{0}' has returned no valid resource path for an audio clip, or it is not a valid resource path.", ResourcesPath);
+            }
+#endif
         }
 
         /// <inheritdoc/>
@@ -107,7 +141,7 @@ namespace VRBuilder.Core.Audio
 
         public string GetLocalizedContent()
         {
-            return LanguageUtils.GetLocalizedString(ResourcesPath, RuntimeConfigurator.Instance.GetProcessStringLocalizationTable(), LanguageSettings.Instance.ActiveOrDefaultLocale);
+            return TranslationServer.GetTranslationObject(LanguageSettings.Instance.ActiveOrDefaultLocale).GetMessage(ResourcesPath, RuntimeConfigurator.Instance.GetProcessStringLocalizationTable());
         }
     }
 }

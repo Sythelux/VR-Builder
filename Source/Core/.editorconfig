@@ -7,6 +7,9 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
+# ReSharper properties
+resharper_csharp_max_line_length = 9999
+
 # trailing whitespace is significant in markdown (bad choice, bad!)
 [*.{md,markdown}]
 trim_trailing_whitespace = false

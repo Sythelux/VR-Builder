@@ -2,7 +2,10 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
-﻿using System;
+using System;
+#if GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.SceneObjects
 {
@@ -14,12 +17,23 @@ namespace VRBuilder.Core.SceneObjects
         /// <summary>
         /// Will be called when the object containing this interface is locked.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         event EventHandler<LockStateChangedEventArgs> Locked;
+#elif GODOT
+        [Signal]
+        delegate void LockedEventHandler(LockStateChangedEventArgs eventArgs);
+#endif
+
 
         /// <summary>
         /// Will be called when the object containing this interface is unlocked.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         event EventHandler<LockStateChangedEventArgs> Unlocked;
+#elif GODOT
+        [Signal]
+        delegate void UnlockedEventHandler(LockStateChangedEventArgs eventArgs);
+#endif
 
         /// <summary>
         /// Returns if the object is locked.

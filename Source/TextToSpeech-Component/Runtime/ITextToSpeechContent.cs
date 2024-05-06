@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using UnityEngine.Localization;
 
 namespace VRBuilder.TextToSpeech.Audio
@@ -18,3 +19,7 @@ namespace VRBuilder.TextToSpeech.Audio
         string Text { get; }
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

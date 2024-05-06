@@ -4,7 +4,11 @@
 
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.RestrictiveEnvironment;
 using VRBuilder.Core.Utils.Logging;
 using VRBuilder.Unity;
@@ -15,7 +19,12 @@ namespace VRBuilder.Core.Conditions
     /// An implementation of <see cref="ICondition"/>. Use it as the base class for your custom conditions.
     /// </summary>
     [DataContract(IsReference = true)]
+#if UNITY_5_3_OR_NEWER
     public abstract class Condition<TData> : CompletableEntity<TData>, ICondition, ILockablePropertiesProvider where TData : class, IConditionData, new()
+#elif GODOT
+    public abstract partial class Condition<TData> : CompletableEntity<TData>, ICondition, ILockablePropertiesProvider where TData : class, IConditionData, new()
+#endif
+
     {
         protected Condition()
         {
@@ -23,7 +32,11 @@ namespace VRBuilder.Core.Conditions
             {
                 LifeCycle.StageChanged += (sender, args) =>
                 {
+#if UNITY_5_3_OR_NEWER
                     Debug.LogFormat("{0}<b>Condition</b> <i>'{1} ({2})'</i> is <b>{3}</b>.\n", ConsoleUtils.GetTabs(2), Data.Name, GetType().Name, LifeCycle.Stage);
+#elif GODOT
+                    GD.Print("{0}<b>Condition</b> <i>'{1} ({2})'</i> is <b>{3}</b>.\n", ConsoleUtils.GetTabs(2), Data.Name, GetType().Name, LifeCycle.Stage);
+#endif
                 };
             }
         }

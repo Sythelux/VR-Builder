@@ -2,9 +2,13 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Runtime.Utils;
 
 namespace VRBuilder.Core.Localization
@@ -12,7 +16,7 @@ namespace VRBuilder.Core.Localization
     /// <summary>
     /// Language settings for VR Builder.
     /// </summary>
-    public class LanguageSettings : SettingsObject<LanguageSettings>
+    public partial class LanguageSettings : SettingsObject<LanguageSettings>
     {
         /// <summary>
         /// Language which should be used if no localization settings are present.
@@ -22,6 +26,7 @@ namespace VRBuilder.Core.Localization
         /// <summary>
         /// Returns the active or default language.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         public string ActiveOrDefaultLanguage
         {
             get
@@ -82,5 +87,16 @@ namespace VRBuilder.Core.Localization
 
             return locale;
         }
+#elif GODOT
+        public string ActiveOrDefaultLanguage
+        {
+            get => TranslationServer.GetLocaleName(TranslationServer.GetLocale());
+        }
+
+        /// <summary>
+        /// Returns the active or default locale.
+        /// </summary>
+        public string ActiveOrDefaultLocale => TranslationServer.GetLocale();
+#endif
     }
 }

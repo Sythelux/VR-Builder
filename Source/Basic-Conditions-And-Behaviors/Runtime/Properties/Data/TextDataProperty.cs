@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -29,3 +30,8 @@ namespace VRBuilder.Core.Properties
         public override string DefaultValue => defaultValue;
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using System.Runtime.Serialization;
 
 namespace VRBuilder.Core.SceneObjects
@@ -37,3 +38,8 @@ namespace VRBuilder.Core.SceneObjects
         public virtual bool IsFirstValueSelected { get; set; }
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

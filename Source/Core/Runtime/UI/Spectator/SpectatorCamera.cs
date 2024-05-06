@@ -1,12 +1,17 @@
 using System;
 using VRBuilder.Core.Configuration;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.UX
 {
     /// <summary>
     /// Spectator camera which sets its viewpoint to the one of the user.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     [RequireComponent(typeof(Camera))]
     public class SpectatorCamera : MonoBehaviour
     {
@@ -42,4 +47,10 @@ namespace VRBuilder.UX
             transform.SetPositionAndRotation(user.transform.position, user.transform.rotation);
         }
     }
+#elif GODOT
+    public partial class SpectatorCamera : Node
+    {
+        private Node user;
+    }
+#endif
 }

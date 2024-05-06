@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 ﻿using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -20,3 +21,7 @@ namespace VRBuilder.TextToSpeech
         Task<AudioClip> ConvertTextToSpeech(string text, Locale locale);
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

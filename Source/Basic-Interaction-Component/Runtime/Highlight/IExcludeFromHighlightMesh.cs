@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 namespace VRBuilder.BasicInteraction
 {
     /// <summary>
@@ -8,3 +9,8 @@ namespace VRBuilder.BasicInteraction
         
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

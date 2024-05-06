@@ -17,8 +17,14 @@ namespace VRBuilder.Core
     /// It contains a complete information about the process workflow.
     /// </summary>
     [DataContract(IsReference = true)]
+#if UNITY_5_3_OR_NEWER
     public class Process : Entity<Process.EntityData>, IProcess
     {
+#elif GODOT
+    public partial class Process : Entity<Process.EntityData>, IProcess
+    {
+        public static readonly IProcess DEFAULT = new Process("None", Array.Empty<IChapter>());
+#endif
         /// <summary>
         /// The data class for a process.
         /// </summary>

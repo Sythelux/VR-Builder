@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using UnityEngine.Events;
 
 namespace VRBuilder.Core.Properties
@@ -24,3 +25,8 @@ namespace VRBuilder.Core.Properties
         void SetValue(T value);      
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

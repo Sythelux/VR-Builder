@@ -13,6 +13,7 @@ using VRBuilder.Unity;
 
 namespace VRBuilder.Core.RestrictiveEnvironment
 {
+#if UNITY_5_3_OR_NEWER
     /// <summary>
     /// Restricts interaction with scene objects by using LockableProperties, which are extracted from the <see cref="IStepData"/>.
     /// </summary>
@@ -164,4 +165,7 @@ namespace VRBuilder.Core.RestrictiveEnvironment
             }
         }
     }
+#elif GODOT
+    // in file Godot/DefaultStepLockHandling
+#endif
 }

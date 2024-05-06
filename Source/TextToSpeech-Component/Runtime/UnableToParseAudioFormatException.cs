@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 ﻿using System;
 
 namespace VRBuilder.TextToSpeech
@@ -7,3 +8,8 @@ namespace VRBuilder.TextToSpeech
         public UnableToParseAudioFormatException(string msg) : base(msg) { }
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

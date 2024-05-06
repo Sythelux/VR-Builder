@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 namespace VRBuilder.Core.Utils
 {
     /// <summary>
@@ -10,3 +11,8 @@ namespace VRBuilder.Core.Utils
 		Mirrored
 	}
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

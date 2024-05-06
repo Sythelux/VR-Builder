@@ -6,14 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+using Godot.Collections;
+#endif
 using VRBuilder.Core.Conditions;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.RestrictiveEnvironment;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils;
-using VRBuilder.Unity;
 
 namespace VRBuilder.Core
 {
@@ -106,6 +110,7 @@ namespace VRBuilder.Core
             IEnumerable<Type> refs = ReflectionUtils.GetConcreteImplementationsOf(referenceType);
             refs = refs.Where(typeof(T).IsAssignableFrom);
 
+#if UNITY_5_3_OR_NEWER
             if (UnitTestChecker.IsUnitTesting == false)
             {
                 refs = refs.Where(type => type.Assembly.GetReferencedAssemblies().All(name => name.Name != "nunit.framework"));
@@ -114,6 +119,10 @@ namespace VRBuilder.Core
                     refs = refs.Where(type => type.Assembly.GetReferencedAssemblies().All(name => name.Name != "UnityEditor"));
                 }
             }
+#elif GODOT
+            //TODO: implement
+#endif
+
 
             return refs;
         }
@@ -153,9 +162,15 @@ namespace VRBuilder.Core
         private static IEnumerable<Type> GetDependenciesFrom<T>(Type processProperty) where T : ISceneObjectProperty
         {
             List<Type> dependencies = new List<Type>();
+#if UNITY_5_3_OR_NEWER
             IEnumerable<Type> requiredComponents = processProperty.GetCustomAttributes(typeof(RequireComponent), false)
                 .Cast<RequireComponent>()
                 .SelectMany(rq => new[] { rq.m_Type0, rq.m_Type1, rq.m_Type2 });
+#elif GODOT
+            //TODO: implement
+            var requiredComponents = new List<Type>();
+#endif
+
 
             foreach (Type requiredComponent in requiredComponents)
             {

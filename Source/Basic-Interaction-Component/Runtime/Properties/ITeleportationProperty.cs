@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 ﻿using System;
 using UnityEngine.Events;
 using VRBuilder.Core.Properties;
@@ -56,3 +57,8 @@ namespace VRBuilder.BasicInteraction.Properties
     {
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

@@ -4,7 +4,13 @@
 
 using System;
 using System.Runtime.Serialization;
+
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
+
 
 namespace VRBuilder.Core
 {

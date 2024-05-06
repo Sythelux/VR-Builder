@@ -5,7 +5,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Conditions;
 using VRBuilder.Core.Configuration.Modes;
@@ -20,7 +24,7 @@ namespace VRBuilder.Core
     /// A class for a transition from one step to another.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class Transition : CompletableEntity<Transition.EntityData>, ITransition, ILockablePropertiesProvider
+    public partial class Transition : CompletableEntity<Transition.EntityData>, ITransition, ILockablePropertiesProvider
     {
         /// <summary>
         /// The transition's data class.
@@ -169,7 +173,11 @@ namespace VRBuilder.Core
             {
                 LifeCycle.StageChanged += (sender, args) =>
                 {
+#if UNITY_5_3_OR_NEWER
                     Debug.LogFormat("{0}<b>Transition to</b> <i>{1}</i> is <b>{2}</b>.\n", ConsoleUtils.GetTabs(3), Data.TargetStep != null ? Data.TargetStep.Data.Name + " (Step)" : "chapter's end", LifeCycle.Stage);
+#elif GODOT
+                    GD.Print($"{ConsoleUtils.GetTabs(3)}<b>Transition to</b> <i>{(Data.TargetStep != null ? Data.TargetStep.Data.Name + " (Step)" : "chapter's end")}</i> is <b>{LifeCycle.Stage}</b>.\n");
+#endif
                 };
             }
         }
@@ -185,6 +193,7 @@ namespace VRBuilder.Core
                     lockable = lockable.Union(lockableCondition.GetLockableProperties());
                 }
             }
+
             return lockable;
         }
 

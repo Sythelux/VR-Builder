@@ -1,12 +1,17 @@
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#elif GODOT
+using Godot;
+using FileAccess = Godot.FileAccess;
+#endif
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEngine;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.IO;
 using VRBuilder.Core.Properties;
@@ -21,7 +26,12 @@ namespace VRBuilder.Core.Configuration
     /// Base class for your runtime process configuration. Extend it to create your own.
     /// </summary>
 #pragma warning disable 0618
+#if UNITY_5_3_OR_NEWER
     public abstract class BaseRuntimeConfiguration
+#elif GODOT
+    [Tool]
+    public abstract partial class BaseRuntimeConfiguration : Resource, IRuntimeConfiguration
+#endif
     {
 #pragma warning restore 0618
         /// <summary>
@@ -97,7 +107,12 @@ namespace VRBuilder.Core.Configuration
         public abstract UserSceneObject LocalUser { get; }
 
         /// <inheritdoc />
+#if UNITY_5_3_OR_NEWER
         public abstract AudioSource InstructionPlayer { get; }
+#elif GODOT
+        public abstract AudioStreamPlayer InstructionPlayer { get; }
+#endif
+
 
         /// <summary>
         /// Determines the property locking strategy used for this runtime configuration.
@@ -120,12 +135,19 @@ namespace VRBuilder.Core.Configuration
             {
                 if (sceneConfiguration == null)
                 {
+#if UNITY_5_3_OR_NEWER
                     ISceneConfiguration configuration = RuntimeConfigurator.Instance.gameObject.GetComponent<ISceneConfiguration>();
 
                     if (configuration == null)
                     {
                         configuration = RuntimeConfigurator.Instance.gameObject.AddComponent<SceneConfiguration>();
                     }
+#elif GODOT
+                    ISceneConfiguration configuration = RuntimeConfigurator.Instance.GetComponent<ISceneConfiguration>();
+
+                    if (configuration == null) configuration = RuntimeConfigurator.Instance.AddComponent<SceneConfiguration>();
+#endif
+
 
                     sceneConfiguration = configuration;
                 }
@@ -162,14 +184,24 @@ namespace VRBuilder.Core.Configuration
                 IProcessAssetStrategy assetStrategy = ReflectionUtils.CreateInstanceOfType(ReflectionUtils.GetConcreteImplementationsOf<IProcessAssetStrategy>().FirstOrDefault(type => type.FullName == manifest.AssetStrategyTypeName)) as IProcessAssetStrategy;
 
                 string processAssetPath = $"{processFolder}/{manifest.ProcessFileName}.{Serializer.FileFormat}";
+#if UNITY_5_3_OR_NEWER
                 byte[] processData = await FileManager.Read(processAssetPath);
+#elif GODOT
+                byte[] processData = FileAccess.GetFileAsBytes(processAssetPath);
+#endif
+
                 List<byte[]> additionalData = await GetAdditionalProcessData(processFolder, manifest);
 
                 return assetStrategy.GetProcessFromSerializedData(processData, additionalData, Serializer);
             }
             catch (Exception exception)
             {
+#if UNITY_5_3_OR_NEWER
                 Debug.LogError($"Error when loading process. {exception.GetType().Name}, {exception.Message}\n{exception.StackTrace}", RuntimeConfigurator.Instance.gameObject);
+#elif GODOT
+                GD.PrintErr($"Error when loading process. {exception.GetType().Name}, {exception.Message}\n{exception.StackTrace}", RuntimeConfigurator.Instance);
+#endif
+
             }
 
             return null;
@@ -182,6 +214,7 @@ namespace VRBuilder.Core.Configuration
             {
                 string filePath = $"{processFolder}/{fileName}.{Serializer.FileFormat}";
 
+#if UNITY_5_3_OR_NEWER
                 if (await FileManager.Exists(filePath))
                 {
                     additionalData.Add(await FileManager.Read(filePath));
@@ -190,6 +223,13 @@ namespace VRBuilder.Core.Configuration
                 {
                     Debug.Log($"Error loading process. File not found: {filePath}");
                 }
+#elif GODOT
+                if (FileAccess.FileExists(filePath))
+                    additionalData.Add(FileAccess.GetFileAsBytes(filePath));
+                else
+                    GD.PrintErr($"Error loading process. File not found: {filePath}");
+#endif
+
             }
 
             return additionalData;
@@ -199,11 +239,20 @@ namespace VRBuilder.Core.Configuration
         {
             IProcessAssetManifest manifest;
 
+#if UNITY_5_3_OR_NEWER
             if (await FileManager.Exists(manifestPath))
             {
                 byte[] manifestData = await FileManager.Read(manifestPath);
                 manifest = Serializer.ManifestFromByteArray(manifestData);
             }
+#elif GODOT
+            if (FileAccess.FileExists(manifestPath))
+            {
+                byte[] manifestData = FileAccess.GetFileAsBytes(manifestPath);
+                manifest = Serializer.ManifestFromByteArray(manifestData);
+            }
+#endif
+
             else
             {
                 manifest = new ProcessAssetManifest()
@@ -226,5 +275,16 @@ namespace VRBuilder.Core.Configuration
 
             return fileName;
         }
+    }
+
+    public class EmptyStepLockHandling : StepLockHandlingStrategy
+    {
+        public override void Unlock(IStepData data, IEnumerable<LockablePropertyData> manualUnlocked)
+    {
+    }
+
+        public override void Lock(IStepData data, IEnumerable<LockablePropertyData> manualUnlocked)
+    {
+    }
     }
 }

@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.UX
 {
@@ -6,6 +10,7 @@ namespace VRBuilder.UX
     /// Dummy object which can be used to set viewpoints into the scene.
     /// Will remove its camera component on runtime and can be used in combination with <see cref="SpectatorCamera"/>.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     [ExecuteInEditMode]
     public class SpectatorCameraDummy : MonoBehaviour
     {
@@ -27,4 +32,10 @@ namespace VRBuilder.UX
             }
         }
     }
+#elif GODOT
+    [Tool]
+    public partial class SpectatorCameraDummy : Node
+    {
+    }
+#endif
 }

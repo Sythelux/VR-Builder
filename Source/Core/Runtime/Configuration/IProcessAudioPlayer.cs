@@ -1,4 +1,8 @@
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Audio;
 
 namespace VRBuilder.Core.Configuration
@@ -11,7 +15,11 @@ namespace VRBuilder.Core.Configuration
         /// <summary>
         /// Gets a fallback audio source. Used only for backwards compatibility.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         AudioSource FallbackAudioSource { get; }
+#elif GODOT
+        AudioStreamPlayer FallbackAudioSource { get; } // was AudioSource
+#endif
 
         /// <summary>
         /// True if currently playing audio.
@@ -21,7 +29,11 @@ namespace VRBuilder.Core.Configuration
         /// <summary>
         /// Play the specified audio immediately with the set parameters.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         void PlayAudio(IAudioData audioData, float volume = 1f, float pitch = 1f);
+#elif GODOT
+        void PlayAudio(AudioStream /* was IAudioData */ audioData, float volume = 1f, float pitch = 1f);
+#endif
 
         /// <summary>
         /// Stops playing audio.

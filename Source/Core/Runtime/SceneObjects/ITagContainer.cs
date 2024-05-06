@@ -26,12 +26,20 @@ namespace VRBuilder.Core.SceneObjects
         /// <summary>
         /// Raised when a tag is added.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         event EventHandler<GuidContainerEventArgs> TagAdded;
+#elif GODOT
+        public delegate void TagAddedEventHandler(string tag);
+#endif
 
         /// <summary>
         /// Raised when a tag is removed.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         event EventHandler<GuidContainerEventArgs> TagRemoved;
+#elif GODOT
+        public delegate void TagRemovedEventHandler(string tag);
+#endif
 
         /// <summary>
         /// All tags on the object.

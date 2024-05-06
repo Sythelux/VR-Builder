@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+#if UNITY_5_3_OR_NEWER
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.SceneObjects;
+using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core.Configuration
 {
@@ -14,15 +18,25 @@ namespace VRBuilder.Core.Configuration
         /// <inheritdoc/>
         public void SetSceneObjectActive(ISceneObject sceneObject, bool isActive)
         {
+#if UNITY_5_3_OR_NEWER
             sceneObject.GameObject.SetActive(isActive);
+#elif GODOT
+            sceneObject.GameObject.SetProcess(isActive);
+#endif
+
         }
 
         /// <inheritdoc/>
         public void SetComponentActive(ISceneObject sceneObject, string componentTypeName, bool isActive)
         {
+#if UNITY_5_3_OR_NEWER
             IEnumerable<Component> components = sceneObject.GameObject.GetComponents<Component>().Where(c => c.GetType().Name == componentTypeName);
+#elif GODOT
+            IEnumerable<Node> components = sceneObject.GameObject.GetComponents<Node>()
+                .Where(c => c.GetType().Name == componentTypeName);
+#endif
 
-            foreach (Component component in components)
+            foreach (Node component in components)
             {
                 Type componentType = component.GetType();
 
@@ -34,10 +48,20 @@ namespace VRBuilder.Core.Configuration
         }
 
         /// <inheritdoc/>
+#if UNITY_5_3_OR_NEWER
         public GameObject InstantiatePrefab(GameObject prefab, Vector3 position, Quaternion rotation)
         {
             return GameObject.Instantiate(prefab, position, rotation);
         }
+#elif GODOT
+        public Node3D InstantiatePrefab(PackedScene prefab, Vector3 position, Quaternion rotation)
+        {
+            var instantiatePrefab = prefab.Instantiate<Node3D>();
+            instantiatePrefab.Position = position;
+            instantiatePrefab.Quaternion = rotation;
+            return instantiatePrefab;
+        }
+#endif
 
         /// <inheritdoc/>
         public void RequestAuthority(ISceneObject sceneObject)

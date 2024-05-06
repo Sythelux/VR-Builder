@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_5_3_OR_NEWER
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace VRBuilder.BaseTemplate
@@ -31,3 +32,7 @@ namespace VRBuilder.BaseTemplate
         }
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

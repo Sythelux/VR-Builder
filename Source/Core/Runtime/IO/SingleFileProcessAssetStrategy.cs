@@ -1,6 +1,10 @@
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using VRBuilder.Core.Serialization;
 
 namespace VRBuilder.Core.IO
@@ -31,7 +35,11 @@ namespace VRBuilder.Core.IO
             }
             catch (Exception ex)
             {
+#if UNITY_5_3_OR_NEWER
                 Debug.LogError(ex.Message);
+#elif GODOT
+            GD.PushError(ex);
+#endif
             }
 
             return null;

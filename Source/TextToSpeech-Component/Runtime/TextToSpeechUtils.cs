@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 ﻿using System.Text;
 using System.Security.Cryptography;
 using UnityEngine.Localization;
@@ -56,3 +57,7 @@ namespace VRBuilder.TextToSpeech
         }
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

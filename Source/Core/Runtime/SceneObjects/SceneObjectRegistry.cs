@@ -4,18 +4,23 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using UnityEditor;
-using UnityEngine;
 using VRBuilder.Core.Exceptions;
 using VRBuilder.Core.Properties;
 using VRBuilder.Unity;
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
 using Object = UnityEngine.Object;
+using UnityEditor;
+#elif GODOT
+using VRBuilder.Core.Godot;
+using Godot;
+#endif
 
 namespace VRBuilder.Core.SceneObjects
 {
     /// <inheritdoc />
-    [Obsolete("This implementation of the scene object registry is obsolete. Use SceneObjectRegistryV2 instead.")]
     public class SceneObjectRegistry : ISceneObjectRegistry
     {
         private readonly Dictionary<Guid, ISceneObject> registeredEntities = new Dictionary<Guid, ISceneObject>();
@@ -45,6 +50,7 @@ namespace VRBuilder.Core.SceneObjects
                 }
                 catch (NameNotUniqueException)
                 {
+#if UNITY_5_3_OR_NEWER
 #if UNITY_EDITOR
                     string isPlayingText = Application.isPlaying ? "\n\nThe object will be restored after ending Play Mode." : "\n\nThe object will be deleted from the scene.";
                     if (EditorUtility.DisplayDialog("Scene Object Name Conflict", $"The game object {processObject.gameObject.name} cannot be registered because it has an already existing unique name: {processObject.UniqueName}. Do you want to delete it?{isPlayingText}", "Yes", "No"))
@@ -53,6 +59,9 @@ namespace VRBuilder.Core.SceneObjects
                     }
 #else
                     Debug.LogErrorFormat("Registration of process object entity with name '{0}' failed. Name is not unique! Errors will ensue. Referenced game object: '{1}'.", processObject.UniqueName, processObject.GameObject.name);
+#endif
+#elif GODOT
+                    GD.PrintErr($"Registration of process object entity with name '{processObject.UniqueName}' failed. Name is not unique! Errors will ensue. Referenced game object: '{processObject.GameObject.Name}'.");
 #endif
                 }
                 catch (AlreadyRegisteredException)

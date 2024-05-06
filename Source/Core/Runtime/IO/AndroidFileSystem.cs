@@ -1,6 +1,7 @@
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
+#if UNITY_5_3_OR_NEWER
 
 #if !UNITY_EDITOR && UNITY_ANDROID
 using UnityEngine;
@@ -110,4 +111,9 @@ namespace VRBuilder.Core.IO
         }
     }
 }
+#endif
+
+#elif GODOT
+using Godot;
+//TODO
 #endif

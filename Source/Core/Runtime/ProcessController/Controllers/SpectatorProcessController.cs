@@ -22,7 +22,11 @@ namespace VRBuilder.UX
         public override List<Type> GetRequiredSetupComponents()
         {
             List<Type> requiredSetupComponents = base.GetRequiredSetupComponents();
+#if UNITY_5_3_OR_NEWER
             requiredSetupComponents.Add(InputController.ConcreteType);
+#elif GODOT
+            requiredSetupComponents.Add(typeof(InputController)); //TODO: doesn't seem right
+#endif
             requiredSetupComponents.Add(typeof(SpectatorController));
             return requiredSetupComponents;
         }

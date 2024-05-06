@@ -3,7 +3,11 @@
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
 using VRBuilder.Core.Runtime.Properties;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.Audio
 {
@@ -21,12 +25,16 @@ namespace VRBuilder.Core.Audio
         /// <summary>
         /// Data used to retrieve the audio clip.
         /// </summary>
-        string ClipData { get; set; }        
+        string ClipData { get; set; }
 
         /// <summary>
         /// The AudioClip of this source, can be null. Best check first with HasAudio.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         AudioClip AudioClip { get; }
+#elif GODOT
+        AudioStream AudioClip { get; }
+#endif
 
         /// <summary>
         /// Initializes the audio clip from the given data.

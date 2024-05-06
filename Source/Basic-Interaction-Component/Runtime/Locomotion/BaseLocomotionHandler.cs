@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 ﻿using UnityEngine;
 
 namespace VRBuilder.BasicInteraction
@@ -25,3 +26,7 @@ namespace VRBuilder.BasicInteraction
         public abstract void SetPositionAndRotation(Vector3 destinationPosition, Quaternion destinationRotation);
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

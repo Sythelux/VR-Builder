@@ -11,7 +11,6 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
-using VRBuilder.Editor.PackageManager;
 
 namespace VRBuilder.Editor
 {
@@ -117,8 +116,7 @@ namespace VRBuilder.Editor
         /// </summary>
         internal static string GetCoreVersion()
         {
-            string version = PackageOperationsManager.GetInstalledPackageVersion(corePackageName);
-            return string.IsNullOrEmpty(version) ? "unknown" : version;
+            return UnityEditor.PackageManager.Client.Search(corePackageName)?.Result?.FirstOrDefault()?.version ?? "unknown";
         }
 
         /// <summary>
@@ -152,6 +150,7 @@ namespace VRBuilder.Editor
             {
                 return;
             }
+
             foreach (VisualTreeAsset treeAsset in asset)
             {
                 CheckVisualTreeAsset(source, treeAsset);

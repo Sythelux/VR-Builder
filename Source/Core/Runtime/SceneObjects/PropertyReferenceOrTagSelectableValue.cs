@@ -1,4 +1,4 @@
-#if UNITY_5_3_OR_NEWER
+using System;
 using System.Runtime.Serialization;
 using VRBuilder.Core.Properties;
 
@@ -25,8 +25,3 @@ namespace VRBuilder.Core.SceneObjects
         }
     }
 }
-
-#elif GODOT
-using Godot;
-//TODO
-#endif

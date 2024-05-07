@@ -3,16 +3,17 @@
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
+using Object = UnityEngine.Object;
 #elif GODOT
 using Godot;
 #endif
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils;
+
 namespace VRBuilder.Core.Properties
 {
     /// <summary>
@@ -147,9 +148,9 @@ namespace VRBuilder.Core.Properties
         /// <param name="removeDependencies">If true, this method also removes other components that are marked as `RequiredComponent` by <paramref name="processProperty"/>.</param>
         /// <param name="excludedFromBeingRemoved">The process properties in this list will not be removed if any is a dependency of <paramref name="processProperty"/>. Only relevant if <paramref name="removeDependencies"/> is true.</param>
 #if UNITY_5_3_OR_NEWER
-        public static void RemoveProcessProperty(this ISceneObject sceneObject, Node processProperty, bool removeDependencies = false, IEnumerable<Component> excludedFromBeingRemoved = null)
+        public static void RemoveProcessProperty(this ISceneObject sceneObject, Component processProperty, bool removeDependencies = false, IEnumerable<Component> excludedFromBeingRemoved = null)
 #elif GODOT
-        public static void RemoveProcessProperty(this ISceneObject sceneObject, Node processProperty, bool removeDependencies = false, IEnumerable<Component> excludedFromBeingRemoved = null)
+        public static void RemoveProcessProperty(this ISceneObject sceneObject, Node processProperty, bool removeDependencies = false, IEnumerable<Node> excludedFromBeingRemoved = null)
 #endif
         {
             Type processPropertyType = processProperty.GetType();

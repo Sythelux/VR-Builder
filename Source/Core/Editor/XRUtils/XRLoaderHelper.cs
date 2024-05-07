@@ -6,7 +6,6 @@ using UnityEditor;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using VRBuilder.Editor.PackageManager;
 using Debug = UnityEngine.Debug;
 
 #if UNITY_XR_MANAGEMENT
@@ -77,7 +76,6 @@ namespace VRBuilder.Editor.XRUtils
             if(isLoadingXRManagement == false)
             {
                 isLoadingXRManagement = true;
-                PackageOperationsManager.LoadPackage(XRManagementPackage);
             }
 #else
             DisplayDialog("OpenXR");
@@ -110,7 +108,6 @@ namespace VRBuilder.Editor.XRUtils
             if(isLoadingXRManagement == false)
             {
                 isLoadingXRManagement = true;
-                PackageOperationsManager.LoadPackage(XRManagementPackage);
             }
 #else
             DisplayDialog("OpenXR");
@@ -151,7 +148,6 @@ namespace VRBuilder.Editor.XRUtils
             if(isLoadingXRManagement == false)
             {
                 isLoadingXRManagement = true;
-                PackageOperationsManager.LoadPackage(XRManagementPackage);
             }
 #else
             DisplayDialog("Oculus XR");
@@ -182,7 +178,6 @@ namespace VRBuilder.Editor.XRUtils
             if(isLoadingXRManagement == false)
             {
                 isLoadingXRManagement = true;
-                PackageOperationsManager.LoadPackage(XRManagementPackage);
             }
 #else
             DisplayDialog("Windows MR");

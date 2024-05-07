@@ -9,7 +9,6 @@ using UnityEditor;
 using UnityEngine;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Utils;
-using VRBuilder.Editor.PackageManager;
 using VRBuilder.Editor.XRUtils;
 
 namespace VRBuilder.Editor.UI.Wizard
@@ -30,22 +29,7 @@ namespace VRBuilder.Editor.UI.Wizard
         {
             if (Application.isBatchMode == false)
             {
-                DependencyManager.OnPostProcess += OnDependenciesRetrieved;
             }
-        }
-
-        private static void OnDependenciesRetrieved(object sender, DependencyManager.DependenciesEnabledEventArgs e)
-        {
-            BuilderProjectSettings settings = BuilderProjectSettings.Load();
-
-            if (settings.IsFirstTimeStarted)
-            {
-                settings.IsFirstTimeStarted = false;
-                settings.Save();
-                Show();
-            }
-
-            DependencyManager.OnPostProcess -= OnDependenciesRetrieved;
         }
 
         [MenuItem("Tools/VR Builder/Project Setup Wizard...", false, 0)]

@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using VRBuilder.Core.Godot;
-
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #elif GODOT
 using Godot;
+using VRBuilder.Core.Godot;
 #endif
 
 using VRBuilder.Core.Properties;

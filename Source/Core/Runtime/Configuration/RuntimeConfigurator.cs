@@ -157,17 +157,7 @@ namespace VRBuilder.Core.Configuration
                     type = typeof(DefaultRuntimeConfiguration);
                 }
 
-                var config = (IRuntimeConfiguration)ReflectionUtils.CreateInstanceOfType(type);
-                if (config is BaseRuntimeConfiguration configuration)
-                {
-                    Configuration = configuration;
-                }
-                else
-                {
-                    //TODO: Debug.LogWarning("Your runtime configuration only extends the interface IRuntimeConfiguration, please consider moving to BaseRuntimeConfiguration as base class.");
-                    // Configuration = new RuntimeConfigWrapper(config);
-                }
-
+                Configuration = (BaseRuntimeConfiguration)ReflectionUtils.CreateInstanceOfType(type);
                 return Instance.runtimeConfiguration;
             }
             set

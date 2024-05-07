@@ -3,7 +3,9 @@
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
 using System;
+#if GODOT
 using Godot;
+#endif
 
 namespace VRBuilder.Core.Configuration.Modes
 {

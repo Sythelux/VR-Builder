@@ -1,7 +1,7 @@
 {
   "displayName": "VR Builder Lite",
   "name": "co.mindport.vrbuilder.core-lite",
-  "version": "4.0.0",
+  "version": "4.0.1-pre",
   "unity": "2021.1",
   "description": "VR Builder core functionality. Without XR-Interaction and TTS",
   "keywords": [
@@ -14,5 +14,9 @@
     "name": "MindPort",
     "email": "contact@mindport.co",
     "url" : "https://mindport.co/"
+  },
+  "dependencies": {
+    "com.unity.localization": "1.5.1",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
   }
 }

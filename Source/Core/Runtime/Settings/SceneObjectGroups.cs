@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Godot.Collections;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #elif GODOT
 using Godot;
+using Godot.Collections;
 #endif
 using VRBuilder.Core.Runtime.Utils;
 
@@ -88,8 +88,8 @@ namespace VRBuilder.Core.Settings
         private List<SceneObjectGroup> groups = new List<SceneObjectGroup>();
 #elif GODOT
         [Export]
-#endif
         private Array<SceneObjectGroup> groups = new Array<SceneObjectGroup>();
+#endif
 
         /// <summary>
         /// All groups in the list.

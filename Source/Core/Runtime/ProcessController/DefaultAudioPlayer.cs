@@ -3,6 +3,7 @@ using UnityEngine;
 #elif GODOT
 using Godot;
 #endif
+using VRBuilder.Core.Audio;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Utils;
 
@@ -80,7 +81,7 @@ public class DefaultAudioPlayer : IProcessAudioPlayer
     public bool IsPlaying => audioSource.Playing;
 
     /// <inheritdoc />
-    public void PlayAudio(AudioStream audioData, float volume = 1, float pitch = 1)
+    public void PlayAudio(IAudioData audioData, float volume = 1, float pitch = 1)
     {
         audioSource.Stream = audioData;
         audioSource.VolumeDb = volume;

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 #if UNITY_5_3_OR_NEWER
+using VRBuilder.Unity;
 using UnityEngine;
 #elif GODOT
 using Godot;

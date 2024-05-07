@@ -21,13 +21,14 @@ namespace VRBuilder.Core.Configuration
     public partial class SceneConfiguration : Node, ISceneConfiguration
 #endif
     {
+        [Tooltip("Lists all assemblies whose property extensions will be used in the current scene.")]
 #if UNITY_5_3_OR_NEWER
         [SerializeField]
+        private List<string> extensionAssembliesWhitelist = new List<string>();
 #elif GODOT
         [Export]
-#endif
-        [Tooltip("Lists all assemblies whose property extensions will be used in the current scene.")]
         private Array<string> extensionAssembliesWhitelist = new Array<string>();
+#endif
 
 #if UNITY_5_3_OR_NEWER
         [SerializeField]

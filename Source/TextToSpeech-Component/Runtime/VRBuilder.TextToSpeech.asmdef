@@ -14,6 +14,7 @@
     "defineConstraints": [
         "VR_BUILDER"
     ],
-    "versionDefines": [],
+    "versionDefines": [
+    ],
     "noEngineReferences": false
 }

@@ -5,6 +5,7 @@
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
+using System.IO;
 #endif
 #elif GODOT
 using Godot;

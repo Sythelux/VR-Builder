@@ -21,15 +21,15 @@ namespace VRBuilder.Core.IO
     {
         private static IPlatformFileSystem? platformFileSystem;
 
-#if UNITY_5_3_OR_NEWER
-[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
-        private static void Initialize()
-        {
-            platformFileSystem = CreatePlatformFileSystem();
-        }
-#elif GODOT
+// #if UNITY_5_3_OR_NEWER
+// [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
+//         private static void Initialize()
+//         {
+//             platformFileSystem = CreatePlatformFileSystem();
+//         }
+// #elif GODOT
         private static IPlatformFileSystem PlatformFileSystem => platformFileSystem ??= CreatePlatformFileSystem();
-#endif
+// #endif
 
         /// <summary>
         /// Loads a file stored at <paramref name="filePath"/>.

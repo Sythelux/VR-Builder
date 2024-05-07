@@ -7,9 +7,9 @@ using UnityEngine;
 using Godot;
 //TODO
 #endif
-using System.Diagnostics;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils;
+
 
 namespace VRBuilder.Core.Properties
 {
@@ -72,7 +72,7 @@ public class UserSceneObject : ProcessSceneObject
             get
         {
             return head ??= this.GetComponentInChildren<Camera3D>();
-            //TODO: Debug.LogWarning("User head object is not referenced on User Scene Object component. The rig's camera will be used, if available.");
+            GD.PushWarning("User head object is not referenced on User Scene Object component. The rig's camera will be used, if available.");
         }
         }
 

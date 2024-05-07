@@ -32,7 +32,7 @@ namespace VRBuilder.Core.Configuration
 #if UNITY_5_3_OR_NEWER
         void PlayAudio(IAudioData audioData, float volume = 1f, float pitch = 1f);
 #elif GODOT
-        void PlayAudio(AudioStream /* was IAudioData */ audioData, float volume = 1f, float pitch = 1f);
+        void PlayAudio(IAudioData /* was IAudioData */ audioData, float volume = 1f, float pitch = 1f);
 #endif
 
         /// <summary>

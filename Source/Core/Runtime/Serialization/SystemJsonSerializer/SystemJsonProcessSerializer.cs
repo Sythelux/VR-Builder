@@ -1,4 +1,4 @@
-#if UNITY_5_3_OR_NEWER
+#if GODOT //TODO should be something like DOTNET5_OR_Later
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +61,4 @@ namespace VRBuilder.Core.Serialization.JSON
         public abstract IProcessAssetManifest ManifestFromByteArray(byte[] data);
     }
 }
-#elif GODOT
-using Godot;
-//TODO
 #endif

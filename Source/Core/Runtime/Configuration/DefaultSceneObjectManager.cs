@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 #if UNITY_5_3_OR_NEWER
+using UnityEngine;
 #elif GODOT
 using Godot;
 #endif
@@ -36,7 +37,7 @@ namespace VRBuilder.Core.Configuration
                 .Where(c => c.GetType().Name == componentTypeName);
 #endif
 
-            foreach (Node component in components)
+            foreach (var component in components)
             {
                 Type componentType = component.GetType();
 

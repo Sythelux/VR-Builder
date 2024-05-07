@@ -30,7 +30,7 @@ namespace VRBuilder.Core.Configuration
     public abstract class BaseRuntimeConfiguration
 #elif GODOT
     [Tool]
-    public abstract partial class BaseRuntimeConfiguration : Resource, IRuntimeConfiguration
+    public abstract partial class BaseRuntimeConfiguration : Resource, IRuntimeConfiguration<-TODO remove IRuntimeConfiguration, yes this line should break compilation
 #endif
     {
 #pragma warning restore 0618

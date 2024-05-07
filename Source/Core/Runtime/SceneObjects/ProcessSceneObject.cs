@@ -16,11 +16,11 @@ using UnityEngine;
 #elif GODOT
 using Godot;
 using Godot.Collections;
+using VRBuilder.Core.Godot.Attributes;
 #endif
 
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Exceptions;
-using VRBuilder.Core.Godot.Attributes;
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.Utils;
 using VRBuilder.Core.Utils.Logging;
@@ -143,10 +143,17 @@ namespace VRBuilder.Core.SceneObjects
         /// </remarks>
         private static bool hasDirtySceneObject = false;
 
+#if UNITY_5_3_OR_NEWER
         [Obsolete("This event is no longer used and will be removed in the next major release.")]
 #pragma warning disable CS0067 //The event 'event' is never used
-        // public delegate void UniqueNameChangedEventHandler(SceneObjectNameChanged changed);
+        public event EventHandler<SceneObjectNameChanged> UniqueNameChanged;
 #pragma warning restore CS0067
+        public event EventHandler<LockStateChangedEventArgs> Locked;
+        public event EventHandler<LockStateChangedEventArgs> Unlocked;
+        public event EventHandler<GuidContainerEventArgs> GuidAdded;
+        public event EventHandler<GuidContainerEventArgs> GuidRemoved;
+        public event EventHandler<UniqueIdChangedEventArgs> ObjectIdChanged;
+#elif GODOT
         [Signal]
         public delegate void LockedEventHandler(LockStateChangedEventArgs eventArgs);
         [Signal]
@@ -157,7 +164,7 @@ namespace VRBuilder.Core.SceneObjects
         public delegate void GuidRemovedEventHandler(GodotObject source, GuidContainerEventArgs eventArgs);
 
         // public delegate void ObjectIdChangedEventHandler(UniqueIdChangedEventArgs eventArgs);
-
+#endif
 
         private bool IsRegistered => RuntimeConfigurator.Configuration != null && RuntimeConfigurator.Configuration.SceneObjectRegistry.ContainsGuid(Guid);
 
@@ -647,12 +654,11 @@ if (Locked != null)
         /// <inheritdoc />
         public override string ToString()
         {
+#if UNITY_5_3_OR_NEWER
+            return GameObject.name;
+#elif GODOT
             return GameObject.Name;
-        }
-
-        private void OnDestroy()
-        {
-            if (RuntimeConfigurator.Exists) RuntimeConfigurator.Configuration.SceneObjectRegistry.Unregister(this);
+#endif
         }
     }
 }

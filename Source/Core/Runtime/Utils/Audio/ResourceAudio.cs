@@ -89,7 +89,7 @@ namespace VRBuilder.Core.Audio
         public void InitializeAudioClip()
         {
 #if UNITY_5_3_OR_NEWER
-AudioClip = null;
+            AudioClip = null;
 
             if (string.IsNullOrEmpty(ResourcesPath))
             {
@@ -141,7 +141,11 @@ AudioClip = null;
 
         public string GetLocalizedContent()
         {
+#if UNITY_5_3_OR_NEWER
+            return LanguageUtils.GetLocalizedString(ResourcesPath, RuntimeConfigurator.Instance.GetProcessStringLocalizationTable(), LanguageSettings.Instance.ActiveOrDefaultLocale);
+#elif GODOT
             return TranslationServer.GetTranslationObject(LanguageSettings.Instance.ActiveOrDefaultLocale).GetMessage(ResourcesPath, RuntimeConfigurator.Instance.GetProcessStringLocalizationTable());
+#endif
         }
     }
 }

@@ -164,13 +164,15 @@ namespace VRBuilder.Core.Properties
         /// <param name="processProperty">Typo of <see cref="ISceneObjectProperty"/> to be removed from <paramref name="sceneObject"/>.</param>
         /// <param name="removeDependencies">If true, this method also removes other components that are marked as `RequiredComponent` by <paramref name="processProperty"/>.</param>
         /// <param name="excludedFromBeingRemoved">The process properties in this list will not be removed if any is a dependency of <paramref name="processProperty"/>. Only relevant if <paramref name="removeDependencies"/> is true.</param>
+#if UNITY_5_3_OR_NEWER
         public static void RemoveProcessProperty(this ISceneObject sceneObject, Type processProperty, bool removeDependencies = false, IEnumerable<Component>? excludedFromBeingRemoved = null)
     {
-#if UNITY_5_3_OR_NEWER
             Component processComponent = sceneObject.GameObject.GetComponent(processProperty);
 #elif GODOT
+        public static void RemoveProcessProperty(this ISceneObject sceneObject, Type processProperty, bool removeDependencies = false, IEnumerable<Node>? excludedFromBeingRemoved = null)
+        {
         Node? processComponent = sceneObject.GameObject.GetChildren().FirstOrDefault(c => c.GetType() == processProperty);
-        excludedFromBeingRemoved ??= new List<Component>();
+        excludedFromBeingRemoved ??= new List<Node>();
 #endif
 
             if (AreParametersNullOrInvalid(sceneObject, processProperty) || processComponent == null)
@@ -231,9 +233,9 @@ namespace VRBuilder.Core.Properties
             return sceneObject == null || sceneObject.GameObject == null || processProperty == null || typeof(ISceneObjectProperty).IsAssignableFrom(processProperty) == false;
         }
 
+#if UNITY_5_3_OR_NEWER
         private static bool IsTypeDependencyOfComponent(Type type, Component component)
         {
-#if UNITY_5_3_OR_NEWER
             Type propertyType = component.GetType();
             RequireComponent[] requireComponents = propertyType.GetCustomAttributes(typeof(RequireComponent), false) as RequireComponent[];
 
@@ -244,7 +246,8 @@ namespace VRBuilder.Core.Properties
 
             return requireComponents.Any(requireComponent => requireComponent.m_Type0 == type || requireComponent.m_Type1 == type || requireComponent.m_Type2 == type);
 #elif GODOT
-//TODO: implement
+        private static bool IsTypeDependencyOfComponent(Type type, Node component)
+        {
 return false;
 #endif
     }
@@ -282,7 +285,12 @@ return false;
             }
         }
 
+#if UNITY_5_3_OR_NEWER
         private static IEnumerable<Type> GetTypesFromComponents(IEnumerable<Component> components)
+#elif GODOT
+        private static IEnumerable<Type> GetTypesFromComponents(IEnumerable<Node> components)
+#endif
+
         {
             return components == null ? new Type[0] : components.Select(component => component.GetType());
         }

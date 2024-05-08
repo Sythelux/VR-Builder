@@ -3,10 +3,10 @@
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
-using VRBuilder.Unity;
 #elif GODOT
 using Godot;
 #endif
+using VRBuilder.Unity;
 using System;
 using System.Linq;
 using System.Collections;

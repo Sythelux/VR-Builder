@@ -1,4 +1,3 @@
-#if UNITY_5_3_OR_NEWER
 using System;
 using System.Runtime.Serialization;
 using VRBuilder.Core.Runtime.Properties;
@@ -20,7 +19,7 @@ namespace VRBuilder.Core.SceneObjects
 
         /// <summary>
         /// Returns the type this tag is associated with.
-        /// </summary>        
+        /// </summary>
         internal abstract Type GetReferenceType();
 
         public SceneObjectTagBase()
@@ -39,8 +38,3 @@ namespace VRBuilder.Core.SceneObjects
         }
     }
 }
-
-#elif GODOT
-using Godot;
-//TODO
-#endif

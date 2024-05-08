@@ -83,7 +83,7 @@ public class DefaultAudioPlayer : IProcessAudioPlayer
     /// <inheritdoc />
     public void PlayAudio(IAudioData audioData, float volume = 1, float pitch = 1)
     {
-        audioSource.Stream = audioData;
+        audioSource.Stream = audioData.AudioClip;
         audioSource.VolumeDb = volume;
         audioSource.PitchScale = pitch;
         audioSource.Play();

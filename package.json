@@ -1,8 +1,8 @@
 {
   "displayName": "VR Builder Lite",
   "name": "co.mindport.vrbuilder.core-lite",
-  "version": "4.0.1-pre",
-  "unity": "2021.1",
+  "version": "4.1.1",
+  "unity": "2021.3",
   "description": "VR Builder core functionality. Without XR-Interaction and TTS",
   "keywords": [
     "builder",

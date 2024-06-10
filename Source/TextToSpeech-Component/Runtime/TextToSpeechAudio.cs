@@ -1,11 +1,12 @@
 #if UNITY_5_3_OR_NEWER
 using System;
-using UnityEngine;
 using System.Runtime.Serialization;
+using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
+using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Audio;
 using VRBuilder.Core.Configuration;
-using UnityEngine.Localization.Settings;
-using UnityEngine.Localization;
 using VRBuilder.Core.Localization;
 
 namespace VRBuilder.TextToSpeech.Audio
@@ -14,7 +15,7 @@ namespace VRBuilder.TextToSpeech.Audio
     /// This class retrieves and stores AudioClips generated based in a provided localized text. 
     /// </summary>
     [DataContract(IsReference = true)]
-    [VRBuilder.Core.Attributes.DisplayName("Play Text to Speech")]
+    [Core.Attributes.DisplayName("Play Text to Speech")]
     public class TextToSpeechAudio : TextToSpeechContent, IAudioData
     {
         private bool isLoading;
@@ -22,6 +23,7 @@ namespace VRBuilder.TextToSpeech.Audio
 
         /// <inheritdoc/>
         [DataMember]
+        [UsesSpecificProcessDrawer("MultiLineStringDrawer")]
         [Core.Attributes.DisplayName("Text/Key")]
         public override string Text
         {

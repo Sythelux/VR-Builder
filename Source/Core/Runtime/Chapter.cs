@@ -68,6 +68,9 @@ namespace VRBuilder.Core
             /// <inheritdoc />
             [IgnoreDataMember]
             public IStep Current { get; set; }
+
+            /// <inheritdoc />
+            IEntity IEntitySequenceData.Current => Current;
         }
 
         private class ActivatingProcess : EntityIteratingProcess<IEntitySequenceDataWithMode<IStep>, IStep>
@@ -199,11 +202,11 @@ namespace VRBuilder.Core
 
             Dictionary<IStep, IStep> clonedSteps = new Dictionary<IStep, IStep>();
 
-            foreach(IStep step in Data.Steps)
+            foreach (IStep step in Data.Steps)
             {
                 IStep clonedStep = step.Clone();
                 clonedChapter.Data.Steps.Add(clonedStep);
-                if(Data.FirstStep == step)
+                if (Data.FirstStep == step)
                 {
                     clonedChapter.Data.FirstStep = clonedStep;
                 }

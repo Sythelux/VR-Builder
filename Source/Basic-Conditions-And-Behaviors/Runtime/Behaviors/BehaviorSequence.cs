@@ -58,7 +58,7 @@ namespace VRBuilder.Core.Behaviors
                 {
                     string behaviors = "";
 
-                    if(Behaviors.Count == 0)
+                    if (Behaviors.Count == 0)
                     {
                         behaviors = "no behavior";
                     }
@@ -83,6 +83,9 @@ namespace VRBuilder.Core.Behaviors
 
             /// <inheritdoc />
             public bool IsBlocking { get; set; }
+
+            /// <inheritdoc />
+            IEntity IEntitySequenceData.Current => Current;
         }
 
         private class IteratingProcess : EntityIteratingProcess<IEntitySequenceDataWithMode<IBehavior>, IBehavior>

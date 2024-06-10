@@ -17,7 +17,7 @@ namespace VRBuilder.Core.Properties
     /// Used to identify the user within the scene.
     /// </summary>
 #if UNITY_5_3_OR_NEWER
-public class UserSceneObject : ProcessSceneObject
+    public class UserSceneObject : MonoBehaviour
     {
         [SerializeField]
         private Transform head, leftHand, rightHand;
@@ -51,7 +51,7 @@ public class UserSceneObject : ProcessSceneObject
     }
     #elif GODOT
 
-    public partial class UserSceneObject : ProcessSceneObject
+    public partial class UserSceneObject : Node
     {
 #if UNITY_5_3_OR_NEWER
         [SerializeField]

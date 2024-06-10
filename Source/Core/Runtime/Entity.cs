@@ -92,23 +92,31 @@ namespace VRBuilder.Core
         /// <inheritdoc />
         public void Update()
         {
-#if UNITY_EDITOR
             try
             {
-#endif
-            LifeCycle.Update();
+	            LifeCycle.Update();
 
-            if (Data is IEntityCollectionData collectionData)
-                foreach (IEntity child in collectionData.GetChildren().Distinct())
-                    child.Update();
-#if UNITY_EDITOR
+	            // IStepData implements IEntitySequenceData despite not being a sequence,
+	            // so we have to manually exclude it.
+	            if (Data is IEntitySequenceData sequenceData && Data is IStepData == false)
+	            {
+	                sequenceData.Current?.Update();
+	            }
+	            else if (Data is IEntityCollectionData collectionData)
+	            {
+	                foreach (IEntity child in collectionData.GetChildren().Distinct())
+	                {
+	                    child.Update();
+	                }
+	            }
             }
             catch (Exception e)
             {
+#if UNITY_EDITOR
                 Debug.LogError($"Exception in Step: {(Data as Step.EntityData)?.Name}. In LifeCycle: {LifeCycle.Stage}");
                 Debug.LogException(e);
-            }
 #endif
+            }
         }
     }
 }

@@ -38,6 +38,12 @@ namespace VRBuilder.Core
         [DataMember]
         public Guid Guid { get; set; }
 
+        /// <summary>
+        /// Stored position of the view in the graph.
+        /// </summary>
+        [DataMember]
+        public ViewTransform ViewTransform { get; set; }
+
         public ChapterMetadata()
         {
         }

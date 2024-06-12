@@ -5,11 +5,11 @@
 using System.Runtime.Serialization;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
+using VRBuilder.Unity;
 #elif GODOT
 using Godot;
 #endif
 using VRBuilder.Core.Utils.Logging;
-using VRBuilder.Unity;
 
 namespace VRBuilder.Core.Behaviors
 {
@@ -35,9 +35,8 @@ namespace VRBuilder.Core.Behaviors
 #if UNITY_5_3_OR_NEWER
                     Debug.LogFormat("{0}<b>Behavior</b> <i>'{1} ({2})'</i> is <b>{3}</b>.\n", ConsoleUtils.GetTabs(2), Data.Name, GetType().Name, LifeCycle.Stage);
 #elif GODOT
-                    GD.Print($"{ConsoleUtils.GetTabs(2)}<b>Behavior</b> <i>'{Data.Name} ({GetType().Name})'</i> is <b>{LifeCycle.Stage}</b>.\n");
+                    GD.PrintRich($"\t\t[b]Behavior[/b] [i]'{Data.Name} ({GetType().Name})'[/i] is [b]{LifeCycle.Stage}[/b].\n");
 #endif
-
                 };
             }
         }

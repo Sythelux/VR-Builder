@@ -3,10 +3,10 @@
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
+using VRBuilder.Unity;
 #elif GODOT
 using Godot;
 #endif
-using VRBuilder.Unity;
 using System;
 using System.Linq;
 using System.Collections;
@@ -319,9 +319,8 @@ namespace VRBuilder.Core
 #if UNITY_5_3_OR_NEWER
                     Debug.LogFormat("{0}<b>Step</b> <i>'{1}'</i> is <b>{2}</b>.\n", ConsoleUtils.GetTabs(), Data.Name, LifeCycle.Stage);
 #elif GODOT
-                    GD.Print($"{ConsoleUtils.GetTabs()}<b>Step</b> <i>'{Data.Name}'</i> is <b>{LifeCycle.Stage}</b>.\n");
+                    GD.PrintRich($"\t\t[b]Step[/b] [i]'{Data.Name}'[/i] is [b]{LifeCycle.Stage}[/b].\n");
 #endif
-
                 };
             }
         }

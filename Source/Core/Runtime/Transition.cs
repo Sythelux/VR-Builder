@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
+using VRBuilder.Unity;
 #elif GODOT
 using Godot;
 #endif
@@ -16,7 +17,6 @@ using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.EntityOwners;
 using VRBuilder.Core.RestrictiveEnvironment;
 using VRBuilder.Core.Utils.Logging;
-using VRBuilder.Unity;
 
 namespace VRBuilder.Core
 {
@@ -176,7 +176,7 @@ namespace VRBuilder.Core
 #if UNITY_5_3_OR_NEWER
                     Debug.LogFormat("{0}<b>Transition to</b> <i>{1}</i> is <b>{2}</b>.\n", ConsoleUtils.GetTabs(3), Data.TargetStep != null ? Data.TargetStep.Data.Name + " (Step)" : "chapter's end", LifeCycle.Stage);
 #elif GODOT
-                    GD.Print($"{ConsoleUtils.GetTabs(3)}<b>Transition to</b> <i>{(Data.TargetStep != null ? Data.TargetStep.Data.Name + " (Step)" : "chapter's end")}</i> is <b>{LifeCycle.Stage}</b>.\n");
+                    GD.Print($"\t\t\t[b]Transition to[/b] [i]{(Data.TargetStep != null ? Data.TargetStep.Data.Name + " (Step)" : "chapter's end")}[/i] is [b]{LifeCycle.Stage}[/b].\n");
 #endif
                 };
             }

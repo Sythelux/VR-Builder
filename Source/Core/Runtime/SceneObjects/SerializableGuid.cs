@@ -20,7 +20,9 @@ namespace VRBuilder.Core.SceneObjects
 #if UNITY_5_3_OR_NEWER
     public class SerializableGuid : IEquatable<SerializableGuid>, IEquatable<Guid>
 #elif GODOT
-    public partial class SerializableGuid : GodotObject, IEquatable<SerializableGuid>, IEquatable<Guid>
+    [Tool]
+    [GlobalClass]
+    public partial class SerializableGuid : Resource, IEquatable<SerializableGuid>, IEquatable<Guid>
 #endif
 
     {

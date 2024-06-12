@@ -18,6 +18,7 @@ namespace VRBuilder.Core.Configuration
 #if UNITY_5_3_OR_NEWER
     public class SceneConfiguration : MonoBehaviour, ISceneConfiguration
 #elif GODOT
+    [Tool, GlobalClass]
     public partial class SceneConfiguration : Node, ISceneConfiguration
 #endif
     {

@@ -42,15 +42,14 @@ namespace VRBuilder.Core.Configuration
         /// </summary>
 #if UNITY_5_3_OR_NEWER
         public static event EventHandler<EventArgs> RuntimeConfigurationChanged;
-#elif GODOT
-        [Signal]
-        public delegate void RuntimeConfigurationChangedEventHandler();
-#endif
 
         /// <summary>
         /// Fully qualified name of the runtime configuration used.
         /// This field is magically filled by <see cref="RuntimeConfiguratorEditor"/>
         /// </summary>
+        /// <remarks>
+        /// This field is filled by <see cref="RuntimeConfiguratorEditor"/>
+        /// </remarks>
 #if UNITY_5_3_OR_NEWER
         [SerializeField]
 #elif GODOT
@@ -60,9 +59,7 @@ namespace VRBuilder.Core.Configuration
 
         /// <summary>
         /// Process name which is selected.
-        /// This field is magically filled by <see cref="RuntimeConfiguratorEditor"/>
         /// </summary>
-#if UNITY_5_3_OR_NEWER
         [SerializeField]
         private string selectedProcessStreamingAssetsPath = "";
 #elif GODOT
@@ -84,15 +81,33 @@ namespace VRBuilder.Core.Configuration
         private BaseRuntimeConfiguration runtimeConfiguration;
 
         private static RuntimeConfigurator instance;
+        private static RuntimeConfigurator[] instances;
 
-        private static RuntimeConfigurator LookUpForGameObject()
+        /// <summary>
+        /// Looks up all the RuntimeConfigurator game objects in the scene.
+        /// </summary>
+        /// <returns>An array of RuntimeConfigurator instances found in the scene.</returns>
+        private static RuntimeConfigurator[] LookUpRuntimeConfiguratorGameObjects()
         {
 #if UNITY_5_3_OR_NEWER
             RuntimeConfigurator[] instances = FindObjectsOfType<RuntimeConfigurator>();
 #elif GODOT
             RuntimeConfigurator[] instances = NodeExtensions.FindObjectsOfType<RuntimeConfigurator>().Take(2).ToArray();
 #endif
+            return instances;
+        }
 
+        /// <summary>
+        /// Gets the RuntimeConfigurator instance.
+        /// </summary>
+        /// <returns>The active RuntimeConfigurator instance.</returns>
+        /// <remarks>
+        /// If there are multiple instances of the RuntimeConfigurator in the scene, the first one found will be used and
+        /// a warning will be logged. 
+        /// </remarks>
+        private static RuntimeConfigurator GetRuntimeConfigurator()
+        {
+            RuntimeConfigurator[] instances = LookUpRuntimeConfiguratorGameObjects();
             if (instances.Length > 1)
             {
 #if UNITY_5_3_OR_NEWER
@@ -106,24 +121,48 @@ namespace VRBuilder.Core.Configuration
             {
                 return null;
             }
+            if (instances.Length > 1)
+            {
+                string errorLog = $"More than one process runtime configurator found in all open scenes. The active process will be {instances[0].GetSelectedProcess()} from Scene {instances[0].gameObject.scene.name}. Ignoring following processes: ";
+                for (int i = 1; i < instances.Length; i++)
+                {
+                    errorLog += $"{instances[i].GetSelectedProcess()} from Scene {instances[i].gameObject.scene.name}";
+                    if (i < instances.Length - 1)
+                    {
+                        errorLog += ", ";
+                    }
+                }
+                Debug.LogError(errorLog);
+            }
 
             return instances[0];
         }
-
         /// <summary>
-        /// Checks if a process runtime configurator instance exists in scene.
+        /// Checks if a process runtime configurator exists in the scene.
         /// </summary>
+        /// <returns><c>true</c> if an instance of the runtime configurator exists; otherwise, <c>false</c>.</returns>
         public static bool Exists
         {
             get
             {
-                if (instance == null || instance.Equals(null))
-                {
-                    instance = LookUpForGameObject();
-                }
-
-                return (instance != null && instance.Equals(null) == false);
+                return IsExisting();
             }
+        }
+
+        /// <summary>
+        /// Checks if an instance of the runtime configurator exists.
+        /// If <see cref="instance"/> is not set it tries to set it by calling <see cref="LookUpRuntimeConfiguratorGameObject"/>.
+        /// </summary>
+        /// <param name="forceNewLookup">If set to <c>true</c>, forces a new lookup for the instance.</param>
+        /// <returns><c>true</c> if an instance of the runtime configurator exists; otherwise, <c>false</c>.</returns>
+        public static bool IsExisting(bool forceNewLookup = false)
+        {
+            if (instance == null || instance.Equals(null) || forceNewLookup)
+            {
+                instance = GetRuntimeConfigurator();
+            }
+
+            return instance != null && instance.Equals(null) == false;
         }
 
         /// <summary>
@@ -192,9 +231,9 @@ namespace VRBuilder.Core.Configuration
         }
 
         /// <summary>
-        /// Current instance of the RuntimeConfigurator.
+        /// Gets the current instance of the RuntimeConfigurator.
         /// </summary>
-        /// <exception cref="NullReferenceException">Will throw a NPE if there is no RuntimeConfigurator added to the scene.</exception>
+        /// <exception cref="NullReferenceException">Thrown if there is no RuntimeConfigurator added to the scene.</exception>
         public static RuntimeConfigurator Instance
         {
             get
@@ -212,6 +251,7 @@ namespace VRBuilder.Core.Configuration
         /// <summary>
         /// Returns the assembly qualified name of the runtime configuration.
         /// </summary>
+        /// <returns>The assembly qualified name of the runtime configuration.</returns>
         public string GetRuntimeConfigurationName()
         {
             return runtimeConfigurationName;
@@ -220,6 +260,7 @@ namespace VRBuilder.Core.Configuration
         /// <summary>
         /// Sets the runtime configuration name, expects an assembly qualified name.
         /// </summary>
+        /// <param name="configurationName">The assembly qualified name of the runtime configuration.</param>
         public void SetRuntimeConfigurationName(string configurationName)
         {
             runtimeConfigurationName = configurationName;
@@ -228,6 +269,7 @@ namespace VRBuilder.Core.Configuration
         /// <summary>
         /// Returns the path to the selected process.
         /// </summary>
+        /// <returns>The path to the selected process.</returns>
         public string GetSelectedProcess()
         {
 #if UNITY_5_3_OR_NEWER
@@ -240,6 +282,7 @@ namespace VRBuilder.Core.Configuration
         /// <summary>
         /// Sets the path to the selected process.
         /// </summary>
+        /// <param name="path">The path to the selected process.</param>
         public void SetSelectedProcess(string path)
         {
 #if UNITY_5_3_OR_NEWER
@@ -252,6 +295,7 @@ namespace VRBuilder.Core.Configuration
         /// <summary>
         /// Returns the string localization table for the selected process.
         /// </summary>
+        /// <returns>The string localization table for the selected process.</returns>
         public string GetProcessStringLocalizationTable()
         {
             return processStringLocalizationTable;

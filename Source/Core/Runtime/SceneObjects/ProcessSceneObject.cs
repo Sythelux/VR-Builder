@@ -42,8 +42,8 @@ namespace VRBuilder.Core.SceneObjects
     [ExecuteInEditMode, DisallowMultipleComponent]
     public class ProcessSceneObject : MonoBehaviour, ISerializationCallbackReceiver, ISceneObject
 #elif GODOT
-    [Tool]
-    public partial class ProcessSceneObject : Node3D, ISceneObject
+    [Tool, GlobalClass]
+    public partial class ProcessSceneObject : Node3D, ISceneObject //todo it is Node3D instead of Node, because in Unity it has "visible" check below
 #endif
     {
         /// <summary>
@@ -52,10 +52,11 @@ namespace VRBuilder.Core.SceneObjects
         /// </summary>
 #if UNITY_5_3_OR_NEWER
         [SerializeField]
+        private SerializableGuid serializedGuid;
 #elif GODOT
         [Export]
+        private Resource serializedGuid;
 #endif
-        private SerializableGuid serializedGuid;
 
         /// <summary>
         /// We use this Guid for comparison, generation and caching.
@@ -83,9 +84,10 @@ namespace VRBuilder.Core.SceneObjects
                 if (!IsGuidAssigned())
                 {
                     // if our serialized data is invalid, then we are a new object and need a new GUID
-                    if (SerializableGuid.IsValid(serializedGuid))
+                    var serializableGuid = serializedGuid as SerializableGuid;
+                    if (SerializableGuid.IsValid(serializableGuid))
                     {
-                        guid = serializedGuid.Guid;
+                        guid = serializableGuid.Guid;
                     }
                     else
                     {
@@ -171,6 +173,10 @@ namespace VRBuilder.Core.SceneObjects
         public delegate void GuidAddedEventHandler(GodotObject source, GuidContainerEventArgs eventArgs);
         [Signal]
         public delegate void GuidRemovedEventHandler(GodotObject source, GuidContainerEventArgs eventArgs);
+        [Signal]
+        public delegate void UniqueNameChangedEventHandler(SceneObjectNameChanged changed);
+        [Signal]
+        public delegate void ObjectIdChangedEventHandler(UniqueIdChangedEventArgs eventArgs);
 
         // public delegate void ObjectIdChangedEventHandler(UniqueIdChangedEventArgs eventArgs);
 #endif
@@ -198,7 +204,7 @@ namespace VRBuilder.Core.SceneObjects
 #elif GODOT
             IEnumerable<ProcessSceneObject> processSceneObjects = FindChildren("*", recursive: true).OfType<ProcessSceneObject>();
             foreach (ProcessSceneObject pso in processSceneObjects)
-                if (!pso.Visible) //was if (!pso.isActiveAndEnabled)
+                if (!pso.Visible)
                     pso.Init();
 #endif
         }
@@ -294,7 +300,7 @@ if (IsGuidAssigned() && !serializedGuid.Equals(guid))
                 /// - Interacting with the prefab outside of the scene
             }
 #elif GODOT
-            //TODO: implement... we do this in _Get() probably
+            //Is in <Godot>/Core/Editor/SceneObjects/ProcessSceneObject.cs
 #endif
         }
 
@@ -327,8 +333,8 @@ if (IsGuidAssigned() && !serializedGuid.Equals(guid))
             }
         }
 #endif
-#if UNITY_5_3_OR_NEWER
-public void ResetUniqueId()
+
+        public void ResetUniqueId()
         {
             if (RuntimeConfigurator.Exists)
             {
@@ -338,9 +344,6 @@ public void ResetUniqueId()
                 Init();
             }
         }
-#elif GODOT
-        //TODO: I don't know when.
-#endif
 
 #if UNITY_5_3_OR_NEWER
         private void OnDestroy()
@@ -357,17 +360,19 @@ public void ResetUniqueId()
         /// <inheritdoc />
         public void SetObjectId(Guid guid)
         {
-            Guid previousGuid = serializedGuid != null && serializedGuid.IsValid() ? serializedGuid.Guid : Guid.Empty;
+            var serializableGuid = serializedGuid as SerializableGuid;
+
+            Guid previousGuid = serializedGuid != null && serializableGuid.IsValid() ? serializableGuid.Guid : Guid.Empty;
 #if UNITY_EDITOR
             Undo.RecordObject(this, "Changed GUID");
 #endif
-            serializedGuid.SetGuid(guid);
+            serializableGuid.SetGuid(guid);
             this.guid = guid;
 
 #if UNITY_5_3_OR_NEWER
             ObjectIdChanged?.Invoke(this, new UniqueIdChangedEventArgs(previousGuid, Guid));
 #elif GODOT
-            EmitSignal("ObjectIdChanged", new UniqueIdChangedEventArgs(previousGuid, Guid)); //TODO: find correct SignalName class
+            EmitSignal(SignalName.ObjectIdChanged, new UniqueIdChangedEventArgs(previousGuid, Guid)); //TODO: find correct SignalName class
 #endif
         }
 

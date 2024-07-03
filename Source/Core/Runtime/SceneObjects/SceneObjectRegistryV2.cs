@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
+using VRBuilder.Unity;
 #elif GODOT
 using Godot;
 using VRBuilder.Core.Godot;
@@ -10,7 +11,6 @@ using VRBuilder.Core.Godot;
 
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.Settings;
-using VRBuilder.Unity;
 
 namespace VRBuilder.Core.SceneObjects
 {

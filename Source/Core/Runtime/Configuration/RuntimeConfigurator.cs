@@ -22,7 +22,7 @@ namespace VRBuilder.Core.Configuration
 #if UNITY_5_3_OR_NEWER
     public sealed class RuntimeConfigurator : MonoBehaviour
 #elif GODOT
-    [Tool]
+    [Tool, GlobalClass]
     public partial class RuntimeConfigurator : Node
 #endif
     {
@@ -52,8 +52,6 @@ namespace VRBuilder.Core.Configuration
         /// </remarks>
 #if UNITY_5_3_OR_NEWER
         [SerializeField]
-#elif GODOT
-        [Export]
 #endif
         private string runtimeConfigurationName = typeof(DefaultRuntimeConfiguration).AssemblyQualifiedName;
 
@@ -61,19 +59,14 @@ namespace VRBuilder.Core.Configuration
         /// Process name which is selected.
         /// </summary>
         [SerializeField]
-        private string selectedProcessStreamingAssetsPath = "";
-#elif GODOT
-        [Export]
-        private string SelectedProcess { get; set; } = "";
 #endif
+        private string selectedProcessStreamingAssetsPath = "";
 
         /// <summary>
         /// String localization table used by the current process.
         /// </summary>
 #if UNITY_5_3_OR_NEWER
         [SerializeField]
-#elif GODOT
-        [Export]
 #endif
         private string processStringLocalizationTable = "";
         // private string ProcessStringLocalizationTable { get; set; } = "";
@@ -275,7 +268,7 @@ namespace VRBuilder.Core.Configuration
 #if UNITY_5_3_OR_NEWER
             return selectedProcessStreamingAssetsPath;
 #elif GODOT
-            return SelectedProcess;
+            return selectedProcessStreamingAssetsPath;
 #endif
         }
 
@@ -288,7 +281,7 @@ namespace VRBuilder.Core.Configuration
 #if UNITY_5_3_OR_NEWER
             selectedProcessStreamingAssetsPath = path;
 #elif GODOT
-            SelectedProcess = path;
+            selectedProcessStreamingAssetsPath = path;
 #endif
         }
 

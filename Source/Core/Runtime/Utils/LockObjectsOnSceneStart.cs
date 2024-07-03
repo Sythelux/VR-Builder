@@ -4,9 +4,9 @@
 
 using System.Linq;
 using VRBuilder.Core.Properties;
-using VRBuilder.Unity;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
+using VRBuilder.Unity;
 #elif GODOT
 using VRBuilder.Core.Godot;
 using VRBuilder.Core.Godot.Attributes;

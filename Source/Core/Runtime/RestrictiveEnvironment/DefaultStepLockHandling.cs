@@ -9,7 +9,9 @@ using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.SceneObjects;
+#if UNITY_5_3_OR_NEWER
 using VRBuilder.Unity;
+#endif
 
 namespace VRBuilder.Core.RestrictiveEnvironment
 {

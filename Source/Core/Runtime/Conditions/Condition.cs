@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
+using VRBuilder.Unity;
 #elif GODOT
 using Godot;
 #endif
 using VRBuilder.Core.RestrictiveEnvironment;
 using VRBuilder.Core.Utils.Logging;
-using VRBuilder.Unity;
 
 namespace VRBuilder.Core.Conditions
 {
@@ -35,7 +35,7 @@ namespace VRBuilder.Core.Conditions
 #if UNITY_5_3_OR_NEWER
                     Debug.LogFormat("{0}<b>Condition</b> <i>'{1} ({2})'</i> is <b>{3}</b>.\n", ConsoleUtils.GetTabs(2), Data.Name, GetType().Name, LifeCycle.Stage);
 #elif GODOT
-                    GD.Print("{0}<b>Condition</b> <i>'{1} ({2})'</i> is <b>{3}</b>.\n", ConsoleUtils.GetTabs(2), Data.Name, GetType().Name, LifeCycle.Stage);
+                    GD.PrintRich("{0}[b]Condition[/b] [i]'{1} ({2})'[/i] is [b]{3}[/b].\n", "\t\t", Data.Name, GetType().Name, LifeCycle.Stage);
 #endif
                 };
             }

@@ -59,7 +59,6 @@ namespace VRBuilder.Core.SceneObjects
 #if UNITY_5_3_OR_NEWER
         event EventHandler<SceneObjectNameChanged> UniqueNameChanged;
 #elif GODOT
-        [Signal]
         delegate void UniqueNameChangedEventHandler(SceneObjectNameChanged changed);
 #endif
 
@@ -69,7 +68,6 @@ namespace VRBuilder.Core.SceneObjects
 #if UNITY_5_3_OR_NEWER
         event EventHandler<UniqueIdChangedEventArgs> ObjectIdChanged;
 #elif GODOT
-        [Signal]
         delegate void ObjectIdChangedEventHandler(UniqueIdChangedEventArgs eventArgs);
 #endif
 

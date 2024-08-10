@@ -89,7 +89,7 @@ namespace VRBuilder.Core.Behaviors
                 RuntimeConfigurator.Configuration.SceneObjectManager.RequestAuthority(Data.TargetObject.Value);
 
                 Rigidbody movingRigidbody = Data.TargetObject.Value.GameObject.GetComponent<Rigidbody>();
-                if (movingRigidbody != null)
+                if (movingRigidbody != null && movingRigidbody.isKinematic == false)
                 {
                     movingRigidbody.velocity = Vector3.zero;
                     movingRigidbody.angularVelocity = Vector3.zero;
@@ -130,7 +130,7 @@ namespace VRBuilder.Core.Behaviors
                 movingTransform.rotation = targetPositionTransform.rotation;
 
                 Rigidbody movingRigidbody = Data.TargetObject.Value.GameObject.GetComponent<Rigidbody>();
-                if (movingRigidbody != null)
+                if (movingRigidbody != null && movingRigidbody.isKinematic == false)
                 {
                     movingRigidbody.velocity = Vector3.zero;
                     movingRigidbody.angularVelocity = Vector3.zero;

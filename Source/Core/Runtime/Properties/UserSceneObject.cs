@@ -7,6 +7,7 @@ using UnityEngine;
 using Godot;
 //TODO
 #endif
+using System.Linq;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils;
 
@@ -53,16 +54,8 @@ namespace VRBuilder.Core.Properties
 
     public partial class UserSceneObject : Node
     {
-#if UNITY_5_3_OR_NEWER
         [SerializeField]
-#elif GODOT
-    [Export]
-#endif
-        private Node3D? head;
-
-#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
-        private Transform3D? leftHand, rightHand;
-#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
+        private Node3D head, leftHand, rightHand;
 
         /// <summary>
         /// Returns the user's head transform.
@@ -70,28 +63,26 @@ namespace VRBuilder.Core.Properties
         public Node3D Head
         {
             get
-        {
-            return head ??= this.GetComponentInChildren<Camera3D>();
-            GD.PushWarning("User head object is not referenced on User Scene Object component. The rig's camera will be used, if available.");
-        }
+            {
+                if (head == null)
+                {
+                    head = FindChildren("*", nameof(Camera3D)).OfType<Node3D>().FirstOrDefault();
+                    GD.PushWarning("User head object is not referenced on User Scene Object component. The rig's camera will be used, if available.");
+                }
+
+                return head;
+            }
         }
 
         /// <summary>
         /// Returns the user's left hand transform.
         /// </summary>
-        public Transform3D? LeftHand => leftHand;
+        public Node3D LeftHand => leftHand;
 
         /// <summary>
         /// Returns the user's right hand transform.
         /// </summary>
-        public Transform3D? RightHand => rightHand;
-
-        public override void _Ready()
-    {
-        base._Ready();
-        uniqueName = "User";
-    }
+        public Node3D RightHand => rightHand;
     }
 #endif
 }
-

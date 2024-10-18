@@ -40,17 +40,21 @@ namespace VRBuilder.Core.Configuration
             Modes = new BaseModeHandler(new List<IMode> { DefaultMode });
         }
 
-        /// <inheritdoc />
-#pragma warning disable CS0672 // Member overrides obsolete member
-        public override ProcessSceneObject User
-#pragma warning restore CS0672 // Member overrides obsolete member
-        {
-            get
-            {
-                Debug.LogError("The User property is obsolete and no longer returns a valid value. Use LocalUser instead.");
-                return null;
-            }
-        }
+//         /// <inheritdoc />
+// #pragma warning disable CS0672 // Member overrides obsolete member
+//         public override ProcessSceneObject User
+// #pragma warning restore CS0672 // Member overrides obsolete member
+//         {
+//             get
+//             {
+// #if UNITY_5_3_OR_NEWER
+//                 Debug.LogError("The User property is obsolete and no longer returns a valid value. Use LocalUser instead.");
+// #elif GODOT
+//                 GD.Print("The User property is obsolete and no longer returns a valid value. Use LocalUser instead.");
+// #endif
+//                 return null;
+//             }
+//         }
 
         /// <inheritdoc />
         public override UserSceneObject LocalUser

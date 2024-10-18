@@ -1,5 +1,10 @@
 #if UNITY_5_3_OR_NEWER
 ﻿using VRBuilder.Core.Configuration;
+using System;
+using System.Linq;
+using Source.TextToSpeech_Component.Runtime;
+using VRBuilder.Core.Configuration;
+using VRBuilder.Core.Utils;
 
 namespace VRBuilder.TextToSpeech
 {
@@ -11,28 +16,28 @@ namespace VRBuilder.TextToSpeech
         /// <summary>
         /// Text to speech configuration.
         /// </summary>
-        private static TextToSpeechConfiguration textToSpeechConfiguration;
+        private static ITextToSpeechConfiguration TextToSpeechConfiguration;
 
         /// <summary>
-        /// Return loaded <see cref="TextToSpeechConfiguration"/>.
+        /// Return loaded <see cref="ITextToSpeechConfiguration"/>.
         /// </summary>
-        public static TextToSpeechConfiguration GetTextToSpeechConfiguration(this BaseRuntimeConfiguration runtimeConfiguration)
+        public static ITextToSpeechConfiguration GetTextToSpeechConfiguration(this BaseRuntimeConfiguration runtimeConfiguration)
         {
-            if (textToSpeechConfiguration == null)
-            {
-                textToSpeechConfiguration = TextToSpeechConfiguration.LoadConfiguration();
-            }
+            return GetTextToSpeechSettings(runtimeConfiguration).Configuration ?? MicrosoftTextToSpeechConfiguration.Instance;
+        }
 
-            return textToSpeechConfiguration;
+        public static TextToSpeechSettings GetTextToSpeechSettings(this BaseRuntimeConfiguration runtimeConfiguration)
+        {
+            return TextToSpeechSettings.Instance;
         }
 
         /// <summary>
-        /// Loads a new <see cref="TextToSpeechConfiguration"/>
+        /// Loads a new <see cref="MicrosoftTextToSpeechConfiguration"/>
         /// </summary>
         public static void SetTextToSpeechConfiguration(this BaseRuntimeConfiguration runtimeConfiguration,
-            TextToSpeechConfiguration ttsConfiguration)
+            ITextToSpeechConfiguration textToSpeechConfiguration)
         {
-            textToSpeechConfiguration = ttsConfiguration;
+            TextToSpeechConfiguration = textToSpeechConfiguration;
         }
     }
 }

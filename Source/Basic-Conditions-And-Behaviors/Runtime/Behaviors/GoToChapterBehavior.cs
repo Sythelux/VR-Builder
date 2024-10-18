@@ -10,7 +10,7 @@ using VRBuilder.Core.Attributes;
 namespace VRBuilder.Core.Behaviors
 {
     /// <summary>
-    /// This behavior sets the next chapter to an arbitrary chapter and fast forwards to the end of the current chapter.
+    /// This behavior sets the next chapter to an arbitrary chapter and immediately aborts the current chapter.
     /// </summary>
     [DataContract(IsReference = true)]
     public class GoToChapterBehavior : Behavior<GoToChapterBehavior.EntityData>
@@ -18,7 +18,7 @@ namespace VRBuilder.Core.Behaviors
         /// <summary>
         /// Behavior data.
         /// </summary>
-        [DisplayName("Start Chapter")]
+        [DisplayName("Go to Chapter")]
         [DataContract(IsReference = true)]
         public class EntityData : IBehaviorData
         {
@@ -26,7 +26,9 @@ namespace VRBuilder.Core.Behaviors
             public Guid ChapterGuid { get; set; }
 
             public Metadata Metadata { get; set; }
-            public string Name { get; set; }
+
+            [IgnoreDataMember]
+            public string Name => "Go to Chapter";
         }
 
         [JsonConstructor, Preserve]
@@ -34,10 +36,9 @@ namespace VRBuilder.Core.Behaviors
         {
         }
 
-        public GoToChapterBehavior(Guid chapterGuid, string name = "Go to Chapter")
+        public GoToChapterBehavior(Guid chapterGuid)
         {
             Data.ChapterGuid = chapterGuid;
-            Data.Name = name;
         }
 
         private class ActivatingProcess : StageProcess<EntityData>
@@ -60,6 +61,8 @@ namespace VRBuilder.Core.Behaviors
                 {
                     ProcessRunner.SetNextChapter(chapter);
                 }
+
+                ProcessRunner.Current.Data.Current?.LifeCycle.Abort();
             }
 
             /// <inheritdoc />

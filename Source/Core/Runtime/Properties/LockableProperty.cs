@@ -9,9 +9,10 @@ using Godot;
 #endif
 using System;
 using System.Collections.Generic;
-using VRBuilder.Core.Utils.Logging;
 using System.Text;
+using UnityEngine;
 using VRBuilder.Core.SceneObjects;
+using VRBuilder.Core.Utils.Logging;
 
 namespace VRBuilder.Core.Properties
 {
@@ -136,6 +137,8 @@ namespace VRBuilder.Core.Properties
             {
                 unlockers.Remove(stepData);
             }
+
+            unlockers.RemoveAll(unlocker => unlocker == null);
 
             bool canLock = unlockers.Count == 0;
 

@@ -24,12 +24,12 @@ namespace VRBuilder.Editor.TextToSpeech.UI.ProjectSettings
         /// <inheritdoc/>
         public void OnGUI(string searchContext)
         {
-            GUILayout.Label("Configuration for your Text to Speech provider.", BuilderEditorStyles.ApplyPadding(BuilderEditorStyles.Label, 0));
-        
+            GUILayout.Label("General Configuration of Text to Speech.", BuilderEditorStyles.ApplyPadding(BuilderEditorStyles.Label, 0));
+
             GUILayout.Space(8);
-        
-            TextToSpeechConfiguration config = TextToSpeechConfiguration.Instance;
-            UnityEditor.Editor.CreateEditor(config, typeof(VRBuilder.Editor.TextToSpeech.UI.TextToSpeechConfigurationEditor)).OnInspectorGUI();
+
+            TextToSpeechSettings config = TextToSpeechSettings.Instance;
+            UnityEditor.Editor.CreateEditor(config, typeof(TextToSpeechSettingsEditor)).OnInspectorGUI();
 
             GUILayout.Space(8);
 	    
@@ -39,9 +39,9 @@ namespace VRBuilder.Editor.TextToSpeech.UI.ProjectSettings
         
         ~TextToSpeechSectionProvider()
         {
-            if (EditorUtility.IsDirty(TextToSpeechConfiguration.Instance))
+            if (EditorUtility.IsDirty(TextToSpeechSettings.Instance))
             {
-                TextToSpeechConfiguration.Instance.Save();
+                TextToSpeechSettings.Instance.Save();
             }
         }
     }

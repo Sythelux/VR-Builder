@@ -9,6 +9,7 @@ using System.Runtime.Serialization;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.EntityOwners;
+using VRBuilder.Core.EntityOwners.ParallelEntityCollection;
 
 namespace VRBuilder.Core
 {
@@ -148,6 +149,12 @@ namespace VRBuilder.Core
         public override IStageProcess GetDeactivatingProcess()
         {
             return new StopEntityIteratingProcess<IChapter>(Data);
+        }
+
+        /// <inheritdoc />
+        public override IStageProcess GetAbortingProcess()
+        {
+            return new ParallelAbortingProcess<EntityData>(Data);
         }
 
         /// <inheritdoc />

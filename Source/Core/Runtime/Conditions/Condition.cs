@@ -11,6 +11,7 @@ using VRBuilder.Unity;
 using Godot;
 #endif
 using VRBuilder.Core.RestrictiveEnvironment;
+using VRBuilder.Core.Utils;
 using VRBuilder.Core.Utils.Logging;
 
 namespace VRBuilder.Core.Conditions

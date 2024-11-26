@@ -2,18 +2,18 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #elif GODOT
 using Godot;
 #endif
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.RestrictiveEnvironment;
 using VRBuilder.Core.SceneObjects;
+using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core
 {
@@ -21,7 +21,7 @@ namespace VRBuilder.Core
     /// Collection of <see cref="ISceneObject"/>s that can be locked and unlocked during a step.
     /// Additionally, checks if objects are automatically or manually unlocked.
     /// </summary>
-    internal class LockableObjectsCollection
+    public class LockableObjectsCollection
     {
         private List<LockablePropertyData> toUnlock;
 

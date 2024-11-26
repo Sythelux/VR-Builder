@@ -67,15 +67,6 @@ namespace VRBuilder.Core.SceneObjects
         /// </remarks>
         protected Guid guid = Guid.Empty;
 
-#if UNITY_5_3_OR_NEWER
-        [SerializeField]
-#elif GODOT
-        [Export]
-#endif
-        [Tooltip("Unique name which identifies an object in scene, can be null or empty, but has to be unique in the scene.")]
-        [Obsolete("This exists for backwards compatibility. Use the serializedGuid field to store the object's unique identifier.")]
-        protected string uniqueName = null;
-
         /// <inheritdoc />
         public Guid Guid
         {
@@ -98,10 +89,6 @@ namespace VRBuilder.Core.SceneObjects
             }
         }
 
-        [Obsolete("Use Guid instead.")]
-        /// <inheritdoc />
-        public string UniqueName => uniqueName;
-
 #if UNITY_5_3_OR_NEWER
         [SerializeField]
         protected List<SerializableGuid> guids = new List<SerializableGuid>();
@@ -112,14 +99,6 @@ namespace VRBuilder.Core.SceneObjects
 
         /// <inheritdoc />
         public IEnumerable<Guid> Guids => guids.Select(bytes => bytes.Guid);
-
-        [SerializeField]
-        [Obsolete("This field will be removed in a future major version.")]
-        protected List<string> tags = new List<string>();
-
-        /// <inheritdoc />
-        [Obsolete("This property will be removed in a future major version.")]
-        public IEnumerable<Guid> Tags => tags.Select(tag => Guid.Parse(tag));
 
         /// <inheritdoc />
 #if UNITY_5_3_OR_NEWER
@@ -155,10 +134,6 @@ namespace VRBuilder.Core.SceneObjects
         private static bool hasDirtySceneObject = false;
 
 #if UNITY_5_3_OR_NEWER
-        [Obsolete("This event is no longer used and will be removed in the next major release.")]
-#pragma warning disable CS0067 //The event 'event' is never used
-        public event EventHandler<SceneObjectNameChanged> UniqueNameChanged;
-#pragma warning restore CS0067
         public event EventHandler<LockStateChangedEventArgs> Locked;
         public event EventHandler<LockStateChangedEventArgs> Unlocked;
         public event EventHandler<GuidContainerEventArgs> GuidAdded;
@@ -376,11 +351,6 @@ if (IsGuidAssigned() && !serializedGuid.Equals(guid))
 #endif
         }
 
-        [Obsolete("This is no longer supported.")]
-        public void ChangeUniqueName(string newName = "")
-        {
-        }
-
         /// <summary>
         /// Checks if the Guid was assigned a value and not <c>System.Guid.Empty</c>.
         /// </summary>
@@ -423,17 +393,7 @@ if (IsGuidAssigned() && !serializedGuid.Equals(guid))
             //     PrefabUtility.RecordPrefabInstancePropertyModifications(this);
             // }
 #endif
-            // RuntimeConfigurator.Configuration.SceneObjectRegistry.Register(this); obsolete?
-            // if (IsRegistered) return;
-            //
-            // this.SetSuitableName(uniqueName);
-            //
-            // if (IsRegistered == false)
-            // {
-            //     if (RuntimeConfigurator.Configuration != null) RuntimeConfigurator.Configuration.SceneObjectRegistry.Register(this);
-            //
-            //     if (UniqueNameChanged != null) UniqueNameChanged.Invoke(this, new SceneObjectNameChanged(UniqueName, UniqueName));
-            // }
+            RuntimeConfigurator.Configuration.SceneObjectRegistry.Register(this);
         }
 
 #if UNITY_EDITOR

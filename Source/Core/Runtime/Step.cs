@@ -13,7 +13,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using VRBuilder.Core.Attributes;
-using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.EntityOwners;
@@ -94,17 +93,7 @@ namespace VRBuilder.Core
 #endif
             public IEnumerable<LockablePropertyReference> ToUnlock { get; set; } = new List<LockablePropertyReference>();
 
-            ///<inheritdoc />
-#if UNITY_5_3_OR_NEWER
-            [HideInProcessInspector]
-#endif
-            [Obsolete("Use GroupsToUnlock instead.")]
-            public IDictionary<Guid, IEnumerable<Type>> TagsToUnlock
-            {
-                get { return GroupsToUnlock; }
-                set { GroupsToUnlock = value; }
-            }
-
+            [DataMember]
 #if UNITY_5_3_OR_NEWER
             [HideInProcessInspector]
 #endif

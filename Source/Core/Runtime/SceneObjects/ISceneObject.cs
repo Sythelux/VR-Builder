@@ -13,24 +13,6 @@ using System.Collections.Generic;
 
 namespace VRBuilder.Core.SceneObjects
 {
-    [Obsolete("These args belong to a unused event and will be removed in the next major release.")]
-#if UNITY_5_3_OR_NEWER
-    public class SceneObjectNameChanged : EventArgs
-#elif GODOT
-    public partial class SceneObjectNameChanged : Resource
-#endif
-
-    {
-        public readonly string NewName;
-        public readonly string PreviousName;
-
-        public SceneObjectNameChanged(string newName, string previousName)
-        {
-            NewName = newName;
-            PreviousName = previousName;
-        }
-    }
-
     /// <summary>
     /// Arguments for UniqueIdChanged event.
     /// </summary>
@@ -55,13 +37,6 @@ namespace VRBuilder.Core.SceneObjects
     /// </summary>
     public interface ISceneObject : ILockable, IGuidContainer
     {
-        [Obsolete("This event is no longer used and will be removed in the next major release. Use UniqueIdChanged instead.")]
-#if UNITY_5_3_OR_NEWER
-        event EventHandler<SceneObjectNameChanged> UniqueNameChanged;
-#elif GODOT
-        delegate void UniqueNameChangedEventHandler(SceneObjectNameChanged changed);
-#endif
-
         /// <summary>
         /// Called when the object's object id has been changed.
         /// </summary>
@@ -75,12 +50,6 @@ namespace VRBuilder.Core.SceneObjects
         /// Unique Guid for each entity, which is required
         /// </summary>
         Guid Guid { get; }
-
-        /// <summary>
-        /// Unique name which is not required
-        /// </summary>
-        [Obsolete("Use Guid instead.")]
-        string UniqueName { get; }
 
         /// <summary>
         /// Target GameObject, used for applying stuff.
@@ -120,12 +89,6 @@ namespace VRBuilder.Core.SceneObjects
         /// Returns a property of the specified type.
         /// </summary>
         T GetProperty<T>() where T : ISceneObjectProperty;
-
-        /// <summary>
-        /// Attempts to change the scene object's unique name to the specified name.
-        /// </summary>
-        [Obsolete("Use ChangeUniqueId instead.")]
-        void ChangeUniqueName(string newName);
 
         /// <summary>
         /// Gives the object a new specified unique ID.

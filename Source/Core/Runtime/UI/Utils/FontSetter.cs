@@ -1,8 +1,8 @@
-﻿#if UNITY_5_3_OR_NEWER
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace VRBuilder.BaseTemplate
+namespace VRBuilder.UI.Utils
 {
     /// <summary>
     /// Utility component to style all child UI text elements.
@@ -12,7 +12,7 @@ namespace VRBuilder.BaseTemplate
         [Tooltip("The font used in all child UI elements.")]
         [SerializeField]
         protected Font font;
-        
+
         [Tooltip("Size of the font used.")]
         [SerializeField]
         protected int fontSize = 30;
@@ -21,7 +21,7 @@ namespace VRBuilder.BaseTemplate
         {
             SetFont();
         }
-        
+
         private void SetFont()
         {
             foreach (Text text in GetComponentsInChildren<Text>(true))

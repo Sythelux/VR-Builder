@@ -6,7 +6,7 @@ using UnityEngine;
 using Godot;
 #endif
 
-namespace VRBuilder.UX
+namespace VRBuilder.UI.Spectator
 {
     /// <summary>
     /// Spectator camera which sets its viewpoint to the one of the user.

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using VRBuilder.Core.Input;
 
-namespace VRBuilder.UX
+namespace VRBuilder.UI.Spectator
 {
     /// <summary>
     /// Controller for a spectator to toggle UI visibility.
@@ -21,7 +21,7 @@ namespace VRBuilder.UX
         {
             RegisterInputEvent(ToggleOverlay);
         }
-        
+
         protected void OnDisable()
         {
             UnregisterInputEvent(ToggleOverlay);

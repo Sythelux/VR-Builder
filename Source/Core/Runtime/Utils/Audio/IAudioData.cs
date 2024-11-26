@@ -9,7 +9,7 @@ using UnityEngine;
 using Godot;
 #endif
 
-namespace VRBuilder.Core.Audio
+namespace VRBuilder.Core.Utils.Audio
 {
     /// <summary>
     /// This class provides audio data in form of an AudioClip. Which also might not be loaded at the time needed,

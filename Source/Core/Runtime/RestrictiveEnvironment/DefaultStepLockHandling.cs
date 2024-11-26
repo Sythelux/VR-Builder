@@ -9,6 +9,7 @@ using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.SceneObjects;
+using VRBuilder.Core.Utils;
 #if UNITY_5_3_OR_NEWER
 using VRBuilder.Unity;
 #endif

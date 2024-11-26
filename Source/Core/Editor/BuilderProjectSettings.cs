@@ -6,13 +6,15 @@ using System.IO;
 using VRBuilder.Editor;
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
-using VRBuilder.Editor.XRUtils;
+using VRBuilder.Core.Editor.XRUtils;
 
-/// <summary>
-/// Settings for a VR Builder Unity project.
-/// </summary>
-public partial class BuilderProjectSettings : ScriptableObject
+namespace VRBuilder.Core.Editor.Settings
+{
+    /// <summary>
+    /// Settings for a VR Builder Unity project.
+    /// </summary>
+    public partial class BuilderProjectSettings : ScriptableObject
+    {
 {
     /// <summary>
     /// Was VR Builder imported and therefore started for the first time.

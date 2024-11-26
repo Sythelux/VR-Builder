@@ -1,15 +1,14 @@
-#if UNITY_5_3_OR_NEWER
-namespace VRBuilder.Core.Utils
+namespace VRBuilder.Core.Utils.Bezier
 {
     /// <summary>
     /// Control point modes for <see cref="BezierSpline"/>.
     /// </summary>
 	public enum BezierControlPointMode
-	{
-		Free,
-		Aligned,
-		Mirrored
-	}
+    {
+        Free,
+        Aligned,
+        Mirrored
+    }
 }
 
 #elif GODOT

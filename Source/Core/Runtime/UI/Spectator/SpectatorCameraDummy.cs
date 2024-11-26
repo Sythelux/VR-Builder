@@ -1,10 +1,10 @@
-﻿#if UNITY_5_3_OR_NEWER
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #elif GODOT
 using Godot;
 #endif
 
-namespace VRBuilder.UX
+namespace VRBuilder.UI.Spectator
 {
     /// <summary>
     /// Dummy object which can be used to set viewpoints into the scene.

@@ -7,7 +7,7 @@ using UnityEngine;
 using Godot;
 using Godot.Collections;
 #endif
-using VRBuilder.Core.Runtime.Utils;
+using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core.Settings
 {

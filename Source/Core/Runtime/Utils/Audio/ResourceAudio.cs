@@ -9,10 +9,12 @@ using UnityEngine;
 #elif GODOT
 using Godot;
 #endif
-using VRBuilder.Core.Localization;
+using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Configuration;
+using VRBuilder.Core.Localization;
+using VRBuilder.Core.Settings;
 
-namespace VRBuilder.Core.Audio
+namespace VRBuilder.Core.Utils.Audio
 {
     /// <summary>
     /// Unity resource based audio data.

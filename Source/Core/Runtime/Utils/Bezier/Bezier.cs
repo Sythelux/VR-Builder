@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
@@ -6,7 +5,7 @@ using UnityEngine;
 using Godot;
 #endif
 
-namespace VRBuilder.Core.Utils
+namespace VRBuilder.Core.Utils.Bezier
 {
     /// <summary>
     /// Bezier curve formulas.
@@ -70,7 +69,7 @@ namespace VRBuilder.Core.Utils
 #elif GODOT
                 length += points[i].DistanceTo(points[i + 1]);
 #endif
-                lengths.Add(length);   
+                lengths.Add(length);
             }
 
             return lengths;

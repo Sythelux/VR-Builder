@@ -60,7 +60,7 @@ namespace VRBuilder.Unity
                 {
                     if (instance == null)
                     {
-                        instance = (T)FindObjectOfType(ConcreteType);
+                        instance = (T)FindFirstObjectByType(ConcreteType);
                     }
 
                     if (instance == null)
@@ -95,7 +95,7 @@ namespace VRBuilder.Unity
             // Make sure to assign the instance on awake.
             if (instance == null)
             {
-                instance = (T) this;
+                instance = (T)this;
             }
             else
             {

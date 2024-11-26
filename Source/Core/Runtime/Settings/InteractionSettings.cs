@@ -3,7 +3,7 @@ using UnityEngine;
 #elif GODOT
 using Godot;
 #endif
-using VRBuilder.Core.Runtime.Utils;
+using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core.Settings
 {

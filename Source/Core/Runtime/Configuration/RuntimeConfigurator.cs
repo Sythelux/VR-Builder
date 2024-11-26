@@ -2,14 +2,12 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using System;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #elif GODOT
 using Godot;
 #endif
-
-using System;
-using System.Linq;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.Utils;
 
@@ -83,7 +81,7 @@ namespace VRBuilder.Core.Configuration
         private static RuntimeConfigurator[] LookUpRuntimeConfiguratorGameObjects()
         {
 #if UNITY_5_3_OR_NEWER
-            RuntimeConfigurator[] instances = FindObjectsOfType<RuntimeConfigurator>();
+            RuntimeConfigurator[] instances = FindObjectsByType<RuntimeConfigurator>(FindObjectsSortMode.None);
 #elif GODOT
             RuntimeConfigurator[] instances = NodeExtensions.FindObjectsOfType<RuntimeConfigurator>().Take(2).ToArray();
 #endif

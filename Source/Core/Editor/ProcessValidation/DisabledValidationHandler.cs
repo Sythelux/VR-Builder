@@ -5,22 +5,26 @@
 using VRBuilder.Core;
 using VRBuilder.Editor.ProcessValidation;
 
-/// <summary>
-/// Does not validate, used to disabled the validation system.
-/// </summary>
-internal class DisabledValidationHandler : IValidationHandler
+
+namespace VRBuilder.Core.Editor.ProcessValidation
 {
-    public IContextResolver ContextResolver { get; set; } = null;
-
-    public IValidationReport LastReport { get; } = null;
-
-    public bool IsAllowedToValidate()
+    /// <summary>
+    /// Does not validate, used to disabled the validation system.
+    /// </summary>
+    internal class DisabledValidationHandler : IValidationHandler
     {
-        return false;
-    }
+        public IContextResolver ContextResolver { get; set; } = null;
 
-    public IValidationReport Validate(IData data, IProcess process, IContext context = null)
-    {
-        return null;
+        public IValidationReport LastReport { get; } = null;
+
+        public bool IsAllowedToValidate()
+        {
+            return false;
+        }
+
+        public IValidationReport Validate(IData data, IProcess process, IContext context = null)
+        {
+            return null;
+        }
     }
 }

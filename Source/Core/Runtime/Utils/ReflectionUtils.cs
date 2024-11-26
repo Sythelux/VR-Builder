@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using VRBuilder.Core.Runtime.Properties;
 
 namespace VRBuilder.Core.Utils
 {
@@ -386,7 +385,7 @@ namespace VRBuilder.Core.Utils
                 return true;
             }
 
-            if (value is string && string.IsNullOrEmpty((string) value))
+            if (value is string && string.IsNullOrEmpty((string)value))
             {
                 return true;
             }

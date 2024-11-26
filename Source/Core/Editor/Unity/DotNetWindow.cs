@@ -14,6 +14,7 @@ namespace VRBuilder.Core.Editor.Unity
     internal class DotNetWindow : EditorWindow
     {
         private bool abortBuilding;
+        private BuildTargetGroup buildTargetGroup;
         private NamedBuildTarget namedBuildTarget;
         private ApiCompatibilityLevel currentLevel;
         private readonly Vector2 fixedSize = new Vector2(400f, 160);
@@ -60,10 +61,11 @@ namespace VRBuilder.Core.Editor.Unity
             EditorGUILayout.EndHorizontal();
         }
 
-        private void GatherCurrentSettings()
-        {
-            namedBuildTarget = EditorUtils.GetCurrentNamedBuildTarget();
-            currentLevel = PlayerSettings.GetApiCompatibilityLevel(namedBuildTarget);
-        }
-    }
-}
+         private void GatherCurrentSettings()
+         {
+             BuildTarget buildTarget = EditorUserBuildSettings.activeBuildTarget;
+             buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
+             currentLevel = PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
+         }
+     }
+ }

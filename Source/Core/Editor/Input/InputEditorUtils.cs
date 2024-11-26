@@ -76,7 +76,7 @@ namespace VRBuilder.Core.Editor.Input
         /// </summary>
         public static void CopyCustomKeyBindingAsset()
         {
-            Debug.LogError("Error, no implementation for the old input system");
+            UnityEngine.Debug.LogError("Error, no implementation for the old input system");
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace VRBuilder.Core.Editor.Input
         /// </summary>
         public static bool UsesCustomKeyBindingAsset()
         {
-            Debug.LogError("Error, no implementation for the old input system");
+            UnityEngine.Debug.LogError("Error, no implementation for the old input system");
             return false;
         }
 
@@ -93,7 +93,7 @@ namespace VRBuilder.Core.Editor.Input
         /// </summary>
         public static void OpenKeyBindingEditor()
         {
-            Debug.LogError("Error, no implementation for the old input system");
+            UnityEngine.Debug.LogError("Error, no implementation for the old input system");
         }
 #endif
     }

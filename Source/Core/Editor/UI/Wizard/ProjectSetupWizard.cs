@@ -9,9 +9,6 @@ using UnityEditor;
 using UnityEngine;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Utils;
-using VRBuilder.PackageManager.Editor;
-using VRBuilder.Core.Editor.Settings;
-using VRBuilder.Core.Editor.XRUtils;
 
 namespace VRBuilder.Core.Editor.UI.Wizard
 {
@@ -31,22 +28,7 @@ namespace VRBuilder.Core.Editor.UI.Wizard
         {
             if (Application.isBatchMode == false)
             {
-                DependencyManager.OnPostProcess += OnDependenciesRetrieved;
-            }
         }
-
-        private static void OnDependenciesRetrieved(object sender, DependencyManager.DependenciesEnabledEventArgs e)
-        {
-            BuilderProjectSettings settings = BuilderProjectSettings.Load();
-
-            if (settings.IsFirstTimeStarted)
-            {
-                settings.IsFirstTimeStarted = false;
-                settings.Save();
-                Show();
-            }
-
-            DependencyManager.OnPostProcess -= OnDependenciesRetrieved;
         }
 
         [MenuItem("Tools/VR Builder/Project Setup Wizard...", false, 0)]
@@ -64,17 +46,6 @@ namespace VRBuilder.Core.Editor.UI.Wizard
             int xrSetupIndex = 2;
             int interactionComponentSetupIndex = 1;
             bool isShowingInteractionComponentPage = ReflectionUtils.GetConcreteImplementationsOf<IInteractionComponentConfiguration>().Count() != 1;
-
-            bool isShowingXRSetupPage = isShowingInteractionComponentPage == false && IsXRInteractionComponent();
-            isShowingXRSetupPage &= XRLoaderHelper.GetCurrentXRConfiguration()
-                .Contains(XRLoaderHelper.XRConfiguration.XRLegacy) == false;
-            isShowingXRSetupPage &= XRLoaderHelper.GetCurrentXRConfiguration()
-                .Contains(XRLoaderHelper.XRConfiguration.None);
-
-            if (isShowingXRSetupPage)
-            {
-                pages.Insert(xrSetupIndex, new XRSDKSetupPage());
-            }
 
             if (isShowingInteractionComponentPage)
             {

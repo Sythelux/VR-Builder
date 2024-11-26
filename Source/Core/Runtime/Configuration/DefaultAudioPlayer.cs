@@ -3,6 +3,7 @@ using UnityEngine;
 #elif GODOT
 using Godot;
 #endif
+using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Utils.Audio;
 
 /// <summary>

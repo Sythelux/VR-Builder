@@ -12,7 +12,6 @@ using UnityEditor.Build;
 using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
-using VRBuilder.PackageManager.Editor;
 
 namespace VRBuilder.Core.Editor
 {
@@ -54,7 +53,7 @@ namespace VRBuilder.Core.Editor
 
         private static void SetImguiTestsState(bool enabled)
         {
-            List<string> symbols = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.Standalone).Split(';').ToList();
+            List<string> symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone).Split(';').ToList();
 
             bool wasEnabled = symbols.Contains(ignoreEditorImguiTestsDefineSymbol) == false;
 
@@ -69,7 +68,7 @@ namespace VRBuilder.Core.Editor
                     symbols.Add(ignoreEditorImguiTestsDefineSymbol);
                 }
 
-                PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.Standalone, string.Join(";", symbols.ToArray()));
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, string.Join(";", symbols.ToArray()));
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
             }
@@ -123,24 +122,13 @@ namespace VRBuilder.Core.Editor
         }
 
         /// <summary>
-        /// Retrieves the current named build target based on the active build target settings in the Unity Editor.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="NamedBuildTarget"/> object representing the current build target group.
-        /// </returns>
-        internal static NamedBuildTarget GetCurrentNamedBuildTarget()
-        {
-            BuildTarget activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-            BuildTargetGroup targetGroup = BuildPipeline.GetBuildTargetGroup(activeBuildTarget);
-            return NamedBuildTarget.FromBuildTargetGroup(targetGroup);
-        }
-
-        /// <summary>
         /// Gets .NET API compatibility level for current BuildTargetGroup.
         /// </summary>
         internal static ApiCompatibilityLevel GetCurrentCompatibilityLevel()
         {
-            return PlayerSettings.GetApiCompatibilityLevel(GetCurrentNamedBuildTarget());
+            BuildTarget buildTarget = EditorUserBuildSettings.activeBuildTarget;
+            BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
+            return PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
         }
 
         /// <summary>
@@ -164,7 +152,6 @@ namespace VRBuilder.Core.Editor
             {
                 return;
             }
-
             foreach (VisualTreeAsset treeAsset in asset)
             {
                 CheckVisualTreeAsset(source, treeAsset);

@@ -1,3 +1,4 @@
+#if UNITY_5_6_OR_NEWER
 namespace VRBuilder.Core.Utils.Bezier
 {
     /// <summary>

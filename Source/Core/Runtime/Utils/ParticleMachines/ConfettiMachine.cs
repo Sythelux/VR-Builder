@@ -1,5 +1,6 @@
+#if UNITY_5_3_OR_NEWER
+﻿using UnityEngine;
 using System.Collections;
-using UnityEngine;
 
 namespace VRBuilder.Core.Utils.ParticleMachines
 {
@@ -196,3 +197,8 @@ namespace VRBuilder.Core.Utils.ParticleMachines
         }
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

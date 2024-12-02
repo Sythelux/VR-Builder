@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Threading.Tasks;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core;
 using VRBuilder.Core.Configuration;
 
@@ -9,13 +13,26 @@ namespace VRBuilder.ProcessController
     /// <summary>
     /// Initializes the <see cref="ProcessRunner"/> with the current selected process on scene start.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     public class InitProcessOnSceneLoad : MonoBehaviour
     {
         private void OnEnable()
         {
             StartCoroutine(InitProcess());
         }
+#elif GODOT
+    public partial class InitProcessOnSceneLoad : Node
+    {
+        private void _Ready()
+        {
+            StartCoroutine(InitProcess());
+        }
 
+        private void StartCoroutine(IEnumerator initProcess)
+        {
+            //TODO
+        }
+#endif
         private IEnumerator InitProcess()
         {
             // Load process from a file.

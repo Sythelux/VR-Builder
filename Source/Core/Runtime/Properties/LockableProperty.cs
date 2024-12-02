@@ -2,6 +2,11 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+#if UNITY_5_3_OR_NEWER
+ using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,14 +20,23 @@ namespace VRBuilder.Core.Properties
     /// <see cref="ProcessSceneObjectProperty"/> which is lockable, to allow the restrictive environment to handle
     /// locking/unlocking your properties, extend this class.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     public abstract class LockableProperty : ProcessSceneObjectProperty, ILockable
+#elif GODOT
+    public abstract partial class LockableProperty : ProcessSceneObjectProperty, ILockable
+#endif
     {
         ///  <inheritdoc/>
         public event EventHandler<LockStateChangedEventArgs> Locked;
+
         ///  <inheritdoc/>
         public event EventHandler<LockStateChangedEventArgs> Unlocked;
 
+#if UNITY_5_3_OR_NEWER
         [SerializeField]
+#elif GODOT
+        [Export]
+#endif
         private bool lockOnParentObjectLock = true;
 
         private List<IStepData> unlockers = new List<IStepData>();
@@ -44,18 +58,43 @@ namespace VRBuilder.Core.Properties
         /// </summary>
         public virtual bool EndStepLocked { get; } = true;
 
+#if UNITY_5_3_OR_NEWER
         protected override void OnEnable()
+#elif GODOT
+        public override void _EnterTree()
+#endif
         {
             base.OnEnable();
 
+#if UNITY_5_3_OR_NEWER
             SceneObject.Locked += HandleObjectLocked;
             SceneObject.Unlocked += HandleObjectUnlocked;
+#elif GODOT
+            if (SceneObject is ProcessSceneObject pso)
+            {
+                pso.Locked += HandleObjectLocked;
+                pso.Unlocked += HandleObjectUnlocked;
+            }
+#endif
         }
 
+#if UNITY_5_3_OR_NEWER
         protected virtual void OnDisable()
+#elif GODOT
+        public override void _ExitTree()
+#endif
         {
+#if UNITY_5_3_OR_NEWER
             SceneObject.Locked -= HandleObjectLocked;
             SceneObject.Unlocked -= HandleObjectUnlocked;
+#elif GODOT
+            if (SceneObject is ProcessSceneObject pso)
+            {
+                pso.Locked -= HandleObjectLocked;
+                pso.Unlocked -= HandleObjectUnlocked;
+            }
+#endif
+
         }
 
         /// <inheritdoc/>
@@ -116,8 +155,13 @@ namespace VRBuilder.Core.Properties
 
                 string listUnlockers = unlockers.Count == 0 ? "" : $"\nSteps keeping this property unlocked:{unlockerList}";
 
+#if UNITY_5_3_OR_NEWER
                 Debug.Log($"<i>{this.GetType().Name}</i> on <i>{gameObject.name}</i> received a <b>{lockType}</b> request from <i>{requester}</i>." +
                     $"\nCurrent lock state: <b>{IsLocked}</b>. Future lock state: <b>{lockState && canLock}</b>{listUnlockers}");
+#elif GODOT
+                GD.Print($"<i>{this.GetType().Name}</i> on <i>{Name}</i> received a <b>{lockType}</b> request from <i>{requester}</i>." +
+                         $"\nCurrent lock state: <b>{IsLocked}</b>. Future lock state: <b>{lockState && canLock}</b>{listUnlockers}");
+#endif
             }
 
             SetLocked(lockState && canLock);
@@ -129,7 +173,11 @@ namespace VRBuilder.Core.Properties
             return unlockers.Remove(data);
         }
 
+#if UNITY_5_3_OR_NEWER
         private void HandleObjectUnlocked(object sender, LockStateChangedEventArgs e)
+#elif GODOT
+        private void HandleObjectUnlocked(LockStateChangedEventArgs e)
+#endif
         {
             if (LockOnParentObjectLock && IsLocked)
             {
@@ -137,7 +185,11 @@ namespace VRBuilder.Core.Properties
             }
         }
 
+#if UNITY_5_3_OR_NEWER
         private void HandleObjectLocked(object sender, LockStateChangedEventArgs e)
+#elif GODOT
+        private void HandleObjectLocked(LockStateChangedEventArgs e)
+#endif
         {
             if (LockOnParentObjectLock && IsLocked == false)
             {

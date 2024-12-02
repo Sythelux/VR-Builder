@@ -1,10 +1,15 @@
+#if UNITY_5_3_OR_NEWER
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.Serialization
 {
+#if UNITY_5_3_OR_NEWER
     /// <summary>
     /// Converter that serializes and deserializes <see cref="Keyframe"/>.
     /// </summary>
@@ -48,4 +53,5 @@ namespace VRBuilder.Core.Serialization
             data.WriteTo(writer);
         }
     }
+#endif
 }

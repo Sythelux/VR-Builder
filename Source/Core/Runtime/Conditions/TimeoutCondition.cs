@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using System.Runtime.Serialization;
 using VRBuilder.Core.Attributes;
 using UnityEngine;
@@ -83,3 +84,8 @@ namespace VRBuilder.Core.Conditions
         }
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

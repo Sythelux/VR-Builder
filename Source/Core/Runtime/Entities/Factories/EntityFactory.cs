@@ -3,7 +3,11 @@
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
 using System;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Utils;
 
 namespace VRBuilder.Core.Entities.Factories

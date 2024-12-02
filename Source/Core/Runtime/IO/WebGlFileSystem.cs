@@ -1,8 +1,12 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 using UnityEngine.Networking;
+#elif GODOT
+using Godot;
+#endif
 
 #if !UNITY_EDITOR && UNITY_WEBGL
 namespace VRBuilder.Core.IO

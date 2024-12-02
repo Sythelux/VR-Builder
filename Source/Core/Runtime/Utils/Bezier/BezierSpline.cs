@@ -1,6 +1,7 @@
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
 using System;
 using System.Linq;
-using UnityEngine;
 
 namespace VRBuilder.Core.Utils.Bezier
 {
@@ -409,3 +410,7 @@ namespace VRBuilder.Core.Utils.Bezier
         }
     }
 }
+
+#elif GODOT
+//TODO
+#endif

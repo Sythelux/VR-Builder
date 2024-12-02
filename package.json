@@ -1,6 +1,6 @@
 {
-  "displayName": "VR Builder",
-  "name": "co.mindport.vrbuilder.core",
+  "displayName": "VR Builder Lite",
+  "name": "co.mindport.vrbuilder.core-lite",
   "version": "5.0.0",
   "unity": "6000.0",
   "description": "VR Builder core functionality.",
@@ -14,5 +14,9 @@
     "name": "MindPort",
     "email": "contact@mindport.co",
     "url" : "https://mindport.co/"
+  },
+  "dependencies": {
+    "com.unity.localization": "1.5.3",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
   }
 }

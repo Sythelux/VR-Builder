@@ -5,7 +5,11 @@
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.Serialization
 {
@@ -21,8 +25,13 @@ namespace VRBuilder.Core.Serialization
             Vector2 vec = (Vector2) value;
             JObject data = new JObject();
 
+#if UNITY_5_3_OR_NEWER
             data.Add("x", vec.x);
             data.Add("y", vec.y);
+#elif GODOT
+            data.Add("x", vec.X);
+            data.Add("y", vec.Y);
+#endif
 
             data.WriteTo(writer);
         }
@@ -36,7 +45,11 @@ namespace VRBuilder.Core.Serialization
                 return new Vector2(data["x"].Value<float>(), data["y"].Value<float>());
             }
 
+#if UNITY_5_3_OR_NEWER
             return Vector2.zero;
+#elif GODOT
+            return Vector2.Zero;
+#endif
         }
 
         /// <inheritDoc/>

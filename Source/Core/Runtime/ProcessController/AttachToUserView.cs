@@ -1,7 +1,8 @@
 using System;
+using VRBuilder.Core.Configuration;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 using UnityEngine.UI;
-using VRBuilder.Core.Configuration;
 
 namespace VRBuilder.ProcessController
 {
@@ -57,3 +58,6 @@ namespace VRBuilder.ProcessController
         }
     }
 }
+#elif GODOT
+using Godot;
+#endif

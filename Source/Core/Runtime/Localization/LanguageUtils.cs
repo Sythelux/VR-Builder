@@ -6,7 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine.Localization;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.Localization
 {
@@ -131,27 +135,46 @@ namespace VRBuilder.Core.Localization
         /// <summary>
         /// Try to localize a step name if used as a key in a localization table
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         public static string GetLocalizedStepName(IStep step, string localizationTable, Locale locale)
+#elif GODOT
+        public static string GetLocalizedStepName(IStep step, string localizationTable, string locale) //https://docs.godotengine.org/en/stable/tutorials/i18n/locales.html#doc-locales
+#endif
         {
             if (step != null)
             {
+#if UNITY_5_3_OR_NEWER
                 return GetLocalizedString(step.Data.Name, localizationTable, locale);
+#elif GODOT
+                return TranslationServer.GetTranslationObject(locale).GetMessage(step.Data.Name, localizationTable);
+#endif
             }
+
             return "";
         }
 
         /// <summary>
         /// Try to localize a chapter name if used as a key in a localization table
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         public static string GetLocalizedChapterName(IChapter chapter, string localizationTable, Locale locale)
+#elif GODOT
+        public static string GetLocalizedChapterName(IChapter chapter, string localizationTable, string locale) //https://docs.godotengine.org/en/stable/tutorials/i18n/locales.html#doc-locales
+#endif
         {
             if (chapter != null)
             {
+#if UNITY_5_3_OR_NEWER
                 return GetLocalizedString(chapter.Data.Name, localizationTable, locale);
+#elif GODOT
+                return TranslationServer.GetTranslationObject(locale).GetMessage(chapter.Data.Name, localizationTable);
+#endif
             }
+
             return "";
         }
 
+#if UNITY_5_3_OR_NEWER
         /// <summary>
         /// Try to get the localized string for a key and in a table with the currently selcted locale
         /// </summary>
@@ -162,6 +185,7 @@ namespace VRBuilder.Core.Localization
                 LocalizedString localizedString = new LocalizedString(localizationTable, localizationKey);
                 return localizedString.GetLocalizedString();
             }
+
             return localizationKey;
         }
 
@@ -176,8 +200,10 @@ namespace VRBuilder.Core.Localization
                 localizedString.LocaleOverride = locale;
                 return localizedString.GetLocalizedString();
             }
+
             return localizationKey;
         }
+#endif
 
         #endregion Unity Localization Utils
     }

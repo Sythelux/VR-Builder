@@ -2,7 +2,11 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.Utils.Audio
 {
@@ -25,7 +29,11 @@ namespace VRBuilder.Core.Utils.Audio
         /// <summary>
         /// The AudioClip of this source, can be null. Best check first with HasAudio.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         AudioClip AudioClip { get; }
+#elif GODOT
+        AudioStream AudioClip { get; }
+#endif
 
         /// <summary>
         /// Initializes the audio clip from the given data.

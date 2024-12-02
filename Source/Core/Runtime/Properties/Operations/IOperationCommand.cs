@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using System;
 
 namespace VRBuilder.Core.Properties.Operations
@@ -15,3 +16,7 @@ namespace VRBuilder.Core.Properties.Operations
         TResult Execute(TOperand leftOperand, TOperand rightOperand);
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 ﻿namespace VRBuilder.BasicInteraction.RigSetup
 {
     
@@ -13,3 +14,7 @@
         public override string PrefabName { get; } = null;
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

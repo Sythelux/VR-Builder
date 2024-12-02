@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.ProcessController
 {
@@ -23,7 +27,11 @@ namespace VRBuilder.ProcessController
         /// <summary>
         /// Gets a process controller game object.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         GameObject GetProcessControllerPrefab();
+#elif GODOT
+        Node GetProcessControllerPrefab();
+#endif
 
         /// <summary>
         /// List of component types which are required on the setup object.
@@ -36,6 +44,10 @@ namespace VRBuilder.ProcessController
         /// Should be called after all components are added and object is initialized.
         /// </summary>
         /// <param name="processControllerObject">Actual process controller object</param>
+#if UNITY_5_3_OR_NEWER
         void HandlePostSetup(GameObject processControllerObject);
+#elif GODOT
+        void HandlePostSetup(Node processControllerObject);
+#endif
     }
 }

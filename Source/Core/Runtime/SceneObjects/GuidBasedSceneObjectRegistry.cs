@@ -1,10 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+using VRBuilder.Unity;
+#elif GODOT
+using Godot;
+using VRBuilder.Core.Godot;
+#endif
+
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.Settings;
-using VRBuilder.Unity;
 
 namespace VRBuilder.Core.SceneObjects
 {
@@ -86,7 +92,12 @@ namespace VRBuilder.Core.SceneObjects
                         key = guid.ToString();
                     }
 
+#if UNITY_5_3_OR_NEWER
                     Debug.LogError($"Null objects found in scene object registry for key {key}: {registeredObjects[guid].Where(obj => obj.Equals(null)).Count()} object.");
+#elif GODOT
+                    GD.Print($"Null objects found in scene object registry for key {key}: {registeredObjects[guid].Count(obj => obj.Equals(null))} object.");
+#endif
+
                 }
 
                 return registeredObjects[guid].Where(obj => obj.Equals(null) == false);
@@ -117,7 +128,12 @@ namespace VRBuilder.Core.SceneObjects
             {
                 obj.SetObjectId(Guid.NewGuid());
 
+#if UNITY_5_3_OR_NEWER
                 Debug.LogWarning($"Found a duplicate in the registry for {obj.GameObject.name}. A new object ID has been assigned.");
+#elif GODOT
+                GD.PushWarning($"Found a duplicate in the registry for {obj.GameObject.Name}. A new object ID has been assigned.");
+#endif
+
 
 #if UNITY_EDITOR
                 UnityEditor.EditorUtility.SetDirty(obj.GameObject);
@@ -138,8 +154,17 @@ namespace VRBuilder.Core.SceneObjects
                 RegisterGuid(obj, guid);
             }
 
+#if UNITY_5_3_OR_NEWER
             obj.GuidAdded += OnGuidAdded;
             obj.GuidRemoved += OnGuidRemoved;
+#elif GODOT
+            if (obj is ProcessSceneObject pso)
+            {
+                pso.GuidAdded += OnGuidAdded;
+                pso.GuidRemoved += OnGuidRemoved;
+            }
+#endif
+
         }
 
         private bool HasDuplicateGuid(ISceneObject obj)
@@ -150,7 +175,11 @@ namespace VRBuilder.Core.SceneObjects
             }
 
             IEnumerable<ISceneObject> sceneObjects = GetObjects(obj.Guid);
+#if UNITY_5_3_OR_NEWER
             return sceneObjects.Select(so => so.GameObject.GetInstanceID()).Contains(obj.GameObject.GetInstanceID()) == false;
+#elif GODOT
+            return sceneObjects.Select(so => so.GameObject.GetInstanceId()).Contains(obj.GameObject.GetInstanceId()) == false;
+#endif
         }
 
         private void RegisterGuid(ISceneObject sceneObject, Guid guid)
@@ -201,7 +230,12 @@ namespace VRBuilder.Core.SceneObjects
         {
             RemoveAllObjectsNotInScene();
             RegisterAll();
+#if UNITY_5_3_OR_NEWER
             Debug.Log("Refreshed SceneObjectRegistry");
+#elif GODOT
+            GD.Print("Refreshed SceneObjectRegistry");
+#endif
+
         }
 
         /// <summary>
@@ -234,8 +268,17 @@ namespace VRBuilder.Core.SceneObjects
                 throw new NullReferenceException("Attempted to unregister a null object.");
             }
 
+#if UNITY_5_3_OR_NEWER
             obj.GuidAdded -= OnGuidAdded;
             obj.GuidRemoved -= OnGuidRemoved;
+#elif GODOT
+            if (obj is ProcessSceneObject pso)
+            {
+                pso.GuidAdded -= OnGuidAdded;
+                pso.GuidRemoved -= OnGuidRemoved;
+            }
+#endif
+
 
             foreach (Guid guid in GetAllGuids(obj))
             {

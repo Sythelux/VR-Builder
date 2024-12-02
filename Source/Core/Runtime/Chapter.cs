@@ -2,11 +2,15 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
+
+using System.Linq;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.EntityOwners;
@@ -14,6 +18,7 @@ using VRBuilder.Core.EntityOwners.ParallelEntityCollection;
 using VRBuilder.Core.Exceptions;
 using VRBuilder.Core.Utils;
 using VRBuilder.Core.Utils.Logging;
+using System;
 
 namespace VRBuilder.Core
 {
@@ -21,7 +26,7 @@ namespace VRBuilder.Core
     /// A chapter of a process <see cref="Process"/>.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class Chapter : Entity<Chapter.EntityData>, IChapter
+    public partial class Chapter : Entity<Chapter.EntityData>, IChapter
     {
         /// <summary>
         /// The chapter's data class.
@@ -255,7 +260,12 @@ namespace VRBuilder.Core
             {
                 LifeCycle.StageChanged += (sender, args) =>
                 {
+#if UNITY_5_3_OR_NEWER
                     Debug.LogFormat("<b>Chapter</b> <i>'{0}'</i> is <b>{1}</b>.\n", Data.Name, LifeCycle.Stage.ToString());
+#elif GODOT
+                    GD.Print($"<b>Chapter</b> <i>'{Data.Name}'</i> is <b>{LifeCycle.Stage.ToString()}</b>.\n");
+#endif
+
                 };
             }
         }

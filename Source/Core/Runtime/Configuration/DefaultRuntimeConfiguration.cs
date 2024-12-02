@@ -2,19 +2,30 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#elif GODOT
+using Godot;
+using VRBuilder.Core.Utils;
+#endif
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.SceneObjects;
+using VRBuilder.Core.Properties;
+using System.Linq;
 
 namespace VRBuilder.Core.Configuration
 {
     /// <summary>
     /// Process runtime configuration which is used if no other was implemented.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     public class DefaultRuntimeConfiguration : BaseRuntimeConfiguration
+#elif GODOT
+    [Tool]
+    public partial class DefaultRuntimeConfiguration : BaseRuntimeConfiguration
+#endif
     {
         private IProcessAudioPlayer processAudioPlayer;
         private ISceneObjectManager sceneObjectManager;
@@ -46,7 +57,11 @@ namespace VRBuilder.Core.Configuration
         }
 
         /// <inheritdoc />
+#if UNITY_5_3_OR_NEWER
         public override AudioSource InstructionPlayer
+#elif GODOT
+        public override AudioStreamPlayer /*AudioSource*/ InstructionPlayer
+#endif
         {
             get
             {
@@ -83,6 +98,7 @@ namespace VRBuilder.Core.Configuration
         }
 
         /// <inheritdoc />
+#if UNITY_5_3_OR_NEWER
         public override IEnumerable<IXRRigTransform> UserTransforms
         {
             get
@@ -97,5 +113,8 @@ namespace VRBuilder.Core.Configuration
                 }
             }
         }
+#elif GODOT
+        public override IEnumerable<Node3D> UserTransforms => NodeExtensions.FindObjectsOfType<Node3D>();
+#endif
     }
 }

@@ -1,13 +1,17 @@
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
-
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+using VRBuilder.Unity;
+#elif GODOT
+using Godot;
+#endif
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using UnityEngine;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.Configuration.Modes;
@@ -16,9 +20,9 @@ using VRBuilder.Core.EntityOwners.FoldedEntityCollection;
 using VRBuilder.Core.EntityOwners.ParallelEntityCollection;
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.RestrictiveEnvironment;
-using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils.Logging;
-using VRBuilder.Unity;
+using VRBuilder.Core.SceneObjects;
+using VRBuilder.Core.Properties;
 
 namespace VRBuilder.Core
 {
@@ -26,29 +30,37 @@ namespace VRBuilder.Core
     /// An implementation of <see cref="IStep"/> interface.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class Step : Entity<Step.EntityData>, IStep
+    public partial class Step : Entity<Step.EntityData>, IStep
     {
         public class EntityData : EntityCollectionData<IStepChild>, IStepData, ILockableStepData
         {
             ///<inheritdoc />
             [DataMember]
+#if UNITY_5_3_OR_NEWER
             [DrawingPriority(0)]
             [HideInProcessInspector]
+#endif
             public string Name { get; set; }
 
             ///<inheritdoc />
             [DataMember]
+#if UNITY_5_3_OR_NEWER
             [DrawingPriority(1)]
+#endif
             public string Description { get; set; }
 
             ///<inheritdoc />
             [DataMember]
+#if UNITY_5_3_OR_NEWER
             [HideInProcessInspector]
+#endif
             public IBehaviorCollection Behaviors { get; set; }
 
             ///<inheritdoc />
             [DataMember]
+#if UNITY_5_3_OR_NEWER
             [HideInProcessInspector]
+#endif
             public ITransitionCollection Transitions { get; set; }
 
             ///<inheritdoc />
@@ -76,11 +88,15 @@ namespace VRBuilder.Core
 
             ///<inheritdoc />
             [DataMember]
+#if UNITY_5_3_OR_NEWER
             [HideInProcessInspector]
+#endif
             public IEnumerable<LockablePropertyReference> ToUnlock { get; set; } = new List<LockablePropertyReference>();
 
             [DataMember]
+#if UNITY_5_3_OR_NEWER
             [HideInProcessInspector]
+#endif
             public IDictionary<Guid, IEnumerable<Type>> GroupsToUnlock { get; set; } = new Dictionary<Guid, IEnumerable<Type>>();
 
             /// <inheritdoc />
@@ -318,7 +334,14 @@ namespace VRBuilder.Core
 
             if (LifeCycleLoggingConfig.Instance.LogSteps)
             {
-                LifeCycle.StageChanged += (sender, args) => { Debug.LogFormat("{0}<b>Step</b> <i>'{1}'</i> is <b>{2}</b>.\n", ConsoleUtils.GetTabs(), Data.Name, LifeCycle.Stage); };
+                LifeCycle.StageChanged += (sender, args) =>
+                {
+#if UNITY_5_3_OR_NEWER
+                    Debug.LogFormat("{0}<b>Step</b> <i>'{1}'</i> is <b>{2}</b>.\n", ConsoleUtils.GetTabs(), Data.Name, LifeCycle.Stage);
+#elif GODOT
+                    GD.PrintRich($"\t\t[b]Step[/b] [i]'{Data.Name}'[/i] is [b]{LifeCycle.Stage}[/b].\n");
+#endif
+                };
             }
         }
     }

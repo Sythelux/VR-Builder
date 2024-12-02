@@ -9,7 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.EntityOwners;
@@ -66,7 +70,11 @@ namespace VRBuilder.Core.Serialization
             }
             catch (Exception ex)
             {
+#if UNITY_5_3_OR_NEWER
                 Debug.LogError(ex.Message);
+#elif GODOT
+                GD.PushError(ex.Message);
+#endif
             }
 
             // This line is required to undo the changes applied to the process.
@@ -114,7 +122,11 @@ namespace VRBuilder.Core.Serialization
             }
             catch (Exception ex)
             {
+#if UNITY_5_3_OR_NEWER
                 Debug.LogError(ex.Message);
+#elif GODOT
+                GD.PushError(ex.Message);
+#endif
             }
 
             // This line is required to undo the changes applied to the process.

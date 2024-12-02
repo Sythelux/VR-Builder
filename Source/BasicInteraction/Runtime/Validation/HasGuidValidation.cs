@@ -1,8 +1,14 @@
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#elif GODOT
+using Godot;
+using Godot.Collections;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using VRBuilder.Core.SceneObjects;
+using VRBuilder.Core.Utils;
 
 namespace VRBuilder.BasicInteraction.Validation
 {
@@ -10,10 +16,20 @@ namespace VRBuilder.BasicInteraction.Validation
     /// Validator that checks if the object has one of the required guids either as
     /// its object ID or as a group.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     public class HasGuidValidation : Validator, IGuidContainer
+#elif GODOT
+    public partial class HasGuidValidation : Validator, IGuidContainer
+#endif
+    
     {
+#if UNITY_5_3_OR_NEWER
         [SerializeField]
         private List<string> guids = new List<string>();
+#elif GODOT
+        [Export]
+        private Array<string> guids = new Array<string>();
+#endif
 
         /// <inheritdoc/>
         public IEnumerable<Guid> Guids => guids.Select(tag => Guid.Parse(tag));
@@ -52,7 +68,11 @@ namespace VRBuilder.BasicInteraction.Validation
         }
 
         /// <inheritdoc/>
+#if UNITY_5_3_OR_NEWER
         public override bool Validate(GameObject obj)
+#elif GODOT
+        public override bool Validate(Node obj)
+#endif
         {
             ProcessSceneObject processSceneObject = obj.GetComponent<ProcessSceneObject>();
 

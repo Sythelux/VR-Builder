@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 namespace VRBuilder.Core.Highlighting
 {
     /// <summary>
@@ -8,3 +9,8 @@ namespace VRBuilder.Core.Highlighting
 
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

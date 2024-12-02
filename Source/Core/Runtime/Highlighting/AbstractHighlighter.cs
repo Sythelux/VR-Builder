@@ -1,3 +1,4 @@
+#if UNITY_5_6_OR_NEWER
 using System;
 using System.Linq;
 using UnityEngine;
@@ -118,3 +119,8 @@ namespace VRBuilder.Core.Highlighting
         }
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 namespace VRBuilder.Core.Utils.ParticleMachines
 {
     public interface IParticleMachine
@@ -37,3 +38,8 @@ namespace VRBuilder.Core.Utils.ParticleMachines
         void ChangeEmissionDuration(float duration);
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

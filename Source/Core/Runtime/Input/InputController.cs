@@ -4,14 +4,22 @@
 
 using System;
 using System.Collections.Generic;
+#if UNITY_5_3_OR_NEWER
 using VRBuilder.Unity;
+#elif GODOT
+using VRBuilder.Core.Godot;
+#endif
 
 namespace VRBuilder.Core.Input
 {
     /// <summary>
     /// Central controller for input via the new Input System using C# events.
     /// </summary>
+#if UNITY_5_3_OR_NEWER
     public abstract class InputController : UnitySceneSingleton<InputController>
+#elif GODOT
+    public abstract partial class InputController : GodotSceneSingleton
+#endif
     {
         public class InputEventArgs : EventArgs
         {
@@ -108,6 +116,7 @@ namespace VRBuilder.Core.Input
         public abstract void ReleaseFocus();
 
 
+#if UNITY_5_3_OR_NEWER
         protected override void Awake()
         {
             base.Awake();
@@ -118,7 +127,13 @@ namespace VRBuilder.Core.Input
         {
             Setup();
         }
-
+#elif GODOT
+        public override void _Ready()
+        {
+            base._Ready();
+            Setup();
+        }
+#endif
         /// <summary>
         /// will be called on Reset (in editor time) and Awake (in play mode).
         /// Intended to setup the input controller properly.

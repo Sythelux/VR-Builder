@@ -1,3 +1,4 @@
+#if UNITY_5_6_OR_NEWER
 namespace VRBuilder.Core.Utils.Bezier
 {
     /// <summary>
@@ -10,3 +11,8 @@ namespace VRBuilder.Core.Utils.Bezier
         Mirrored
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

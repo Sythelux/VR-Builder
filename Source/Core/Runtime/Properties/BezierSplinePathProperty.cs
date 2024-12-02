@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 using VRBuilder.Core.Utils.Bezier;
 
@@ -34,3 +35,8 @@ namespace VRBuilder.Core.Properties
         }
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using VRBuilder.Core.Configuration;
 
 namespace VRBuilder.Core.TextToSpeech.Configuration
@@ -35,3 +36,7 @@ namespace VRBuilder.Core.TextToSpeech.Configuration
         }
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

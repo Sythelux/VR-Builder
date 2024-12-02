@@ -6,7 +6,11 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.IO
 {
@@ -15,13 +19,17 @@ namespace VRBuilder.Core.IO
     /// </summary>
     public static class FileManager
     {
-        private static IPlatformFileSystem platformFileSystem;
+        private static IPlatformFileSystem? platformFileSystem;
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
-        private static void Initialize()
-        {
-            platformFileSystem = CreatePlatformFileSystem();
-        }
+// #if UNITY_5_3_OR_NEWER
+// [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
+//         private static void Initialize()
+//         {
+//             platformFileSystem = CreatePlatformFileSystem();
+//         }
+// #elif GODOT
+        private static IPlatformFileSystem PlatformFileSystem => platformFileSystem ??= CreatePlatformFileSystem();
+// #endif
 
         /// <summary>
         /// Loads a file stored at <paramref name="filePath"/>.
@@ -42,12 +50,7 @@ namespace VRBuilder.Core.IO
                 throw new ArgumentException($"Method only accepts relative paths.\n'filePath': {filePath}");
             }
 
-            if (platformFileSystem == null)
-            {
-                Initialize();
-            }
-
-            return await platformFileSystem.Read(filePath);
+            return await PlatformFileSystem.Read(filePath);
         }
 
         /// <summary>
@@ -69,12 +72,7 @@ namespace VRBuilder.Core.IO
                 throw new ArgumentException($"Method only accepts relative paths.\n'filePath': {filePath}");
             }
 
-            if (platformFileSystem == null)
-            {
-                Initialize();
-            }
-
-            return await platformFileSystem.ReadAllText(filePath);
+            return await PlatformFileSystem.ReadAllText(filePath);
         }
 
         /// <summary>
@@ -99,12 +97,7 @@ namespace VRBuilder.Core.IO
                 throw new ArgumentException("Invalid 'fileData'");
             }
 
-            if (platformFileSystem == null)
-            {
-                Initialize();
-            }
-
-            return await platformFileSystem.Write(filePath, fileData);
+            return await PlatformFileSystem.Write(filePath, fileData);
         }
 
         /// <summary>
@@ -123,12 +116,7 @@ namespace VRBuilder.Core.IO
                 throw new ArgumentException($"Method only accepts relative paths.\n'filePath': {filePath}");
             }
 
-            if (platformFileSystem == null)
-            {
-                Initialize();
-            }
-
-            return await platformFileSystem.Exists(filePath);
+            return await PlatformFileSystem.Exists(filePath);
         }
 
         /// <summary>
@@ -141,17 +129,27 @@ namespace VRBuilder.Core.IO
         /// </param>
         public static IEnumerable<string> FetchStreamingAssetsFilesAt(string path, string searchPattern)
         {
-            return platformFileSystem.FetchStreamingAssetsFilesAt(path, searchPattern);
+            return PlatformFileSystem.FetchStreamingAssetsFilesAt(path, searchPattern);
         }
 
         private static IPlatformFileSystem CreatePlatformFileSystem()
         {
+#if UNITY_5_3_OR_NEWER
 #if !UNITY_EDITOR && UNITY_ANDROID
             return new AndroidFileSystem(Application.streamingAssetsPath, Application.persistentDataPath);
 #elif !UNITY_EDITOR && UNITY_WEBGL
             return new WebGlFileSystem(Application.streamingAssetsPath, Application.persistentDataPath);
 #else
             return new DefaultFileSystem(Application.streamingAssetsPath, Application.persistentDataPath);
+#endif
+#elif GODOT
+#if GODOT_MOBILE
+            return new AndroidFileSystem("res://StreamingAssets", "user://");
+#elif GODOT_WEB
+            return new WebGlFileSystem("res://StreamingAssets", "user://");
+#else
+            return new DefaultFileSystem("res://StreamingAssets", "user://");
+#endif
 #endif
         }
     }

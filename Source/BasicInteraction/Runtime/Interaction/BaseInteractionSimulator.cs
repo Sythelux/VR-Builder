@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 ﻿using System;
 using System.Linq;
 using UnityEngine;
@@ -109,3 +110,8 @@ namespace VRBuilder.BasicInteraction.Interaction
         public abstract bool IsColliderValid(GameObject teleportationObject, Collider colliderToValidate);
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

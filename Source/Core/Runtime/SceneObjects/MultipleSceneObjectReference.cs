@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,3 +44,8 @@ namespace VRBuilder.Core.SceneObjects
         public MultipleSceneObjectReference(IEnumerable<Guid> guids) : base(guids) { }
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

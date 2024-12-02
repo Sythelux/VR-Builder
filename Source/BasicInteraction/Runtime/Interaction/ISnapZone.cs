@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+#if UNITY_5_3_OR_NEWER
 using VRBuilder.BasicInteraction.Properties;
+using UnityEngine;
 
 namespace VRBuilder.BasicInteraction.Interaction
 {
@@ -39,3 +40,7 @@ namespace VRBuilder.BasicInteraction.Interaction
         bool ForceRelease();
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

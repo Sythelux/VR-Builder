@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -96,4 +97,9 @@ namespace VRBuilder.Unity
         }
     }
 }
+#endif
+
+#elif GODOT
+using Godot;
+//TODO
 #endif

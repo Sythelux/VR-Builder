@@ -1,5 +1,11 @@
 using System;
+
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
+
 
 namespace VRBuilder.Core.SceneObjects
 {
@@ -11,9 +17,20 @@ namespace VRBuilder.Core.SceneObjects
     /// It has a implementation to serialize <see cref="System.Guid"/>.
     /// </remarks>
     [Serializable]
+#if UNITY_5_3_OR_NEWER
     public class SerializableGuid : IEquatable<SerializableGuid>, IEquatable<Guid>
+#elif GODOT
+    [Tool]
+    [GlobalClass]
+    public partial class SerializableGuid : Resource, IEquatable<SerializableGuid>, IEquatable<Guid>
+#endif
+
     {
+#if UNITY_5_3_OR_NEWER
         [SerializeField]
+#elif GODOT
+    [Export]
+#endif
         private byte[] serializedGuid = Guid.NewGuid().ToByteArray();
 
         /// <summary>
@@ -33,6 +50,10 @@ namespace VRBuilder.Core.SceneObjects
         public SerializableGuid(Guid guid)
         {
             Guid = guid;
+        }
+
+        public SerializableGuid()
+        {
         }
 
 

@@ -5,7 +5,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.RestrictiveEnvironment;
 using VRBuilder.Core.SceneObjects;
@@ -45,8 +49,13 @@ namespace VRBuilder.Core
             if (data.ToUnlock.Any(propertyReference => propertyReference.TargetObject.Value == null))
             {
                 data.ToUnlock = data.ToUnlock.Where(propertyReference => propertyReference.TargetObject.Value != null).ToList();
+#if UNITY_5_3_OR_NEWER
                 Debug.LogWarning($"Null references have been found and removed in the manually unlocked objects of step '{data.Name}'.\n" +
-                    $"Did you delete or reset any Process Scene Objects?");
+                                    $"Did you delete or reset any Process Scene Objects?");
+#elif GODOT
+                GD.PushWarning($"Null references have been found and removed in the manually unlocked objects of step '{data.Name}'.\n" +
+                               $"Did you delete or reset any Process Scene Objects?");
+#endif
             }
 
             foreach (LockablePropertyReference propertyReference in data.ToUnlock)

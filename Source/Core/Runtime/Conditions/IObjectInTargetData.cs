@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using System.Runtime.Serialization;
 
 namespace VRBuilder.Core.Conditions
@@ -14,3 +15,8 @@ namespace VRBuilder.Core.Conditions
         float RequiredTimeInside { get; set; }
     }
 }
+
+#elif GODOT
+using Godot;
+//TODO
+#endif

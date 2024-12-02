@@ -1,19 +1,38 @@
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#elif GODOT
+using Godot;
+using Godot.Collections;
+using VRBuilder.Core.Godot.Attributes;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace VRBuilder.Core.Configuration
 {
+#if UNITY_5_3_OR_NEWER
     public class PropertyExtensionExclusionList : MonoBehaviour
+#elif GODOT
+    public partial class PropertyExtensionExclusionList : Node
+#endif
     {
+#if UNITY_5_3_OR_NEWER
         [SerializeField]
+#elif GODOT
+        [Export]
+#endif
         [Tooltip("Full name of the assembly we want to exclude the types from.")]
-        private string assemblyFullName;
+        private string assemblyFullName = string.Empty;
 
-        [SerializeField]
         [Tooltip("List of excluded extension type names, including namespaces.")]
-        private List<string> disallowedExtensionTypeNames;
+#if UNITY_5_3_OR_NEWER
+        [SerializeField]
+        private readonly List<string> disallowedExtensionTypeNames = new();
+#elif GODOT
+        [Export]
+        private Array<string> disallowedExtensionTypeNames = new();
+#endif
 
         /// <summary>
         /// Full name of the assembly we want to exclude the types from.
@@ -36,7 +55,11 @@ namespace VRBuilder.Core.Configuration
 
                     if (excludedType == null)
                     {
+#if UNITY_5_3_OR_NEWER
                         Debug.LogWarning($"Property extension exclusion list for assembly '{assemblyFullName}' contains invalid extension type: '{typeName}'.");
+#elif GODOT
+                        GD.PushWarning($"Property extension exclusion list for assembly '{assemblyFullName}' contains invalid extension type: '{typeName}'.");
+#endif
                     }
                     else
                     {

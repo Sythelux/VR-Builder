@@ -1,3 +1,4 @@
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,3 +32,7 @@ namespace VRBuilder.UI.Utils
         }
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

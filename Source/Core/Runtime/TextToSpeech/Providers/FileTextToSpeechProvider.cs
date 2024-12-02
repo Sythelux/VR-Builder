@@ -1,4 +1,8 @@
-using System;
+#if UNITY_5_3_OR_NEWER
+﻿using System;
+using System.Threading.Tasks;
+using VRBuilder.Core.IO;
+using UnityEngine;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -118,3 +122,7 @@ namespace VRBuilder.Core.TextToSpeech.Providers
         }
     }
 }
+#elif GODOT
+using Godot;
+//TODO
+#endif

@@ -2,10 +2,15 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using VRBuilder.Core.Exceptions;
 
 namespace VRBuilder.Core
@@ -49,7 +54,8 @@ namespace VRBuilder.Core
         {
             if (Stage != Stage.Inactive)
             {
-                throw new InvalidStateException("Process entity can only be activated when not running yet. Stage: " + Stage);
+                throw new InvalidStateException("Process entity can only be activated when not running yet. Stage: " +
+                                                Stage);
             }
 
             StartActivating();
@@ -335,7 +341,12 @@ namespace VRBuilder.Core
                 }
             }
 
+
+#if UNITY_5_3_OR_NEWER
             Debug.LogError($"Exception in{step}{ownerInfo} while <b>{Stage} ({function})</b>\n{exception}");
+#elif GODOT
+            GD.PushError($"Exception in{step}{ownerInfo} while <b>{Stage} ({function})</b>\n{exception}");
+#endif
         }
     }
 }

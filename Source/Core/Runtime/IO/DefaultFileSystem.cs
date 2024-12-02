@@ -6,7 +6,11 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.IO
 {
@@ -57,7 +61,11 @@ namespace VRBuilder.Core.IO
 
             if (await Exists(filePath))
             {
+#if UNITY_5_3_OR_NEWER
                 string rootPath = await FileExistsInStreamingAssets(filePath) ? Application.streamingAssetsPath : Application.persistentDataPath;
+#elif GODOT
+                string rootPath = await FileExistsInStreamingAssets(filePath) ? "res://StreamingAssets" : "user://";
+#endif
                 string absolutePath = Path.Combine(rootPath, filePath);
                 return File.ReadAllText(absolutePath);
             }
@@ -80,7 +88,11 @@ namespace VRBuilder.Core.IO
             }
             catch (Exception e)
             {
+#if UNITY_5_3_OR_NEWER
                 Debug.LogException(e);
+#elif GODOT
+                GD.PushError(e);
+#endif
                 return false;
             }
         }
@@ -182,7 +194,11 @@ namespace VRBuilder.Core.IO
             if (Directory.Exists(absolutePath) == false)
             {
                 Directory.CreateDirectory(absolutePath);
+#if UNITY_5_3_OR_NEWER
                 Debug.LogWarningFormat("Directory '{0}' was created.", absolutePath);
+#elif GODOT
+                GD.PushWarning("Directory '{0}' was created.", absolutePath);
+#endif
             }
 
             if (string.IsNullOrEmpty(fileName))

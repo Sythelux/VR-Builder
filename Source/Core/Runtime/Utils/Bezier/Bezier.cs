@@ -1,5 +1,9 @@
 using System.Collections.Generic;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 
 namespace VRBuilder.Core.Utils.Bezier
 {
@@ -10,7 +14,7 @@ namespace VRBuilder.Core.Utils.Bezier
     {
         public static Vector3 GetPoint(Vector3 p0, Vector3 p1, Vector3 p2, float t)
         {
-            t = Mathf.Clamp01(t);
+            t = Mathf.Clamp(t, 0, 1);
             float oneMinusT = 1f - t;
             return
                 oneMinusT * oneMinusT * p0 +
@@ -27,7 +31,7 @@ namespace VRBuilder.Core.Utils.Bezier
 
         public static Vector3 GetPoint(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
         {
-            t = Mathf.Clamp01(t);
+            t = Mathf.Clamp(t, 0, 1);
             float OneMinusT = 1f - t;
             return
                 OneMinusT * OneMinusT * OneMinusT * p0 +
@@ -38,7 +42,7 @@ namespace VRBuilder.Core.Utils.Bezier
 
         public static Vector3 GetFirstDerivative(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
         {
-            t = Mathf.Clamp01(t);
+            t = Mathf.Clamp(t, 0, 1);
             float oneMinusT = 1f - t;
             return
                 3f * oneMinusT * oneMinusT * (p1 - p0) +
@@ -60,7 +64,11 @@ namespace VRBuilder.Core.Utils.Bezier
 
             for (int i = 0; i < points.Count - 1; ++i)
             {
+#if UNITY_5_3_OR_NEWER
                 length += Vector3.Distance(points[i], points[i + 1]);
+#elif GODOT
+                length += points[i].DistanceTo(points[i + 1]);
+#endif
                 lengths.Add(length);
             }
 

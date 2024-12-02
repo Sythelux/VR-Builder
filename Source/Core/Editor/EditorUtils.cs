@@ -12,7 +12,6 @@ using UnityEditor.Build;
 using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
-using VRBuilder.PackageManager.Editor;
 
 namespace VRBuilder.Core.Editor
 {
@@ -54,7 +53,7 @@ namespace VRBuilder.Core.Editor
 
         private static void SetImguiTestsState(bool enabled)
         {
-            List<string> symbols = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.Standalone).Split(';').ToList();
+            List<string> symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone).Split(';').ToList();
 
             bool wasEnabled = symbols.Contains(ignoreEditorImguiTestsDefineSymbol) == false;
 
@@ -69,7 +68,7 @@ namespace VRBuilder.Core.Editor
                     symbols.Add(ignoreEditorImguiTestsDefineSymbol);
                 }
 
-                PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.Standalone, string.Join(";", symbols.ToArray()));
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, string.Join(";", symbols.ToArray()));
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
             }
@@ -119,21 +118,7 @@ namespace VRBuilder.Core.Editor
         /// </summary>
         internal static string GetCoreVersion()
         {
-            string version = PackageOperationsManager.GetInstalledPackageVersion(corePackageName);
-            return string.IsNullOrEmpty(version) ? "unknown" : version;
-        }
-
-        /// <summary>
-        /// Retrieves the current named build target based on the active build target settings in the Unity Editor.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="NamedBuildTarget"/> object representing the current build target group.
-        /// </returns>
-        internal static NamedBuildTarget GetCurrentNamedBuildTarget()
-        {
-            BuildTarget activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-            BuildTargetGroup targetGroup = BuildPipeline.GetBuildTargetGroup(activeBuildTarget);
-            return NamedBuildTarget.FromBuildTargetGroup(targetGroup);
+            return UnityEditor.PackageManager.Client.Search(corePackageName)?.Result?.FirstOrDefault()?.version ?? "unknown";
         }
 
         /// <summary>
@@ -141,7 +126,9 @@ namespace VRBuilder.Core.Editor
         /// </summary>
         internal static ApiCompatibilityLevel GetCurrentCompatibilityLevel()
         {
-            return PlayerSettings.GetApiCompatibilityLevel(GetCurrentNamedBuildTarget());
+            BuildTarget buildTarget = EditorUserBuildSettings.activeBuildTarget;
+            BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
+            return PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
         }
 
         /// <summary>

@@ -1,4 +1,8 @@
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.SceneObjects;
 
 namespace VRBuilder.Core.Configuration
@@ -21,7 +25,11 @@ namespace VRBuilder.Core.Configuration
         /// <summary>
         /// Instantiates the specified prefab.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         GameObject InstantiatePrefab(GameObject prefab, Vector3 position, Quaternion rotation);
+#elif GODOT
+        Node3D /*GameObject*/ InstantiatePrefab(PackedScene /*GameObject*/ prefab, Vector3 position, Quaternion rotation);
+#endif
 
         /// <summary>
         /// Requests authority on the specified scene object.

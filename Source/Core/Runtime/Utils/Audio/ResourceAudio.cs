@@ -39,6 +39,7 @@ namespace VRBuilder.Core.Audio
             }
             set
             {
+                path = value;
 #if UNITY_5_3_OR_NEWER
                 if (Application.isPlaying)
 #endif

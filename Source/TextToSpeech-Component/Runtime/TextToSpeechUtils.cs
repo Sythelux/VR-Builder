@@ -1,5 +1,5 @@
 #if UNITY_5_3_OR_NEWER
-﻿using System.Text;
+using System.Text;
 using System.Security.Cryptography;
 using Source.TextToSpeech_Component.Runtime;
 using UnityEngine.Localization;

@@ -1,5 +1,5 @@
 #if UNITY_5_3_OR_NEWER
-﻿using System;
+using System;
 using UnityEngine.Events;
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.SceneObjects;

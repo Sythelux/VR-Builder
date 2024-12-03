@@ -2,13 +2,14 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using System.Collections.Generic;
 using System.IO;
-using VRBuilder.Editor;
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
 using VRBuilder.Editor.XRUtils;
 
+namespace VRBuilder.Editor.Settings
+{
 /// <summary>
 /// Settings for a VR Builder Unity project.
 /// </summary>
@@ -72,5 +73,6 @@ public partial class BuilderProjectSettings : ScriptableObject
         EditorUtility.SetDirty(this);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+        }
     }
 }

@@ -3,9 +3,9 @@ using UnityEditor.Localization;
 using UnityEditor.Localization.UI;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
-using VRBuilder.Editor.UI;
-using VRBuilder.Editor.UI.Wizard;
 
+namespace VRBuilder.Editor.UI.Wizard
+{
 /// <summary>
 /// Wizard page where the user can set up localization preferences.
 /// </summary>
@@ -229,5 +229,6 @@ internal class LocalizationSettingsPage : WizardPage
     {
         public GUIContent activeSettings = EditorGUIUtility.TrTextContent("Active Settings", "The Localization Settings that will be used by this project and included into any builds.");
         public GUIContent noSettingsMsg = EditorGUIUtility.TrTextContent("You have no active Localization Settings. Would you like to create one?");
+        }
     }
 }

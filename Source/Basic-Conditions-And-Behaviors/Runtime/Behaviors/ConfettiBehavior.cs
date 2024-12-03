@@ -1,5 +1,5 @@
 #if UNITY_5_3_OR_NEWER
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -273,7 +273,6 @@ namespace VRBuilder.Core.Behaviors
         }
     }
 }
-
 #elif GODOT
 using Godot;
 //TODO

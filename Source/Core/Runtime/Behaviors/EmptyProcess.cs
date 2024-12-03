@@ -3,8 +3,9 @@
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
 using System.Collections;
-using VRBuilder.Core;
 
+namespace VRBuilder.Core
+{
 /// <summary>
 /// A stage process that does nothing.
 /// </summary>
@@ -29,5 +30,6 @@ public sealed class EmptyProcess : IStageProcess
     /// <inheritdoc />
     public void FastForward()
     {
+        }
     }
 }

@@ -2,15 +2,14 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
-using UnityEditor;
-using VRBuilder.Editor.UI;
-using VRBuilder.Core.Localization;
-using UnityEngine;
-using UnityEngine.Localization.Settings;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
+using VRBuilder.Core.Localization;
 
-namespace VRBuilder.Editor.Localization
+namespace VRBuilder.Editor.UI
 {
     public class LanguageSettingsProvider : BaseSettingsProvider
     {

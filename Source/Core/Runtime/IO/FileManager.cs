@@ -20,17 +20,8 @@ namespace VRBuilder.Core.IO
     public static class FileManager
     {
         private static IPlatformFileSystem? platformFileSystem;
-
-// #if UNITY_5_3_OR_NEWER
-// [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
-//         private static void Initialize()
-//         {
-//             platformFileSystem = CreatePlatformFileSystem();
-//         }
-// #elif GODOT
-        private static IPlatformFileSystem PlatformFileSystem => platformFileSystem ??= CreatePlatformFileSystem();
-// #endif
-
+       private static IPlatformFileSystem PlatformFileSystem => platformFileSystem ??= CreatePlatformFileSystem();
+ 
         /// <summary>
         /// Loads a file stored at <paramref name="filePath"/>.
         /// </summary>

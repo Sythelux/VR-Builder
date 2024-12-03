@@ -21,6 +21,7 @@ using Godot;
 namespace VRBuilder.Core.SceneObjects
 {
     /// <inheritdoc />
+    [Obsolete("This implementation of the scene object registry is obsolete. Use SceneObjectRegistryV2 instead.")]
     public class SceneObjectRegistry : ISceneObjectRegistry
     {
         private readonly Dictionary<Guid, ISceneObject> registeredEntities = new Dictionary<Guid, ISceneObject>();

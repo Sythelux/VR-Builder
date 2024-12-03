@@ -108,7 +108,6 @@ namespace VRBuilder.Core.Behaviors
         }
     }
 }
-
 #elif GODOT
 using Godot;
 //TODO

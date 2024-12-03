@@ -1,17 +1,17 @@
 // Copyright (c) 2013-2019 Innoactive GmbH
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 using VRBuilder.Unity;
 #elif GODOT
 using Godot;
 #endif
-using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Configuration;
@@ -21,9 +21,8 @@ using VRBuilder.Core.EntityOwners.FoldedEntityCollection;
 using VRBuilder.Core.EntityOwners.ParallelEntityCollection;
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.RestrictiveEnvironment;
-using VRBuilder.Core.Utils.Logging;
 using VRBuilder.Core.SceneObjects;
-using VRBuilder.Core.Properties;
+using VRBuilder.Core.Utils.Logging;
 
 namespace VRBuilder.Core
 {

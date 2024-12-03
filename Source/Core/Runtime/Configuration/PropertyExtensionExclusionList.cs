@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #elif GODOT
@@ -5,9 +8,6 @@ using Godot;
 using Godot.Collections;
 using VRBuilder.Core.Godot.Attributes;
 #endif
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace VRBuilder.Core.Configuration
 {

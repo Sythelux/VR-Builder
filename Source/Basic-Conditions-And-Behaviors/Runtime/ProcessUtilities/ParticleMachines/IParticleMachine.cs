@@ -1,5 +1,5 @@
 #if UNITY_5_3_OR_NEWER
-﻿namespace VRBuilder.Core.ProcessUtils
+namespace VRBuilder.Core.ProcessUtils
 {
     public interface IParticleMachine
     {

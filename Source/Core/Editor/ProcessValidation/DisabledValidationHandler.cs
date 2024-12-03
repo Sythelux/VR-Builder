@@ -3,8 +3,9 @@
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
 using VRBuilder.Core;
-using VRBuilder.Editor.ProcessValidation;
 
+namespace VRBuilder.Editor.ProcessValidation
+{
 /// <summary>
 /// Does not validate, used to disabled the validation system.
 /// </summary>
@@ -22,5 +23,6 @@ internal class DisabledValidationHandler : IValidationHandler
     public IValidationReport Validate(IData data, IProcess process, IContext context = null)
     {
         return null;
+        }
     }
 }

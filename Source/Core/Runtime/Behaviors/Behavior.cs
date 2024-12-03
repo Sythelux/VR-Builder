@@ -2,13 +2,13 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
-using System.Runtime.Serialization;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 using VRBuilder.Unity;
 #elif GODOT
 using Godot;
 #endif
+using System.Runtime.Serialization;
 using VRBuilder.Core.Utils.Logging;
 
 namespace VRBuilder.Core.Behaviors

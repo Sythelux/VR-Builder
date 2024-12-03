@@ -5,6 +5,8 @@
 using UnityEditor;
 using VRBuilder.Editor.Settings;
 
+namespace VRBuilder.Editor.Setup
+{
 [InitializeOnLoad]
 public static class InputSystemChecker
 {
@@ -25,5 +27,6 @@ public static class InputSystemChecker
             }
 #endif
 
+        }
     }
 }

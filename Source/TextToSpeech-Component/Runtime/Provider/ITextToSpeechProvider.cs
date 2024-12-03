@@ -1,5 +1,5 @@
 #if UNITY_5_3_OR_NEWER
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Source.TextToSpeech_Component.Runtime;
 using UnityEngine;
 using UnityEngine.Localization;

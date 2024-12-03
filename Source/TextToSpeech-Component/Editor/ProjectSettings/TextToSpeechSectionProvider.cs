@@ -1,9 +1,8 @@
 using System;
-using VRBuilder.TextToSpeech;
-using VRBuilder.Editor.UI;
-using VRBuilder.Editor.Localization;
 using UnityEditor;
 using UnityEngine;
+using VRBuilder.Editor.UI;
+using VRBuilder.TextToSpeech;
 
 namespace VRBuilder.Editor.TextToSpeech.UI.ProjectSettings
 {

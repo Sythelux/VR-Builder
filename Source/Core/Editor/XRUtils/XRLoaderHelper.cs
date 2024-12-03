@@ -6,7 +6,10 @@ using UnityEditor;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+// using VRBuilder.Editor.PackageManager;
 using Debug = UnityEngine.Debug;
+using VRBuilder.Editor.Settings;
+
 
 #if UNITY_XR_MANAGEMENT
 using UnityEngine;
@@ -76,10 +79,11 @@ namespace VRBuilder.Editor.XRUtils
             if(isLoadingXRManagement == false)
             {
                 isLoadingXRManagement = true;
+                PackageOperationsManager.LoadPackage(XRManagementPackage);
             }
 #else
             DisplayDialog("OpenXR");
-            PackageOperationsManager.LoadPackage(OpenXRPackage);
+            // PackageOperationsManager.LoadPackage(OpenXRPackage);
 #endif
 #endif
         }
@@ -108,10 +112,11 @@ namespace VRBuilder.Editor.XRUtils
             if(isLoadingXRManagement == false)
             {
                 isLoadingXRManagement = true;
+                PackageOperationsManager.LoadPackage(XRManagementPackage);
             }
 #else
             DisplayDialog("OpenXR");
-            PackageOperationsManager.LoadPackage(OpenXRPackage);
+            // PackageOperationsManager.LoadPackage(OpenXRPackage);
 #endif
 #elif UNITY_2019_1_OR_NEWER
             if (EditorReflectionUtils.AssemblyExists("Unity.XR.Management") == false)
@@ -148,10 +153,11 @@ namespace VRBuilder.Editor.XRUtils
             if(isLoadingXRManagement == false)
             {
                 isLoadingXRManagement = true;
+                PackageOperationsManager.LoadPackage(XRManagementPackage);
             }
 #else
             DisplayDialog("Oculus XR");
-            PackageOperationsManager.LoadPackage(OculusXRPackage);
+            // PackageOperationsManager.LoadPackage(OculusXRPackage);
 #endif
         }
 
@@ -178,10 +184,11 @@ namespace VRBuilder.Editor.XRUtils
             if(isLoadingXRManagement == false)
             {
                 isLoadingXRManagement = true;
+                PackageOperationsManager.LoadPackage(XRManagementPackage);
             }
 #else
             DisplayDialog("Windows MR");
-            PackageOperationsManager.LoadPackage(WindowsXRPackage);
+            // PackageOperationsManager.LoadPackage(WindowsXRPackage);
 #endif
         }
 

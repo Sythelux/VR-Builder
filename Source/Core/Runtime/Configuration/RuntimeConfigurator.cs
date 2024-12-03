@@ -2,13 +2,13 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using System;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #elif GODOT
 using Godot;
 #endif
 
-using System;
 using System.Linq;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.Utils;
@@ -233,8 +233,7 @@ namespace VRBuilder.Core.Configuration
             {
                 if (Exists == false)
                 {
-                    throw new NullReferenceException(
-                        "Process runtime configurator is not set in the scene. Create an empty game object with the 'RuntimeConfigurator' script attached to it.");
+                    throw new NullReferenceException("Process runtime configurator is not set in the scene. Create an empty game object with the 'RuntimeConfigurator' script attached to it.");
                 }
 
                 return instance;

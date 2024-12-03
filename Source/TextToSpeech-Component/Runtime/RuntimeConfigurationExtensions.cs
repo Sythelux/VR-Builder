@@ -1,5 +1,5 @@
 #if UNITY_5_3_OR_NEWER
-﻿using VRBuilder.Core.Configuration;
+using VRBuilder.Core.Configuration;
 using System;
 using System.Linq;
 using Source.TextToSpeech_Component.Runtime;

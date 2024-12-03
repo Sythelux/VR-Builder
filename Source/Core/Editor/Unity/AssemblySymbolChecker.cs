@@ -4,10 +4,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using VRBuilder.Editor;
 using UnityEditor;
 using VRBuilder.Editor.Settings;
 
+namespace VRBuilder.Editor.Setup
+{
 /// <summary>
 /// Checks for assemblies specified and adds/removes the symbol according to their existence.
 /// </summary>
@@ -106,6 +107,7 @@ internal class AssemblySymbolChecker
         {
             symbols.Remove(symbol);
             PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, string.Join(";", symbols.ToArray()));
+            }
         }
     }
 }

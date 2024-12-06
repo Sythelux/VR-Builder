@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using System;
 using UnityEngine;
 using VRBuilder.Core.Conditions;
@@ -64,3 +65,5 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         }
     }
 }
+
+#endif

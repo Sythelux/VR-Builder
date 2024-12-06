@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEditor;
 using UnityEditor.Localization;
 using UnityEditor.Localization.UI;
@@ -232,3 +233,5 @@ namespace VRBuilder.Core.Editor.UI.Wizard
         }
     }
 }
+
+#endif

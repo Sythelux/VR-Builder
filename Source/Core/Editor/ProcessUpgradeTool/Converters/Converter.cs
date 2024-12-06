@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using System;
 
 namespace VRBuilder.Core.Editor.ProcessUpgradeTool.Converters
@@ -39,3 +40,5 @@ namespace VRBuilder.Core.Editor.ProcessUpgradeTool.Converters
         }
     }
 }
+
+#endif

@@ -4,7 +4,13 @@
 
 using System;
 using System.Reflection;
+
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
+
 
 namespace VRBuilder.Core.Editor.UI.Drawers
 {
@@ -24,7 +30,12 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         /// </param>
         /// <param name="label">Label text to display.</param>
         /// <returns>The area that was taken by the property.</returns>
+#if UNITY_6000_0_OR_NEWER
         Rect Draw(Rect rect, object currentValue, Action<object> changeValueCallback, string label);
+#elif GODOT
+        Control Create<T>(T currentValue, Action<object> changeValueCallback, string text);
+#endif
+
 
         /// <summary>
         /// Draw editor view in given Rect.
@@ -38,17 +49,32 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         /// </param>
         /// <param name="label">Label content to display.</param>
         /// <returns>The area that was taken by the property.</returns>
+#if UNITY_6000_0_OR_NEWER
         Rect Draw(Rect rect, object currentValue, Action<object> changeValueCallback, GUIContent label);
+#elif GODOT
+            // Control Create<T>(T currentValue, Action<object> changeValueCallback, Control label);
+#endif
+
 
         /// <summary>
         /// Return a label for a property/field <paramref name="memberInfo"/> of an object <paramref name="memberOwner"/>.
         /// </summary>
+#if UNITY_6000_0_OR_NEWER
         GUIContent GetLabel(MemberInfo memberInfo, object memberOwner);
+#elif GODOT
+        Label GetLabel(MemberInfo memberInfo, object memberOwner);
+#endif
+
 
         /// <summary>
         /// Return a label for a <paramref name="value"/> of <paramref name="declaredType"/>.
         /// </summary>
+#if UNITY_6000_0_OR_NEWER
         GUIContent GetLabel(object value, Type declaredType);
+#elif GODOT
+        Label GetLabel<T>(T value);
+#endif
+
 
         /// <summary>
         /// Call when the value has changed; it will create proper <see cref="ProcessCommand"/> to handle Do/Undo logic.
@@ -57,6 +83,11 @@ namespace VRBuilder.Core.Editor.UI.Drawers
         /// <param name="getOldValueCallback">A delegate that returns an old value for the drawn entity. Invoked during the <see cref="ProcessCommand.Undo"/> call. The result is passed to the <paramref name="assignValueCallback"/>.</param>
         /// <param name="assignValueCallback">A delegate that actually assigns a value to the property/field.</param>
         /// </summary>
+#if UNITY_6000_0_OR_NEWER
         void ChangeValue(Func<object> getNewValueCallback, Func<object> getOldValueCallback, Action<object> assignValueCallback);
+#elif GODOT
+        void ChangeValue<T>(Func<T> getNewValueCallback, Func<T> getOldValueCallback, Action<T> assignValueCallback);
+#endif
+
     }
 }

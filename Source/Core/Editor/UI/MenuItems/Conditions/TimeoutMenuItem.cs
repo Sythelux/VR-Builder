@@ -1,4 +1,5 @@
-﻿using VRBuilder.Core.Conditions;
+#if UNITY_6000_0_OR_NEWER
+using VRBuilder.Core.Conditions;
 using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 
 namespace VRBuilder.Core.Editor.UI.MenuItems.Conditions
@@ -16,3 +17,5 @@ namespace VRBuilder.Core.Editor.UI.MenuItems.Conditions
         }
     }
 }
+
+#endif

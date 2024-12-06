@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using VRBuilder.BasicInteraction.Behaviors;
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Editor.UI.StepInspector.Menu;
@@ -15,3 +16,4 @@ namespace VRBuilder.BasicInteraction.Editor.UI.MenuItems
         }
     }
 }
+#endif

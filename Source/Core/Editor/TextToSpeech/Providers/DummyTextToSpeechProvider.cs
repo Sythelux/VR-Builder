@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -30,3 +31,5 @@ namespace VRBuilder.Core.Editor.TextToSpeech.Providers
         }
     }
 }
+
+#endif

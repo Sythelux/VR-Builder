@@ -22,7 +22,7 @@ namespace VRBuilder.Core.Editor
         /// <summary>
         /// Invoked when a new <see cref="ProcessEditorWindow"/> was just opened.
         /// </summary>
-        void HandleNewProcessWindow(ProcessEditorWindow window);
+        void HandleNewProcessWindow(IProcessEditorWindow window);
 
         /// <summary>
         /// Invoked when a new <see cref="IStepView"/> was just opened.
@@ -37,7 +37,7 @@ namespace VRBuilder.Core.Editor
         /// <summary>
         /// Invoked when a <see cref="ProcessEditorWindow"/> was closed.
         /// </summary>
-        void HandleProcessWindowClosed(ProcessEditorWindow window);
+        void HandleProcessWindowClosed(IProcessEditorWindow window);
 
         /// <summary>
         /// Invoked when a <see cref="IStepView"/> was closed.

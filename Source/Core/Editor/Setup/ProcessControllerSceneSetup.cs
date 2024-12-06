@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine;
 using VRBuilder.ProcessController;
 using VRBuilder.Unity;
@@ -28,3 +29,5 @@ namespace VRBuilder.Core.Editor.Setup
         }
     }
 }
+
+#endif

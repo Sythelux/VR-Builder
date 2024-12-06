@@ -1,4 +1,9 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine.UIElements;
+#elif GODOT
+using Godot;
+#endif
+
 using VRBuilder.Core.Editor.UI.GraphView.Nodes;
 
 namespace VRBuilder.Core.Editor.UI.GraphView.Instantiators
@@ -36,6 +41,11 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Instantiators
         /// <summary>
         /// Returns the status for the context menu entry to instantiate the node.
         /// </summary>
+#if UNITY_6000_0_OR_NEWER
         DropdownMenuAction.Status GetContextMenuStatus(IEventHandler target, IChapter currentChapter);
+#elif GODOT
+// TODO: implement Godot Version
+#endif
+
     }
 }

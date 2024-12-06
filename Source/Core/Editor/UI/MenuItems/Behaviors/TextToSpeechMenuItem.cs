@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Editor.UI.StepInspector.Menu;
 using VRBuilder.Core.TextToSpeech;
@@ -17,3 +18,5 @@ namespace VRBuilder.Core.Editor.UI.MenuItems.Behaviors
         }
     }
 }
+
+#endif

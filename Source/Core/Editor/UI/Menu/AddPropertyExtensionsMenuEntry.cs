@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -38,3 +39,5 @@ namespace VRBuilder.Core.Editor.Menu
         }
     }
 }
+
+#endif

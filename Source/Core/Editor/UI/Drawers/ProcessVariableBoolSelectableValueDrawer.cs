@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using VRBuilder.Core.Properties;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.UI.SelectableValues;
@@ -12,3 +13,5 @@ namespace VRBuilder.Core.Editor.UI.Drawers
     {
     }
 }
+
+#endif

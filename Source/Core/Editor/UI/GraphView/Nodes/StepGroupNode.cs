@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -165,3 +166,5 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Nodes
         }
     }
 }
+
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -751,3 +752,5 @@ namespace VRBuilder.Core.Editor.UI.GraphView
         }
     }
 }
+
+#endif

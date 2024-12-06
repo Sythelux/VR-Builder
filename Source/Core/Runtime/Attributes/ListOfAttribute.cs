@@ -52,7 +52,7 @@ namespace VRBuilder.Core.Attributes
 #if UNITY_5_3_OR_NEWER
                 Debug.LogError("Child attributes of ListOf attribute have to be unique. Duplicates are omitted.");
 #elif GODOT
-                GD.PushErr("Child attributes of ListOf attribute have to be unique. Duplicates are omitted.");
+                GD.PushError("Child attributes of ListOf attribute have to be unique. Duplicates are omitted.");
 #endif
             }
 

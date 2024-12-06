@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine;
 
 namespace VRBuilder.Core.Editor.UI.Drawers
@@ -9,3 +10,5 @@ namespace VRBuilder.Core.Editor.UI.Drawers
     {
     }
 }
+
+#endif

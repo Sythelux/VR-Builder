@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
@@ -96,3 +97,5 @@ namespace VRBuilder.Core.Editor.TextToSpeech
         }
     }
 }
+
+#endif

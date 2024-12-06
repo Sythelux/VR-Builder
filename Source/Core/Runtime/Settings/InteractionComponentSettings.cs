@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine;
 
 namespace VRBuilder.Core.Settings
@@ -13,3 +14,7 @@ namespace VRBuilder.Core.Settings
         public bool EnableXRInteractionComponent = true;
     }
 }
+
+#elif GODOT
+// TODO: implement Godot Version
+#endif

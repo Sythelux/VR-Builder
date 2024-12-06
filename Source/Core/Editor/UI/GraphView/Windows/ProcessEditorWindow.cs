@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEditor;
 
 namespace VRBuilder.Core.Editor.UI.GraphView.Windows
@@ -5,7 +6,7 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Windows
     /// <summary>
     /// Base class for a process GUI editor window.
     /// </summary>
-    public abstract class ProcessEditorWindow : EditorWindow
+    public abstract class ProcessEditorWindow : EditorWindow, IProcessEditorWindow
     {
         /// <summary>
         /// Sets the process to be displayed.
@@ -28,3 +29,5 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Windows
         internal abstract void RefreshChapterRepresentation();
     }
 }
+
+#endif

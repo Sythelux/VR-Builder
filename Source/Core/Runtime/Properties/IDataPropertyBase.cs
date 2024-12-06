@@ -1,5 +1,9 @@
-#if UNITY_5_3_OR_NEWER
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine.Events;
+#elif GODOT
+// TODO: implement Godot Version
+#endif
+
 
 namespace VRBuilder.Core.Properties
 {
@@ -11,7 +15,12 @@ namespace VRBuilder.Core.Properties
         /// <summary>
         /// Raised when the stored value is reset to the default.
         /// </summary>
+#if UNITY_6000_0_OR_NEWER
         UnityEvent OnValueReset { get; }
+#elif GODOT
+        // TODO: Godot can't handle Signal handler in Interfaces
+#endif
+
 
         /// <summary>
         /// Resets the value to its default.
@@ -20,7 +29,3 @@ namespace VRBuilder.Core.Properties
     }
 }
 
-#elif GODOT
-using Godot;
-//TODO
-#endif

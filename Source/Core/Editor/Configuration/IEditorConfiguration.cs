@@ -24,6 +24,7 @@ namespace VRBuilder.Core.Editor.Configuration
         /// <summary>
         /// Assets path where to save the serialized <see cref="AllowedMenuItemsSettings"/> file.
         /// It has to start with "Assets/".
+        /// In Godot this isn't a real file, but a sub entry in the ProjectSettings
         /// </summary>
         string AllowedMenuItemsSettingsAssetPath { get; }
 

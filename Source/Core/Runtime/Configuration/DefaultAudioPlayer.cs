@@ -4,6 +4,7 @@ using UnityEngine;
 using Godot;
 #endif
 using VRBuilder.Core.Configuration;
+using VRBuilder.Core.Utils;
 using VRBuilder.Core.Utils.Audio;
 
 /// <summary>

@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using System;
 using System.Collections;
 using System.Threading.Tasks;
@@ -139,3 +140,5 @@ namespace VRBuilder.Core.Editor.TextToSpeech.Providers
         }
     }
 }
+
+#endif

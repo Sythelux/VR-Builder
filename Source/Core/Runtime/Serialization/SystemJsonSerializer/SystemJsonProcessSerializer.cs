@@ -13,6 +13,7 @@ namespace VRBuilder.Core.Serialization.JSON
     {
         public string Name { get; }
         public string FileFormat => "json";
+
         private JsonSerializerOptions? options;
 
         public JsonSerializerOptions Options
@@ -59,6 +60,16 @@ namespace VRBuilder.Core.Serialization.JSON
         public abstract IStep StepFromByteArray(byte[] data);
         public abstract byte[] ManifestToByteArray(IProcessAssetManifest manifest);
         public abstract IProcessAssetManifest ManifestFromByteArray(byte[] data);
+        public byte[] EntityToByteArray(IEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEntity EntityFromByteArray(byte[] data)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
 #endif

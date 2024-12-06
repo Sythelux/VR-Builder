@@ -85,6 +85,7 @@ namespace VRBuilder.Core.SceneObjects
                         SetObjectId(Guid.NewGuid());
                     }
                 }
+
                 return guid;
             }
         }
@@ -141,19 +142,19 @@ namespace VRBuilder.Core.SceneObjects
         public event EventHandler<UniqueIdChangedEventArgs> ObjectIdChanged;
 #elif GODOT
         [Signal]
-        public delegate void LockedEventHandler(LockStateChangedEventArgs eventArgs);
-        [Signal]
-        public delegate void UnlockedEventHandler(LockStateChangedEventArgs eventArgs);
-        [Signal]
-        public delegate void GuidAddedEventHandler(GodotObject source, GuidContainerEventArgs eventArgs);
-        [Signal]
-        public delegate void GuidRemovedEventHandler(GodotObject source, GuidContainerEventArgs eventArgs);
-        [Signal]
-        public delegate void UniqueNameChangedEventHandler(SceneObjectNameChanged changed);
-        [Signal]
-        public delegate void ObjectIdChangedEventHandler(UniqueIdChangedEventArgs eventArgs);
+        public delegate void LockedEventHandler(Node sender, LockStateChangedEventArgs eventArgs);
 
-        // public delegate void ObjectIdChangedEventHandler(UniqueIdChangedEventArgs eventArgs);
+        [Signal]
+        public delegate void UnlockedEventHandler(Node sender, LockStateChangedEventArgs eventArgs);
+
+        [Signal]
+        public delegate void GuidAddedEventHandler(Node sender, GuidContainerEventArgs eventArgs);
+
+        [Signal]
+        public delegate void GuidRemovedEventHandler(Node sender, GuidContainerEventArgs eventArgs);
+        
+        [Signal]
+        public delegate void ObjectIdChangedEventHandler(Node sender, UniqueIdChangedEventArgs eventArgs);
 #endif
 
         private bool IsRegistered => RuntimeConfigurator.Configuration != null && RuntimeConfigurator.Configuration.SceneObjectRegistry.ContainsGuid(Guid);
@@ -481,7 +482,7 @@ if (IsGuidAssigned() && !serializedGuid.Equals(guid))
 #if UNITY_5_3_OR_NEWER
                     Debug.LogErrorFormat("Property of type '{0}' is not attached to SceneObject '{1}'", propertyType.Name, gameObject.name);
 #elif GODOT
-                    GD.PrintErr($"Property of type '{propertyType.Name}' is not attached to SceneObject '{UniqueName}'");
+                    GD.PrintErr($"Property of type '{propertyType.Name}' is not attached to SceneObject '{SceneFilePath}'");
 #endif
                     hasFailed = true;
                 }

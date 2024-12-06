@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -20,3 +21,5 @@ namespace VRBuilder.Core.Editor.Tabs
         }
     }
 }
+
+#endif

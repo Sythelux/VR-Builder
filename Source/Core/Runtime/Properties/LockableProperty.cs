@@ -3,14 +3,13 @@
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
 #if UNITY_5_3_OR_NEWER
- using UnityEngine;
+using UnityEngine;
 #elif GODOT
 using Godot;
 #endif
 using System;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils.Logging;
 
@@ -173,11 +172,7 @@ namespace VRBuilder.Core.Properties
             return unlockers.Remove(data);
         }
 
-#if UNITY_5_3_OR_NEWER
         private void HandleObjectUnlocked(object sender, LockStateChangedEventArgs e)
-#elif GODOT
-        private void HandleObjectUnlocked(LockStateChangedEventArgs e)
-#endif
         {
             if (LockOnParentObjectLock && IsLocked)
             {
@@ -185,11 +180,7 @@ namespace VRBuilder.Core.Properties
             }
         }
 
-#if UNITY_5_3_OR_NEWER
         private void HandleObjectLocked(object sender, LockStateChangedEventArgs e)
-#elif GODOT
-        private void HandleObjectLocked(LockStateChangedEventArgs e)
-#endif
         {
             if (LockOnParentObjectLock && IsLocked == false)
             {

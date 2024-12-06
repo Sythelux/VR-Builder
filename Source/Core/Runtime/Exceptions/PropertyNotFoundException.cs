@@ -13,7 +13,7 @@ namespace VRBuilder.Core.Exceptions
 #if UNITY_5_3_OR_NEWER
         public PropertyNotFoundException(ISceneObject sourceObject, Type missingType) : base(string.Format("SceneObject '{0}' does not contain a property of type '{1}'", sourceObject.GameObject.name, missingType.Name)) { }
 #elif GODOT
-        public PropertyNotFoundException(ISceneObject sourceObject, Type missingType) : base(string.Format("SceneObject '{0}' does not contain a property of type '{1}'", sourceObject.UniqueName, missingType.Name)) { }
+        public PropertyNotFoundException(ISceneObject sourceObject, Type missingType) : base(string.Format("SceneObject '{0}' does not contain a property of type '{1}'", sourceObject.GameObject.Name, missingType.Name)) { }
 #endif
     }
 }

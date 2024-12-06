@@ -2,7 +2,12 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine;
+#elif GODOT
+using Godot;
+#endif
+
 
 namespace VRBuilder.Core.Editor.Tabs
 {
@@ -14,7 +19,12 @@ namespace VRBuilder.Core.Editor.Tabs
         /// <summary>
         /// A label to display in the tab view.
         /// </summary>
+#if UNITY_6000_0_OR_NEWER
         GUIContent Label { get; }
+#elif GODOT
+        Label Label { get; }
+#endif
+
 
         /// <summary>
         /// When user selects this tab, the Step Inspector displays the value from this method.

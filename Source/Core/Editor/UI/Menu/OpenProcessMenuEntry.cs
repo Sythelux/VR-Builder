@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 // Copyright (c) 2021 MindPort GmbH
 // Licensed under the Apache License, Version 2.0
 
@@ -39,3 +40,5 @@ namespace VRBuilder.Core.Editor.Menu
         }
     }
 }
+
+#endif

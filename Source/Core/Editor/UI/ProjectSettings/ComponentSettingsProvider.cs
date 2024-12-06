@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEditor;
 
 namespace VRBuilder.Core.Editor.UI.ProjectSettings
@@ -25,3 +26,5 @@ namespace VRBuilder.Core.Editor.UI.ProjectSettings
         }
     }
 }
+
+#endif

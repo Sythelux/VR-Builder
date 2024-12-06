@@ -3,6 +3,8 @@
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
 using System;
+using System.Diagnostics;
+using System.Linq;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #elif GODOT
@@ -38,7 +40,6 @@ namespace VRBuilder.Core.Configuration
         /// <summary>
         /// The event that fires when a process runtime configuration changes.
         /// </summary>
-#if UNITY_5_3_OR_NEWER
         public static event EventHandler<EventArgs> RuntimeConfigurationChanged;
 
         /// <summary>
@@ -56,6 +57,7 @@ namespace VRBuilder.Core.Configuration
         /// <summary>
         /// Process name which is selected.
         /// </summary>
+#if UNITY_5_3_OR_NEWER
         [SerializeField]
 #endif
         private string selectedProcessStreamingAssetsPath = "";
@@ -112,8 +114,10 @@ namespace VRBuilder.Core.Configuration
             {
                 return null;
             }
+
             if (instances.Length > 1)
             {
+#if UNITY_6000_0_OR_NEWER
                 string errorLog = $"More than one process runtime configurator found in all open scenes. The active process will be {instances[0].GetSelectedProcess()} from Scene {instances[0].gameObject.scene.name}. Ignoring following processes: ";
                 for (int i = 1; i < instances.Length; i++)
                 {
@@ -124,20 +128,31 @@ namespace VRBuilder.Core.Configuration
                     }
                 }
                 Debug.LogError(errorLog);
+#elif GODOT
+                string errorLog = $"More than one process runtime configurator found in all open scenes. The active process will be {instances[0].GetSelectedProcess()} from Scene {instances[0].GetPath()}. Ignoring following processes: ";
+                for (int i = 1; i < instances.Length; i++)
+                {
+                    errorLog += $"{instances[i].GetSelectedProcess()} from Scene {instances[i].GetPath()}";
+                    if (i < instances.Length - 1)
+                    {
+                        errorLog += ", ";
+                    }
+                }
+
+                GD.PushError(errorLog);
+#endif
             }
 
             return instances[0];
         }
+
         /// <summary>
         /// Checks if a process runtime configurator exists in the scene.
         /// </summary>
         /// <returns><c>true</c> if an instance of the runtime configurator exists; otherwise, <c>false</c>.</returns>
         public static bool Exists
         {
-            get
-            {
-                return IsExisting();
-            }
+            get { return IsExisting(); }
         }
 
         /// <summary>
@@ -172,8 +187,7 @@ namespace VRBuilder.Core.Configuration
                 Type type = ReflectionUtils.GetTypeFromAssemblyQualifiedName(Instance.runtimeConfigurationName);
 #elif GODOT
                 string instanceRuntimeConfigurationName =
-                    Instance.runtimeConfigurationName
-                        .Replace(";", ","); //,->; is a temporary fix as Godot, will interpret "," as separator for field names... now we have to switch it back.
+                    Instance.GetRuntimeConfigurationName().Replace(";", ","); //,->; is a temporary fix as Godot, will interpret "," as separator for field names... now we have to switch it back.
                 Type? type = ReflectionUtils.GetTypeFromAssemblyQualifiedName(instanceRuntimeConfigurationName);
 #endif
                 if (type == null)
@@ -214,7 +228,8 @@ namespace VRBuilder.Core.Configuration
 
                 value.Modes.ModeChanged += RuntimeConfigurationModeChanged;
 
-                Instance.runtimeConfigurationName = value.GetType().AssemblyQualifiedName;
+                var assemblyQualifiedName = value.GetType().AssemblyQualifiedName;
+                if (assemblyQualifiedName != null) Instance.SetRuntimeConfigurationName(assemblyQualifiedName.Replace(",", ";"));
                 Instance.runtimeConfiguration = value;
 
                 EmitRuntimeConfigurationChanged();
@@ -302,7 +317,7 @@ namespace VRBuilder.Core.Configuration
         public override void _Ready()
         {
             // TODO: Configuration.SceneObjectRegistry.RegisterAll();
-            RuntimeConfigurationChanged += EmitModeChanged;
+            RuntimeConfigurationChanged += HandleRuntimeConfigurationChanged;
         }
 #endif
 
@@ -316,7 +331,8 @@ namespace VRBuilder.Core.Configuration
 #elif GODOT
         public override void _ExitTree()
         {
-            RuntimeConfigurationChanged -= EmitModeChanged;
+            // ModeChanged;
+            RuntimeConfigurationChanged = null;
         }
 #endif
 
@@ -334,7 +350,8 @@ namespace VRBuilder.Core.Configuration
 #if UNITY_5_3_OR_NEWER
             RuntimeConfigurationChanged?.Invoke(Instance, EventArgs.Empty);
 #elif GODOT
-            Instance.EmitSignal(SignalName.RuntimeConfigurationChanged, Array.Empty<Variant>());
+            RuntimeConfigurationChanged?.Invoke(Instance, EventArgs.Empty);
+            // Instance.EmitSignal(SignalName.RuntimeConfigurationChanged, Array.Empty<Variant>());
 #endif
         }
 

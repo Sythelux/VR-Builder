@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_6000_0_OR_NEWER
+using UnityEngine;
 using VRBuilder.Core.Editor.Setup;
 
 namespace VRBuilder.BasicInteraction.Editor.Setup
@@ -27,3 +28,5 @@ namespace VRBuilder.BasicInteraction.Editor.Setup
         }
     }
 }
+
+#endif

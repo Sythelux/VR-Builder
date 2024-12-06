@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using VRBuilder.Core.Editor.UI.Windows;
@@ -23,3 +24,5 @@ namespace VRBuilder.Core.Editor.Unity
         }
     }
 }
+
+#endif

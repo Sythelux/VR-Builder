@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_6000_0_OR_NEWER
+using UnityEngine;
 using VRBuilder.BasicInteraction.RigSetup;
 using VRBuilder.Core.Editor.Setup;
 using VRBuilder.Core.SceneObjects;
@@ -49,3 +50,4 @@ namespace VRBuilder.BasicInteraction.Editor.Setup
         }
     }
 }
+#endif

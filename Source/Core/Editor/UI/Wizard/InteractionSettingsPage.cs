@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine;
 using VRBuilder.Core.Settings;
 
@@ -40,3 +41,5 @@ namespace VRBuilder.Core.Editor.UI.Wizard
         }
     }
 }
+
+#endif

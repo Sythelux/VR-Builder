@@ -1,5 +1,9 @@
-#if UNITY_5_3_OR_NEWER
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine.Events;
+#elif GODOT
+using Godot;
+#endif
+
 
 namespace VRBuilder.Core.Properties
 {
@@ -12,7 +16,12 @@ namespace VRBuilder.Core.Properties
         /// <summary>
         /// Raised when the stored value changes.
         /// </summary>
+#if UNITY_6000_0_OR_NEWER
         UnityEvent<T> OnValueChanged { get; }
+#elif GODOT
+        //TODO: Godot can't handle SignalHandler in Interfaces
+#endif
+
 
         /// <summary>
         /// Returns the value.
@@ -25,8 +34,3 @@ namespace VRBuilder.Core.Properties
         void SetValue(T value);      
     }
 }
-
-#elif GODOT
-using Godot;
-//TODO
-#endif

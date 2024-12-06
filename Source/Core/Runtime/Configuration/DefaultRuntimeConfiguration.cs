@@ -45,7 +45,12 @@ namespace VRBuilder.Core.Configuration
         {
             get
             {
+#if UNITY_6000_0_OR_NEWER
                 UserSceneObject user = GameObject.FindObjectsByType<UserSceneObject>(FindObjectsSortMode.None).FirstOrDefault();
+#elif GODOT
+                UserSceneObject user = UserTransforms.FirstOrDefault<Node>() as UserSceneObject ?? throw new InvalidOperationException();
+#endif
+
 
                 if (user == null)
                 {
@@ -87,7 +92,7 @@ namespace VRBuilder.Core.Configuration
 #if UNITY_5_3_OR_NEWER
         public override IEnumerable<UserSceneObject> Users => GameObject.FindObjectsByType<UserSceneObject>(FindObjectsSortMode.None);
 #elif GODOT
-        public override IEnumerable<Node3D> UserTransforms => NodeExtensions.FindObjectsOfType<Node3D>();
+        public override IEnumerable<UserSceneObject> UserTransforms => NodeExtensions.FindObjectsOfType<UserSceneObject>();
 #endif
 
         /// <inheritdoc />

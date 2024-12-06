@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 namespace VRBuilder.Core.Editor.ProcessUpgradeTool.Updaters
 {
     /// <summary>
@@ -7,3 +8,5 @@ namespace VRBuilder.Core.Editor.ProcessUpgradeTool.Updaters
     {
     }
 }
+
+#endif

@@ -1,4 +1,10 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine.Localization;
+#elif GODOT
+using System.Globalization;
+using Godot;
+#endif
+
 
 namespace VRBuilder.Core.TextToSpeech.Configuration
 {
@@ -17,7 +23,12 @@ namespace VRBuilder.Core.TextToSpeech.Configuration
         /// <param name="md5Hash">Hashed text value</param>
         /// <param name="locale">Used locale</param>
         /// <returns>A unique identifier of the text</returns>
+#if UNITY_6000_0_OR_NEWER
         string GetUniqueIdentifier(string text, string md5Hash, Locale locale);
+#elif GODOT
+        string GetUniqueIdentifier(string text, string md5Hash, RegionInfo locale);
+#endif
+
 
         /// <summary>
         /// Check if the localizedContent in the chosen locale is cached
@@ -25,6 +36,11 @@ namespace VRBuilder.Core.TextToSpeech.Configuration
         /// <param name="locale">Used locale</param>
         /// <param name="localizedContent">Content to be checked</param>
         /// <returns>True if the localizedContent in the chosen locale is cached</returns>
+#if UNITY_6000_0_OR_NEWER
         bool IsCached(Locale locale, string localizedContent);
+#elif GODOT
+        bool IsCached(RegionInfo locale, string localizedContent);
+#endif
+
     }
 }

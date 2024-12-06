@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using VRBuilder.Core.Behaviors;
 using VRBuilder.Core.Entities.Factories;
 
@@ -19,3 +20,5 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Nodes
         }
     }
 }
+
+#endif

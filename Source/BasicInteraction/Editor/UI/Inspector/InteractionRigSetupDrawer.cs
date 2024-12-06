@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_6000_0_OR_NEWER
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditorInternal;
@@ -100,3 +101,5 @@ namespace VRBuilder.BasicInteraction.Editor.UI.Inspector
         }
     }
 }
+
+#endif

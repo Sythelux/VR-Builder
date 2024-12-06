@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using System.Collections.Generic;
 using VRBuilder.Core.Configuration;
 using VRBuilder.ProcessController;
@@ -43,3 +44,5 @@ namespace VRBuilder.Core.Editor.Setup
         }
     }
 }
+
+#endif

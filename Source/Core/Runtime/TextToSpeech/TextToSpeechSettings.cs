@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using System.IO;
 using UnityEngine;
 using VRBuilder.Core.Configuration;
@@ -69,3 +70,5 @@ namespace VRBuilder.Core.TextToSpeech
         }
     }
 }
+
+#endif

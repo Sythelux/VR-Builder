@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEditor;
 using VRBuilder.Core.Editor.UI.GraphView.Windows;
 
@@ -33,3 +34,5 @@ namespace VRBuilder.Core.Editor.UI.Windows
         }
     }
 }
+
+#endif

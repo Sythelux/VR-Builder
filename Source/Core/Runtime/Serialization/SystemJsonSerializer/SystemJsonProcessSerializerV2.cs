@@ -221,6 +221,11 @@ namespace VRBuilder.Core.Serialization.JSON
                 throw new NotImplementedException();
             }
 
+                public IStageProcess GetAbortingProcess()
+                {
+                    throw new NotImplementedException();
+                }
+
                 public void Configure(IMode mode)
             {
                 throw new NotImplementedException();

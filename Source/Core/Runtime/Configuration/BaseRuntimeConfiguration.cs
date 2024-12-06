@@ -116,7 +116,7 @@ namespace VRBuilder.Core.Configuration
         public StepLockHandlingStrategy StepLockHandling { get; set; }
 
         /// <inheritdoc />
-        public abstract IEnumerable<UserSceneObject> Users { get; }
+        public abstract IEnumerable<UserSceneObject> UserTransforms { get; }
 
         /// <inheritdoc />
         public abstract IProcessAudioPlayer ProcessAudioPlayer { get; }

@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine;
 
 namespace VRBuilder.Core.Utils
@@ -49,3 +50,5 @@ namespace VRBuilder.Core.Utils
         }
     }
 }
+
+#endif

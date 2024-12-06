@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine.UIElements;
 using VRBuilder.Core.Editor.UI.GraphView.Nodes;
 
@@ -33,3 +34,5 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Instantiators
         }
     }
 }
+
+#endif

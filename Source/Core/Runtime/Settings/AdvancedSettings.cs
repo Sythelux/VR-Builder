@@ -1,3 +1,4 @@
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine;
 using VRBuilder.Core.Utils;
 
@@ -22,3 +23,7 @@ namespace VRBuilder.Core.Settings
         public bool ShowExpertInfo = false;
     }
 }
+
+#elif GODOT
+
+#endif

@@ -3,16 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
-using UnityEngine.SceneManagement;
-using VRBuilder.Core.Behaviors;
-using VRBuilder.Core.Configuration;
-using VRBuilder.Core.Editor.ProcessAssets;
 using VRBuilder.Core.Editor.ProcessUpgradeTool.Converters;
 using VRBuilder.Core.Editor.ProcessUpgradeTool.Updaters;
 using VRBuilder.Core.EntityOwners;
-using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils;
-using VRBuilder.Unity;
 
 namespace VRBuilder.Core.Editor.ProcessUpgradeTool
 {
@@ -61,83 +55,72 @@ namespace VRBuilder.Core.Editor.ProcessUpgradeTool
         }
 
         //[MenuItem("Tools/VR Builder/Developer/Fix Groups", false, 70)]
-        // Used to fix GroupsToUnlock == null errors.
-        private static void FixGroups()
-        {
-            IProcess process = GlobalEditorHandler.GetCurrentProcess();
+        //private static void FixGroups()
+        //{
+        //    IProcess process = GlobalEditorHandler.GetCurrentProcess();
 
-            foreach (IChapter chapter in process.Data.Chapters)
-            {
-                foreach (IStep step in chapter.Data.Steps)
-                {
-                    FixGroupsToUnlockInStep(step);
-                }
-            }
+        //    foreach (IChapter chapter in process.Data.Chapters)
+        //    {
+        //        foreach (IStep step in chapter.Data.Steps)
+        //        {
+        //            if (((Step)step).Data.GroupsToUnlock == null)
+        //            {
+        //                ((Step)step).Data.GroupsToUnlock = new Dictionary<Guid, IEnumerable<Type>>();
+        //            }
+        //        }
+        //    }
 
-            ProcessAssetManager.Save(process);
-        }
+        //    ProcessAssetManager.Save(process);
+        //}
 
-        private static void FixGroupsToUnlockInStep(IStep step)
-        {
-            if (((Step)step).Data.GroupsToUnlock == null)
-            {
-                ((Step)step).Data.GroupsToUnlock = new Dictionary<Guid, IEnumerable<Type>>();
-            }
-
-            foreach (IBehavior behavior in step.Data.Behaviors.Data.Behaviors)
-            {
-                if (behavior is IDataOwner dataOwner && dataOwner.Data is EntityCollectionData<IChapter> nestedData)
-                {
-                    foreach (IChapter chapter in nestedData.GetChildren())
-                    {
-                        foreach (IStep nestedStep in chapter.Data.Steps)
-                        {
-                            FixGroupsToUnlockInStep(nestedStep);
-                        }
-                    }
-                }
-            }
-        }
 
         //        [MenuItem("Tools/VR Builder/Developer/Update Process in Scene", false, 70)]
-        // Was used for updating from VR Builder 3 to VR Builder 4.
-        private static void UpdateProcessMenuEntry()
-        {
-            if (RuntimeConfigurator.Exists == false)
-            {
-                UnityEngine.Debug.LogError("This is not a VR Builder scene");
-                return;
-            }
+        //        private static void UpdateProcessMenuEntry()
+        //        {
+        //            if (RuntimeConfigurator.Exists == false)
+        //            {
+        //                UnityEngine.Debug.LogError("This is not a VR Builder scene");
+        //                return;
+        //            }
 
-            IProcess process = GlobalEditorHandler.GetCurrentProcess();
+        //            IProcess process = GlobalEditorHandler.GetCurrentProcess();
 
-            if (process == null)
-            {
-                UnityEngine.Debug.LogError("No active process found.");
-                return;
-            }
+        //            if (process == null)
+        //            {
+        //                UnityEngine.Debug.LogError("No active process found.");
+        //                return;
+        //            }
 
-            if (EditorUtility.DisplayDialog("Process Upgrade Tool", $"Updating the current process to the newest version of VR Builder.\n" +
-                $"The correct scene needs to be opened for the upgrade to work properly.\n\n" +
-                $"Process: {process.Data.Name}\n" +
-                $"Scene: {SceneManager.GetActiveScene().name}\n\n" +
-                $"Ensure you have backed up your process file before proceeding!\n" +
-                $"Continue?", "Ok", "Cancel") == false)
-            {
-                return;
-            }
+        //            if (EditorUtility.DisplayDialog("Process Upgrade Tool", $"Updating the current process to the newest version of VR Builder.\n" +
+        //                $"The correct scene needs to be opened for the upgrade to work properly.\n\n" +
+        //                $"Process: {process.Data.Name}\n" +
+        //                $"Scene: {SceneManager.GetActiveScene().name}\n\n" +
+        //                $"Ensure you have backed up your process file before proceeding!\n" +
+        //                $"Continue?", "Ok", "Cancel") == false)
+        //            {
+        //                return;
+        //            }
 
-            IEnumerable<ProcessSceneObject> processSceneObjects = SceneUtils.GetActiveAndInactiveComponents<ProcessSceneObject>();
-            foreach (ProcessSceneObject sceneObject in processSceneObjects)
-            {
-                sceneObject.ResetUniqueId();
-                EditorUtility.SetDirty(sceneObject);
-            }
+        //            UpdateObjectGroups();
 
-            UpdateDataOwnerRecursively(process);
+        //            IEnumerable<ProcessSceneObject> processSceneObjects = SceneUtils.GetActiveAndInactiveComponents<ProcessSceneObject>();
+        //            foreach (ProcessSceneObject sceneObject in processSceneObjects)
+        //            {
+        //                sceneObject.ResetUniqueId();
+        //#pragma warning disable CS0618 // Type or member is obsolete
+        //                foreach (Guid guid in sceneObject.Tags)
+        //                {
+        //                    sceneObject.AddGuid(guid);
+        //                }
+        //#pragma warning restore CS0618 // Type or member is obsolete
 
-            ProcessAssetManager.Save(process);
-        }
+        //                EditorUtility.SetDirty(sceneObject);
+        //            }
+
+        //            UpdateDataOwnerRecursively(process);
+
+        //            ProcessAssetManager.Save(process);
+        //        }
 
         /// <summary>
         /// Updates the provided data owner and all of its child data owners, if a suitable updater exists.

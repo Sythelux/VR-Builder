@@ -1,10 +1,10 @@
 using System;
-using VRBuilder.Core.Configuration;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #elif GODOT
 using Godot;
 #endif
+using VRBuilder.Core.Configuration;
 
 namespace VRBuilder.UI.Spectator
 {

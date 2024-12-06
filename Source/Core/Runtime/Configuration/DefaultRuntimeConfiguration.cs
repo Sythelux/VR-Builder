@@ -2,14 +2,14 @@
 // Licensed under the Apache License, Version 2.0
 // Modifications copyright (c) 2021-2024 MindPort GmbH
 
+using System;
+using System.Collections.Generic;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #elif GODOT
 using Godot;
 using VRBuilder.Core.Utils;
 #endif
-using System;
-using System.Collections.Generic;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Properties;
@@ -84,6 +84,13 @@ namespace VRBuilder.Core.Configuration
         }
 
         /// <inheritdoc />
+#if UNITY_5_3_OR_NEWER
+        public override IEnumerable<UserSceneObject> Users => GameObject.FindObjectsByType<UserSceneObject>(FindObjectsSortMode.None);
+#elif GODOT
+        public override IEnumerable<Node3D> UserTransforms => NodeExtensions.FindObjectsOfType<Node3D>();
+#endif
+
+        /// <inheritdoc />
         public override ISceneObjectManager SceneObjectManager
         {
             get
@@ -96,25 +103,5 @@ namespace VRBuilder.Core.Configuration
                 return sceneObjectManager;
             }
         }
-
-        /// <inheritdoc />
-#if UNITY_5_3_OR_NEWER
-        public override IEnumerable<IXRRigTransform> UserTransforms
-        {
-            get
-            {
-                if (LocalUser != null)
-                {
-                    return new List<IXRRigTransform>() { LocalUser };
-                }
-                else
-                {
-                    return new List<IXRRigTransform>();
-                }
-            }
-        }
-#elif GODOT
-        public override IEnumerable<Node3D> UserTransforms => NodeExtensions.FindObjectsOfType<Node3D>();
-#endif
     }
 }

@@ -122,13 +122,24 @@ namespace VRBuilder.Core.Editor
         }
 
         /// <summary>
+        /// Retrieves the current named build target based on the active build target settings in the Unity Editor.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="NamedBuildTarget"/> object representing the current build target group.
+        /// </returns>
+        internal static NamedBuildTarget GetCurrentNamedBuildTarget()
+        {
+            BuildTarget activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
+            BuildTargetGroup targetGroup = BuildPipeline.GetBuildTargetGroup(activeBuildTarget);
+            return NamedBuildTarget.FromBuildTargetGroup(targetGroup);
+        }
+
+        /// <summary>
         /// Gets .NET API compatibility level for current BuildTargetGroup.
         /// </summary>
         internal static ApiCompatibilityLevel GetCurrentCompatibilityLevel()
         {
-            BuildTarget buildTarget = EditorUserBuildSettings.activeBuildTarget;
-            BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
-            return PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
+            return PlayerSettings.GetApiCompatibilityLevel(GetCurrentNamedBuildTarget());
         }
 
         /// <summary>

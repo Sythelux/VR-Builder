@@ -115,10 +115,8 @@ namespace VRBuilder.Core.Configuration
         /// </summary>
         public StepLockHandlingStrategy StepLockHandling { get; set; }
 
-        /// <summary>
-        /// Returns transform data for all user rigs in the scene.
-        /// </summary>
-        public abstract IEnumerable<IXRRigTransform> UserTransforms { get; }
+        /// <inheritdoc />
+        public abstract IEnumerable<UserSceneObject> Users { get; }
 
         /// <inheritdoc />
         public abstract IProcessAudioPlayer ProcessAudioPlayer { get; }

@@ -1,12 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #elif GODOT
 using Godot;
 using Godot.Collections;
 #endif
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils;
 

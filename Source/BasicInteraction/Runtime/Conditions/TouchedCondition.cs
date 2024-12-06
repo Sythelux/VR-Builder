@@ -1,5 +1,5 @@
 #if UNITY_5_3_OR_NEWER
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Runtime.Serialization;

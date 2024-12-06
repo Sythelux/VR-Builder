@@ -32,8 +32,8 @@
         },
         {
             "name": "Unity",
-            "expression": "5.3.0",
-            "define": "UNITY_5_3_OR_NEWER"
+            "expression": "6000.0.0",
+            "define": "UNITY_6000_OR_NEWER"
         }
     ],
     "noEngineReferences": false

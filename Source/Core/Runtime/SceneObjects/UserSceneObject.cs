@@ -18,7 +18,7 @@ namespace VRBuilder.Core.SceneObjects
     /// Used to identify the user within the scene.
     /// </summary>
 #if UNITY_5_3_OR_NEWER
-    public class UserSceneObject : MonoBehaviour, IXRRigTransform
+    public class UserSceneObject : MonoBehaviour
     {
         [SerializeField]
         private Transform head, leftHand, rightHand, rigBase;

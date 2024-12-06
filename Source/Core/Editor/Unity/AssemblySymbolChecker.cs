@@ -27,14 +27,15 @@ namespace VRBuilder.Core.Editor.Unity
             // Postpone if editor is busy to avoid errors
             if (!EditorApplication.isUpdating)
             {
-                AddXRInteraction();
+                // AddXRInteraction();
             }
             else
             {
-                EditorApplication.delayCall += () => { AddXRInteraction(); };
+//                EditorApplication.delayCall += () => { AddXRInteraction(); };
             }
         }
 
+/*
         private static void AddXRInteraction()
         {
             if (InteractionComponentSettings.Instance.EnableXRInteractionComponent)
@@ -47,6 +48,7 @@ namespace VRBuilder.Core.Editor.Unity
                 RemoveSymbol("VR_BUILDER_ENABLE_XR_INTERACTION");
             }
         }
+*/
 
         /// <summary>
         /// Tries to find the given assembly name, and add/removes the symbol according to the existence of it.
@@ -85,27 +87,25 @@ namespace VRBuilder.Core.Editor.Unity
 
         private static void AddSymbol(string symbol)
         {
-            BuildTarget buildTarget = EditorUserBuildSettings.activeBuildTarget;
-            BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
-            List<string> symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup).Split(';').ToList();
+            NamedBuildTarget namedBuildTarget = EditorUtils.GetCurrentNamedBuildTarget();
+            List<string> symbols = PlayerSettings.GetScriptingDefineSymbols(namedBuildTarget).Split(';').ToList();
 
             if (symbols.Contains(symbol) == false)
             {
                 symbols.Add(symbol);
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, string.Join(";", symbols.ToArray()));
+                PlayerSettings.SetScriptingDefineSymbols(namedBuildTarget, string.Join(";", symbols.ToArray()));
             }
         }
 
         private static void RemoveSymbol(string symbol)
         {
-            BuildTarget buildTarget = EditorUserBuildSettings.activeBuildTarget;
-            BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
-            List<string> symbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup).Split(';').ToList();
+            NamedBuildTarget namedBuildTarget = EditorUtils.GetCurrentNamedBuildTarget();
+            List<string> symbols = PlayerSettings.GetScriptingDefineSymbols(namedBuildTarget).Split(';').ToList();
 
             if (symbols.Contains(symbol))
             {
                 symbols.Remove(symbol);
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, string.Join(";", symbols.ToArray()));
+                PlayerSettings.SetScriptingDefineSymbols(namedBuildTarget, string.Join(";", symbols.ToArray()));
             }
         }
     }

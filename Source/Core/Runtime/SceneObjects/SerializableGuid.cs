@@ -29,7 +29,7 @@ namespace VRBuilder.Core.SceneObjects
 #if UNITY_5_3_OR_NEWER
         [SerializeField]
 #elif GODOT
-    [Export]
+        [Export]
 #endif
         private byte[] serializedGuid = Guid.NewGuid().ToByteArray();
 

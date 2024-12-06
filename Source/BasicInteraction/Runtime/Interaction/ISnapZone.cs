@@ -1,6 +1,6 @@
 #if UNITY_5_3_OR_NEWER
-using VRBuilder.BasicInteraction.Properties;
 using UnityEngine;
+using VRBuilder.BasicInteraction.Properties;
 
 namespace VRBuilder.BasicInteraction.Interaction
 {

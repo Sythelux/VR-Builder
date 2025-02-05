@@ -1,8 +1,11 @@
-#if UNITY_5_3_OR_NEWER
 using Newtonsoft.Json;
 using System;
 using System.Runtime.Serialization;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine.Scripting;
+#elif GODOT4
+using Godot;
+#endif
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.SceneObjects;
@@ -13,7 +16,7 @@ namespace VRBuilder.Core.Behaviors
     /// Sets enabled or disabled all specified objects.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class SetObjectsEnabledBehavior : Behavior<SetObjectsEnabledBehavior.EntityData>
+    public partial class SetObjectsEnabledBehavior : Behavior<SetObjectsEnabledBehavior.EntityData>
     {
         /// <summary>
         /// Behavior data for <see cref="SetObjectsEnabledBehavior"/>.
@@ -114,8 +117,3 @@ namespace VRBuilder.Core.Behaviors
         }
     }
 }
-
-#elif GODOT
-using Godot;
-//TODO
-#endif

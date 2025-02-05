@@ -1,17 +1,20 @@
-#if UNITY_5_3_OR_NEWER
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+using Object = UnityEngine.Object;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Configuration;
 using VRBuilder.Core.SceneObjects;
 using VRBuilder.Core.Utils;
 using VRBuilder.Core.Utils.ParticleMachines;
-using Object = UnityEngine.Object;
 
 namespace VRBuilder.Core.Behaviors
 {
@@ -19,7 +22,7 @@ namespace VRBuilder.Core.Behaviors
     /// This behavior causes confetti to rain.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class ConfettiBehavior : Behavior<ConfettiBehavior.EntityData>
+    public partial class ConfettiBehavior : Behavior<ConfettiBehavior.EntityData>
     {
         [DisplayName("Spawn Confetti")]
         [DataContract(IsReference = true)]
@@ -65,7 +68,11 @@ namespace VRBuilder.Core.Behaviors
             [DataMember]
             public BehaviorExecutionStages ExecutionStages { get; set; }
 
+#if UNITY_6000_0_OR_NEWER
             public GameObject ConfettiMachine { get; set; }
+#elif GODOT
+            public Node ConfettiMachine { get; set; }
+#endif
 
             public Metadata Metadata { get; set; }
 
@@ -77,7 +84,12 @@ namespace VRBuilder.Core.Behaviors
                     string positionProvider = "user";
                     if (IsAboveUser == false)
                     {
+#if UNITY_6000_0_OR_NEWER
                         positionProvider = ConfettiPosition.HasValue() ? ConfettiPosition.Value.GameObject.name : "[NULL]";
+#elif GODOT
+                        positionProvider = ConfettiPosition.HasValue() ? ConfettiPosition.Value.GameObject.Name : "[NULL]";
+#endif
+
                     }
 
                     return $"Spawn confetti on {positionProvider}";
@@ -118,8 +130,14 @@ namespace VRBuilder.Core.Behaviors
         {
             private readonly BehaviorExecutionStages stages;
             private float timeStarted;
+#if UNITY_6000_0_OR_NEWER
             private GameObject confettiPrefab;
             private List<GameObject> confettiMachines = new List<GameObject>();
+#elif GODOT
+            private PackedScene confettiPrefab;
+            private readonly List<Node> confettiMachines = new();
+#endif
+
 
             public EmitConfettiProcess(EntityData data, BehaviorExecutionStages stages) : base(data)
             {
@@ -135,33 +153,57 @@ namespace VRBuilder.Core.Behaviors
                 }
 
                 // Load the given prefab and stop the coroutine if not possible.
+#if UNITY_6000_0_OR_NEWER
                 confettiPrefab = Resources.Load<GameObject>(Data.ConfettiMachinePrefabPath);
+#elif GODOT
+                confettiPrefab = ResourceLoader.Load<PackedScene>(Data.ConfettiMachinePrefabPath);
+#endif
 
                 if (confettiPrefab == null)
                 {
+#if UNITY_6000_0_OR_NEWER
                     Debug.LogWarning("No valid prefab path provided.");
+#elif GODOT
+                    GD.PushWarning("No valid prefab path provided.");
+#endif
                     return;
                 }
 
                 if (Data.IsAboveUser)
                 {
-                    foreach (var user in RuntimeConfigurator.Configuration.Users)
+                    foreach (var user in RuntimeConfigurator.Configuration.UserTransforms)
                     {
                         Vector3 spawnPosition;
+#if UNITY_6000_0_OR_NEWER
                         spawnPosition = user.Head.position;
                         spawnPosition.y += distanceAboveUser;
+#elif GODOT
+                        spawnPosition = user.Head.Position;
+                        spawnPosition.Y += distanceAboveUser;
+#endif
 
                         CreateConfettiMachine(spawnPosition);
                     }
                 }
                 else
                 {
+#if UNITY_6000_0_OR_NEWER
                     CreateConfettiMachine(Data.ConfettiPosition.Value.GameObject.transform.position);
+#elif GODOT
+                    if (Data.ConfettiPosition.Value.GameObject is Node3D valueGameObject)
+                        CreateConfettiMachine(valueGameObject.Position);
+                    else
+                        GD.PushWarning($"{Data.ConfettiPosition.Value.GameObject} needs to be a Node3D.");
+#endif
                 }
 
                 if (Data.Duration > 0f)
                 {
+#if UNITY_6000_0_OR_NEWER
                     timeStarted = Time.time;
+#elif GODOT
+                    timeStarted = GetTimeSinceStart();
+#endif
                 }
             }
 
@@ -180,10 +222,15 @@ namespace VRBuilder.Core.Behaviors
 
                 if (Data.Duration > 0)
                 {
+#if UNITY_6000_0_OR_NEWER
                     while (Time.time - timeStarted < Data.Duration)
                     {
                         yield return null;
                     }
+#elif GODOT
+                    while (GetTimeSinceStart() - timeStarted < Data.Duration)
+                        yield return null;
+#endif
                 }
             }
 
@@ -192,10 +239,15 @@ namespace VRBuilder.Core.Behaviors
             {
                 if (ShouldExecuteCurrentStage(Data))
                 {
+#if UNITY_6000_0_OR_NEWER
                     foreach (GameObject confettiMachine in confettiMachines)
                     {
                         Object.Destroy(confettiMachine);
                     }
+#elif GODOT
+                    foreach (Node confettiMachine in confettiMachines)
+                        confettiMachine.QueueFree();
+#endif
 
                     confettiMachines.Clear();
                 }
@@ -209,6 +261,7 @@ namespace VRBuilder.Core.Behaviors
                 return (data.ExecutionStages & stages) > 0;
             }
 
+#if UNITY_6000_0_OR_NEWER
             private void CreateConfettiMachine(Vector3 spawnPosition)
             {
                 // Spawn the machine and check if it has the interface IParticleMachine
@@ -232,6 +285,29 @@ namespace VRBuilder.Core.Behaviors
                 IParticleMachine particleMachine = confettiMachine.GetComponent<IParticleMachine>();
                 particleMachine.Activate(Data.AreaRadius, Data.Duration);
             }
+#elif GODOT
+            private void CreateConfettiMachine(Vector3 spawnPosition)
+            {
+                // Spawn the machine and check if it has the interface IParticleMachine
+                if (RuntimeConfigurator.Configuration.SceneObjectManager.InstantiatePrefab(confettiPrefab, spawnPosition, Quaternion.FromEuler(new Vector3(90, 0, 0))) is not Node confettiMachine)
+                {
+                    GD.PushWarning($"Couldn't instantiate confetti machine prefab. ({confettiPrefab})");
+                    return;
+                }
+
+                if (confettiMachine.GetComponent(typeof(IParticleMachine)) == null)
+                {
+                    GD.PushWarning("The provided prefab does not have any component of type \"IParticleMachine\".");
+                    return;
+                }
+
+                confettiMachines.Add(confettiMachine);
+
+                // Change the settings and activate the machine
+                if (confettiMachine.GetComponent<IParticleMachine>() is IParticleMachine particleMachine)
+                    particleMachine.Activate(Data.AreaRadius, Data.Duration);
+            }
+#endif
         }
 
 
@@ -246,10 +322,12 @@ namespace VRBuilder.Core.Behaviors
         {
             return new EmitConfettiProcess(Data, BehaviorExecutionStages.Deactivation);
         }
+
+#if GODOT
+        static float GetTimeSinceStart()
+        {
+            return Time.GetTicksMsec() / 1000f;
+        }
+#endif
     }
 }
-
-#elif GODOT
-using Godot;
-//TODO
-#endif

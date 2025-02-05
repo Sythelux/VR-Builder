@@ -55,7 +55,7 @@ namespace VRBuilder.Core.SceneObjects
         private SerializableGuid serializedGuid;
 #elif GODOT
         [Export]
-        private Resource serializedGuid;
+        private Resource? serializedGuid;
 #endif
 
         /// <summary>
@@ -336,13 +336,13 @@ if (IsGuidAssigned() && !serializedGuid.Equals(guid))
         /// <inheritdoc />
         public void SetObjectId(Guid guid)
         {
-            var serializableGuid = serializedGuid as SerializableGuid;
+            SerializableGuid? serializableGuid = serializedGuid as SerializableGuid;
 
             Guid previousGuid = serializedGuid != null && serializableGuid.IsValid() ? serializableGuid.Guid : Guid.Empty;
 #if UNITY_EDITOR
             Undo.RecordObject(this, "Changed GUID");
 #endif
-            serializableGuid.SetGuid(guid);
+            serializableGuid?.SetGuid(guid);
             this.guid = guid;
 
 #if UNITY_5_3_OR_NEWER

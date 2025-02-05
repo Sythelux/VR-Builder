@@ -1,10 +1,14 @@
-#if UNITY_5_3_OR_NEWER
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Linq;
 using System.Runtime.Serialization;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine.Scripting;
+#elif GODOT
+using Godot;
+#endif
+
 using VRBuilder.Core.Attributes;
 
 namespace VRBuilder.Core.Behaviors
@@ -13,7 +17,7 @@ namespace VRBuilder.Core.Behaviors
     /// This behavior sets the next chapter to an arbitrary chapter and immediately aborts the current chapter.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class GoToChapterBehavior : Behavior<GoToChapterBehavior.EntityData>
+    public partial class GoToChapterBehavior : Behavior<GoToChapterBehavior.EntityData>
     {
         /// <summary>
         /// Behavior data.
@@ -89,8 +93,3 @@ namespace VRBuilder.Core.Behaviors
         }
     }
 }
-
-#elif GODOT
-using Godot;
-//TODO
-#endif

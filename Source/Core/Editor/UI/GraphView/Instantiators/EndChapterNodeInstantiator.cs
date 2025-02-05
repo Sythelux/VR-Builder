@@ -1,5 +1,6 @@
 #if UNITY_6000_0_OR_NEWER
 using UnityEngine.UIElements;
+#endif
 using VRBuilder.Core.Editor.UI.GraphView.Nodes;
 
 namespace VRBuilder.Core.Editor.UI.GraphView.Instantiators
@@ -22,17 +23,17 @@ namespace VRBuilder.Core.Editor.UI.GraphView.Instantiators
         public string StepType => "endChapter";
 
         /// <inheritdoc/>
+#if UNITY_5_3_OR_NEWER
         public DropdownMenuAction.Status GetContextMenuStatus(IEventHandler target, IChapter currentChapter)
         {
             return DropdownMenuAction.Status.Normal;
         }
+#endif
 
         /// <inheritdoc/>
         public ProcessGraphNode InstantiateNode(IStep step)
         {
-            return new EndChapterNode(step);
+            return null; //TODO: return new EndChapterNode(step);
         }
     }
 }
-
-#endif

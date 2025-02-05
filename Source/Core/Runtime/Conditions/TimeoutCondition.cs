@@ -1,9 +1,12 @@
-#if UNITY_5_3_OR_NEWER
 using System.Runtime.Serialization;
 using VRBuilder.Core.Attributes;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
-using Newtonsoft.Json;
 using UnityEngine.Scripting;
+#elif GODOT
+using Godot;
+#endif
+using Newtonsoft.Json;
 
 namespace VRBuilder.Core.Conditions
 {
@@ -12,7 +15,7 @@ namespace VRBuilder.Core.Conditions
     /// </summary>
     [DataContract(IsReference = true)]
     [HelpLink("https://www.mindport.co/vr-builder/manual/default-conditions/timeout-condition")]
-    public class TimeoutCondition : Condition<TimeoutCondition.EntityData>
+    public partial class TimeoutCondition : Condition<TimeoutCondition.EntityData>
     {
         /// <summary>
         /// The data for timeout condition.
@@ -56,13 +59,21 @@ namespace VRBuilder.Core.Conditions
             /// <inheritdoc />
             protected override bool CheckIfCompleted()
             {
+#if UNITY_6000_0_OR_NEWER
                 return Time.time - timeStarted >= Data.Timeout;
+#elif GODOT
+                return Time.GetTicksMsec() - timeStarted >= Data.Timeout;
+#endif
             }
 
             /// <inheritdoc />
             public override void Start()
             {
+#if UNITY_6000_0_OR_NEWER
                 timeStarted = Time.time;
+#elif GODOT
+                timeStarted = Time.GetTicksMsec();
+#endif
                 base.Start();
             }
         }
@@ -84,8 +95,3 @@ namespace VRBuilder.Core.Conditions
         }
     }
 }
-
-#elif GODOT
-using Godot;
-//TODO
-#endif

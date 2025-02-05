@@ -1,10 +1,13 @@
-#if UNITY_5_3_OR_NEWER
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+#if UNITY_5_3_OR_NEWER
 using UnityEngine.Scripting;
+#elif GODOT
+using Godot;
+#endif
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.EntityOwners;
@@ -17,7 +20,7 @@ namespace VRBuilder.Core.Behaviors
     /// </summary>
     [DataContract(IsReference = true)]
     [HelpLink("https://www.mindport.co/vr-builder/manual/default-behaviors/behavior-sequence")]
-    public class BehaviorSequence : Behavior<BehaviorSequence.EntityData>
+    public partial class BehaviorSequence : Behavior<BehaviorSequence.EntityData>
     {
         /// <summary>
         /// Behavior sequence's data.
@@ -236,8 +239,3 @@ namespace VRBuilder.Core.Behaviors
         }
     }
 }
-
-#elif GODOT
-using Godot;
-//TODO
-#endif

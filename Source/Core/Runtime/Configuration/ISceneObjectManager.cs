@@ -28,7 +28,7 @@ namespace VRBuilder.Core.Configuration
 #if UNITY_5_3_OR_NEWER
         GameObject InstantiatePrefab(GameObject prefab, Vector3 position, Quaternion rotation);
 #elif GODOT
-        Node3D /*GameObject*/ InstantiatePrefab(PackedScene /*GameObject*/ prefab, Vector3 position, Quaternion rotation);
+        Node3D? /*GameObject*/ InstantiatePrefab(PackedScene /*GameObject*/ prefab, Vector3 position, Quaternion rotation);
 #endif
 
         /// <summary>

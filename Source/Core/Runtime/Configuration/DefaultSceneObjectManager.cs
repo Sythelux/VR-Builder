@@ -55,12 +55,15 @@ namespace VRBuilder.Core.Configuration
             return GameObject.Instantiate(prefab, position, rotation);
         }
 #elif GODOT
-        public Node3D InstantiatePrefab(PackedScene prefab, Vector3 position, Quaternion rotation)
+        public Node3D? InstantiatePrefab(PackedScene prefab, Vector3 position, Quaternion rotation)
         {
-            var instantiatePrefab = prefab.Instantiate<Node3D>();
-            instantiatePrefab.Position = position;
-            instantiatePrefab.Quaternion = rotation;
-            return instantiatePrefab;
+            if (prefab.InstantiateOrNull<Node3D>() is Node3D instantiatePrefab)
+            {
+                instantiatePrefab.Position = position;
+                instantiatePrefab.Quaternion = rotation;
+                return instantiatePrefab;
+            }
+            return null;
         }
 #endif
 

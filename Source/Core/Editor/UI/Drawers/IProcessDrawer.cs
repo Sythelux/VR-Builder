@@ -33,7 +33,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 #if UNITY_6000_0_OR_NEWER
         Rect Draw(Rect rect, object currentValue, Action<object> changeValueCallback, string label);
 #elif GODOT
-        Control Create<T>(T currentValue, Action<object> changeValueCallback, string text);
+        Control? Create<T>(T currentValue, Action<object> changeValueCallback, string text);
 #endif
 
 
@@ -62,7 +62,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 #if UNITY_6000_0_OR_NEWER
         GUIContent GetLabel(MemberInfo memberInfo, object memberOwner);
 #elif GODOT
-        Label GetLabel(MemberInfo memberInfo, object memberOwner);
+        Label? GetLabel(MemberInfo memberInfo, object memberOwner);
 #endif
 
 
@@ -72,7 +72,7 @@ namespace VRBuilder.Core.Editor.UI.Drawers
 #if UNITY_6000_0_OR_NEWER
         GUIContent GetLabel(object value, Type declaredType);
 #elif GODOT
-        Label GetLabel<T>(T value);
+        Label? GetLabel<T>(T value);
 #endif
 
 

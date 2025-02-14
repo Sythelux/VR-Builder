@@ -22,7 +22,7 @@ namespace VRBuilder.Core.Editor.Tabs
 #if UNITY_6000_0_OR_NEWER
         GUIContent Label { get; }
 #elif GODOT
-        Label Label { get; }
+        string Label { get; }
 #endif
 
 

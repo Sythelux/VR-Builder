@@ -36,31 +36,23 @@ namespace VRBuilder.Core
         {
             ///<inheritdoc />
             [DataMember]
-#if UNITY_5_3_OR_NEWER
             [DrawingPriority(0)]
             [HideInProcessInspector]
-#endif
             public string Name { get; set; }
 
             ///<inheritdoc />
             [DataMember]
-#if UNITY_5_3_OR_NEWER
             [DrawingPriority(1)]
-#endif
             public string Description { get; set; }
 
             ///<inheritdoc />
             [DataMember]
-#if UNITY_5_3_OR_NEWER
             [HideInProcessInspector]
-#endif
             public IBehaviorCollection Behaviors { get; set; }
 
             ///<inheritdoc />
             [DataMember]
-#if UNITY_5_3_OR_NEWER
             [HideInProcessInspector]
-#endif
             public ITransitionCollection Transitions { get; set; }
 
             ///<inheritdoc />
@@ -88,15 +80,11 @@ namespace VRBuilder.Core
 
             ///<inheritdoc />
             [DataMember]
-#if UNITY_5_3_OR_NEWER
             [HideInProcessInspector]
-#endif
             public IEnumerable<LockablePropertyReference> ToUnlock { get; set; } = new List<LockablePropertyReference>();
 
             [DataMember]
-#if UNITY_5_3_OR_NEWER
             [HideInProcessInspector]
-#endif
             public IDictionary<Guid, IEnumerable<Type>> GroupsToUnlock { get; set; } = new Dictionary<Guid, IEnumerable<Type>>();
 
             /// <inheritdoc />
